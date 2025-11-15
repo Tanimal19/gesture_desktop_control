@@ -86,11 +86,8 @@ class TemporalConvNet(nn.Module):
         self.layers = nn.ModuleList(layers)
 
     def forward(self, x):
-        # x: (B, window_length, gcn_hidden_dim*3)
-        x = x.transpose(1, 2)
-
-        for conv, pad in zip(self.layers, self.padding):
-            x = F.pad(x, (0, pad))  # pad at the end
+        for conv, p in zip(self.layers, self.padding):
+            x = F.pad(x, (0, p))  # pad at the end 
             x = conv(x)
 
         # Global Average Pooling (over window_length)

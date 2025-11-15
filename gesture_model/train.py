@@ -5,6 +5,7 @@ from torch.utils.data import random_split
 import torch.nn as nn
 import torch.optim as optim
 from model import GestureNet
+import time
 
 
 class GestureDataset(Dataset):
@@ -12,7 +13,7 @@ class GestureDataset(Dataset):
         self.X = np.load(X_path)  # (N, 30, 12, 3)
         self.y = np.load(y_path)  # (N,)
         self.X = torch.tensor(self.X, dtype=torch.float32)
-        self.y = torch.tensor(self.y, dtype=torch.int)
+        self.y = torch.tensor(self.y, dtype=torch.long)
 
     def __len__(self):
         return len(self.X)
@@ -66,24 +67,32 @@ def validate(model, loader, criterion, device):
 
 
 if __name__ == "__main__":
-    dataset = GestureDataset("./datasets/X.npy", "./datasets/y.npy")
+    start_time = time.time()
+    print(f"start train: {time.asctime()}")
+    
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"Using device: {device}")
+
+    data_folder = "./gesture_model/datasets/"
+    dataset = GestureDataset(data_folder + "X.npy", data_folder + "y.npy")
 
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
-    print(f"Train size: {train_size}, Val size: {val_size}")
-
     train_ds, val_ds = random_split(dataset, [train_size, val_size])
     train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
+    print(f"Train size: {train_size}, Val size: {val_size}")
 
     model = GestureNet()
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
-
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-    EPOCHS = 30
+
+    EPOCHS = 100
+    best_val_loss = float("inf")
+    patience = 10
+    count = 0
 
     for epoch in range(EPOCHS):
         train_loss, train_acc = train_one_epoch(
@@ -97,5 +106,18 @@ if __name__ == "__main__":
             f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f}"
         )
 
-        # optional: save best model
-        torch.save(model.state_dict(), "gesturenet.pth")
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            count = 0
+        else:
+            count += 1
+            if count >= patience:
+                print("Early stopping triggered.")
+                break
+
+    torch.save(model.state_dict(), "gesture_model.pth")
+
+
+    print(f"Completed in {time.time() - start_time:.2f} seconds.")
+
+# nohup python train.py &
