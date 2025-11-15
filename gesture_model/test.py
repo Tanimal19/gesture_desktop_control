@@ -35,9 +35,7 @@ with torch.no_grad():
             assert sample["landmarks"].shape == (WINDOW_LENGTH, len(LANDMARKS), 3)
             lm_tensor = torch.tensor(
                 sample["landmarks"], dtype=torch.float32
-            ).unsqueeze(
-                0
-            )  # (1, 30, 12, 3)
+            ).unsqueeze(0)
             lm_tensor = lm_tensor.to(device)
 
             out = model(lm_tensor)  # (1, 8)

@@ -89,7 +89,7 @@ if __name__ == "__main__":
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
 
-    EPOCHS = 100
+    EPOCHS = 150
     best_val_loss = float("inf")
     patience = 10
     count = 0
