@@ -70,6 +70,8 @@ if __name__ == "__main__":
 
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
+    print(f"Train size: {train_size}, Val size: {val_size}")
+
     train_ds, val_ds = random_split(dataset, [train_size, val_size])
     train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)

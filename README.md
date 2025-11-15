@@ -1,8 +1,8 @@
 
-DISPLAY_WIDTH = 1512
-DISPLAY_HEIGHT = 982
-CAMERA_WIDTH = 1620
-CAMERA_HEIGHT = 1080
+DISPLAY_WIDTH = 1512  
+DISPLAY_HEIGHT = 982  
+CAMERA_WIDTH = 1620  
+CAMERA_HEIGHT = 1080  
 
 ## Mediapipe Landmarks
 - `screen_landmarks` (x, y, z): Normalized coordinates of hand landmarks on the image in pixel.
