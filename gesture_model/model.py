@@ -4,9 +4,9 @@ import torch.nn.functional as F
 
 
 # landmark_num = 12, dimension = 3, gesture_num = 8
-window_length = 30  # number of frames in input sequence
-gcn_hidden_dim = 16  # GCN hidden dimension
-tcn_hidden_dim = 64  # TCN hidden dimension
+WINDOW_LENGTH = 30  # number of frames in input sequence
+GCN_HIDDEN_DIM = 16  # GCN hidden dimension
+TCN_HIDDEN_DIM = 64  # TCN hidden dimension
 
 
 class GCNLayer(nn.Module):
@@ -20,7 +20,7 @@ class GCNLayer(nn.Module):
     def __init__(self):
         super().__init__()
         in_dim = 3
-        out_dim = gcn_hidden_dim
+        out_dim = GCN_HIDDEN_DIM
 
         self.W1 = nn.Linear(in_dim, out_dim, bias=False)
         self.W2 = nn.Linear(in_dim, out_dim, bias=False)
@@ -65,8 +65,8 @@ class TemporalConvNet(nn.Module):
     def __init__(self):
         super().__init__()
         layers = []
-        in_ch = 3 * gcn_hidden_dim
-        out_ch = tcn_hidden_dim
+        in_ch = 3 * GCN_HIDDEN_DIM
+        out_ch = TCN_HIDDEN_DIM
 
         kernel_size = 3
         dilations = [1, 3, 9]
@@ -116,7 +116,7 @@ class GestureNet(nn.Module):
         self.tcn = TemporalConvNet()
 
         # Classifier
-        self.fc = nn.Linear(tcn_hidden_dim, 8)
+        self.fc = nn.Linear(TCN_HIDDEN_DIM, 8)
 
         # Predefine adjacency matrices
         self.A1 = nn.Parameter(torch.eye(12), requires_grad=False)

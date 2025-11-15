@@ -1,7 +1,5 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.animation import FuncAnimation
 
 csv_file = "./data_collection/datasets/p0/task_result.csv"

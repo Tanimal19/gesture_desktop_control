@@ -1,21 +1,16 @@
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
-from gesture_model.utils import index_to_label
+from gesture_model.utils import index_to_label, LANDMARKS as GM_LANDMARKS
+from data_collection.annotation.utils import split_landmarks
 
 csv_file = "./data_collection/datasets/p0/task_result.csv"
 df = pd.read_csv(csv_file)
 df["label"] = ""  # add label column
 
+df = split_landmarks(df)
 
-# init landmark settings
-meta_cols = ["timestamp", "task", "trail", "label"]
-LANDMARKS = [c for c in df.columns if c not in meta_cols]
-for lm in LANDMARKS:
-    df[[f"{lm}_x", f"{lm}_y", f"{lm}_z"]] = (
-        df[lm].str.split("_", expand=True).astype(float)
-    )
-
+LANDMARKS = ["WRIST"] + GM_LANDMARKS
 CONNECTIONS = [
     ("WRIST", "THUMB_CMC"),
     ("THUMB_CMC", "THUMB_MCP"),
@@ -138,7 +133,13 @@ draw_frame(current_frame)
 plt.show()
 
 # save annotated results
-output_csv = "./data_collection/datasets/p0/labels_temp.csv"
+output_csv = "./data_collection/datasets/p0/labels_out.csv"
 df = df[df["label"] != ""]
 write_header = not os.path.exists(output_csv)
-df.to_csv(output_csv, columns=meta_cols, index=False, mode="a", header=write_header)
+df.to_csv(
+    output_csv,
+    columns=["timestamp", "label"],
+    index=False,
+    mode="a",
+    header=write_header,
+)
