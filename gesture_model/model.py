@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 
 # landmark_num = 12, dimension = 3, gesture_num = 8
-WINDOW_LENGTH = 30  # number of frames in input sequence
+WINDOW_LENGTH = 20  # number of frames in input sequence
 GCN_HIDDEN_DIM = 16  # GCN hidden dimension
 TCN_HIDDEN_DIM = 64  # TCN hidden dimension
 
@@ -87,7 +87,7 @@ class TemporalConvNet(nn.Module):
 
     def forward(self, x):
         for conv, p in zip(self.layers, self.padding):
-            x = F.pad(x, (0, p))  # pad at the end 
+            x = F.pad(x, (0, p))  # pad at the end
             x = conv(x)
 
         # Global Average Pooling (over window_length)
