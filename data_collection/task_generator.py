@@ -1,13 +1,13 @@
 # generating and reading task configuration file
 
-from src.task import *
-from src.config import BASE_DIR
+from data_collection.src.task import *
 import pandas as pd
 import csv
 import ast
 
 num_participant = 12 + 1
-config_path = BASE_DIR + "/task_configs.csv"
+base_dir = "./data_collection/datasets"
+config_path = base_dir + "/task_configs.csv"
 
 display_width = 1512
 display_height = 982
@@ -26,8 +26,7 @@ def generate_configs():
         (TrueTaskType.BA_POINT, 5),  # number of trials
         (TrueTaskType.BA_LEFT_CLICK, 5),
         (TrueTaskType.BA_RIGHT_CLICK, 5),
-        (TrueTaskType.BA_SCROLL_UP, 5),
-        (TrueTaskType.BA_SCROLL_DOWN, 5),
+        (TrueTaskType.BA_SCROLL, 5),
     ]
     other_tasks = [
         (TrueTaskType.MENU_NAVIGATION, 5),
@@ -45,9 +44,9 @@ def generate_configs():
             latin_tasks = other_tasks[i:] + other_tasks[:i]
 
             for t in basic_tasks + latin_tasks:
-                tclass = return_tclass(t[0].value)
+                tclass = return_tclass(t[0])
                 configs = tclass.generate_configs(t[1], canva_bound)
-                writer.writerow([p, t[0].value, t[1], configs])
+                writer.writerow([p, t[0].name, t[1], configs])
 
 
 def read_configs(pid=0):
@@ -67,7 +66,8 @@ def read_configs(pid=0):
 
     # convert to dict
     tasks = [
-        {"task": row["task"], "configs": row["configs"]} for _, row in pdf.iterrows()
+        {"task": TrueTaskType[row["task"]], "configs": row["configs"]}
+        for _, row in pdf.iterrows()
     ]
 
     return tasks

@@ -5,17 +5,13 @@ CAMERA_WIDTH = 1620
 CAMERA_HEIGHT = 1080  
 
 
-## change model parameters in gesture_model/model
+- `data_collection/task_generator.py`: Script to generate data collection tasks
+- `data_collection/app.py`: Main application for data collection
 
-## Training
-generate training samples
-```
-python -m data_collection.annotation.training_data_build
-```
 
-train model
-```
-python -m gesture_model.train
-```
+- `gesture_model/model.py`: Gesture recognition model definition
+- `gesture_model/datasets/.npy`: Training data
+
+
 
 

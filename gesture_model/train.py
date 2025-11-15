@@ -4,7 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data import random_split
 import torch.nn as nn
 import torch.optim as optim
-from model import GestureNet
+from model import GestureModel
 import time
 
 
@@ -69,7 +69,7 @@ def validate(model, loader, criterion, device):
 if __name__ == "__main__":
     start_time = time.time()
     print(f"start train: {time.asctime()}")
-    
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
@@ -83,11 +83,10 @@ if __name__ == "__main__":
     val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
     print(f"Train size: {train_size}, Val size: {val_size}")
 
-    model = GestureNet()
+    model = GestureModel()
     model.to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
-
 
     EPOCHS = 150
     best_val_loss = float("inf")
@@ -116,7 +115,6 @@ if __name__ == "__main__":
                 break
 
     torch.save(model.state_dict(), "gesture_model.pth")
-
 
     print(f"Completed in {time.time() - start_time:.2f} seconds.")
 

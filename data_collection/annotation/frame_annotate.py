@@ -133,13 +133,6 @@ draw_frame(current_frame)
 plt.show()
 
 # save annotated results
-output_csv = "./data_collection/datasets/p0/labels_out.csv"
+output_csv = "./data_collection/datasets/p0/_labels.csv"
 df = df[df["label"] != ""]
-write_header = not os.path.exists(output_csv)
-df.to_csv(
-    output_csv,
-    columns=["timestamp", "label"],
-    index=False,
-    mode="a",
-    header=write_header,
-)
+df.to_csv(output_csv, index=False)

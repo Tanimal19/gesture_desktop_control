@@ -1,12 +1,67 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from gesture_model.utils import generate_adjacent_matrix
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 
-# landmark_num = 12, dimension = 3, gesture_num = 8
+# landmark_num = 12, dimension = 3, gesture_num = 7
 WINDOW_LENGTH = 20  # number of frames in input sequence
 GCN_HIDDEN_DIM = 16  # GCN hidden dimension
 TCN_HIDDEN_DIM = 64  # TCN hidden dimension
+
+LABELS = [
+    "none",
+    "left_press",
+    "left_release",
+    "right_press",
+    "right_release",
+    "scroll_up",
+    "scroll_down",
+]
+
+INPUT_LANDMARKS = [
+    HandLandmark.THUMB_CMC,
+    HandLandmark.THUMB_MCP,
+    HandLandmark.THUMB_IP,
+    HandLandmark.THUMB_TIP,
+    HandLandmark.INDEX_FINGER_MCP,
+    HandLandmark.INDEX_FINGER_PIP,
+    HandLandmark.INDEX_FINGER_DIP,
+    HandLandmark.INDEX_FINGER_TIP,
+    HandLandmark.MIDDLE_FINGER_MCP,
+    HandLandmark.MIDDLE_FINGER_PIP,
+    HandLandmark.MIDDLE_FINGER_DIP,
+    HandLandmark.MIDDLE_FINGER_TIP,
+]
+
+
+INSIDE_FINGER_CONNECTIONS = [
+    ("THUMB_CMC", "THUMB_MCP"),
+    ("THUMB_MCP", "THUMB_IP"),
+    ("THUMB_IP", "THUMB_TIP"),
+    ("INDEX_FINGER_MCP", "INDEX_FINGER_PIP"),
+    ("INDEX_FINGER_PIP", "INDEX_FINGER_DIP"),
+    ("INDEX_FINGER_DIP", "INDEX_FINGER_TIP"),
+    ("MIDDLE_FINGER_MCP", "MIDDLE_FINGER_PIP"),
+    ("MIDDLE_FINGER_PIP", "MIDDLE_FINGER_DIP"),
+    ("MIDDLE_FINGER_DIP", "MIDDLE_FINGER_TIP"),
+]
+
+BETWEEN_FINGER_CONNECTIONS = [
+    ("THUMB_CMC", "INDEX_FINGER_MCP"),
+    ("THUMB_MCP", "INDEX_FINGER_PIP"),
+    ("THUMB_IP", "INDEX_FINGER_DIP"),
+    ("THUMB_TIP", "INDEX_FINGER_TIP"),
+    ("INDEX_FINGER_MCP", "MIDDLE_FINGER_MCP"),
+    ("INDEX_FINGER_PIP", "MIDDLE_FINGER_PIP"),
+    ("INDEX_FINGER_DIP", "MIDDLE_FINGER_DIP"),
+    ("INDEX_FINGER_TIP", "MIDDLE_FINGER_TIP"),
+    ("THUMB_CMC", "MIDDLE_FINGER_MCP"),
+    ("THUMB_MCP", "MIDDLE_FINGER_PIP"),
+    ("THUMB_IP", "MIDDLE_FINGER_DIP"),
+    ("THUMB_TIP", "MIDDLE_FINGER_TIP"),
+]
 
 
 class GCNLayer(nn.Module):
@@ -95,11 +150,11 @@ class TemporalConvNet(nn.Module):
         return x
 
 
-class GestureNet(nn.Module):
+class GestureModel(nn.Module):
     """
     Gesture Recognition Network
     Input: (B, window_length, 12, 3)
-    Output: (B, 8)
+    Output: (B, 7)
     """
 
     def __init__(self):
@@ -113,11 +168,11 @@ class GestureNet(nn.Module):
         self.tcn = TemporalConvNet()
 
         # Classifier
-        self.fc = nn.Linear(TCN_HIDDEN_DIM, 8)
+        self.fc = nn.Linear(TCN_HIDDEN_DIM, len(LABELS))
 
-        # Predefine adjacency matrices
-        self.A1 = nn.Parameter(torch.eye(12), requires_grad=False)
-        self.A2 = nn.Parameter(torch.eye(12), requires_grad=False)
+        # Adjacency matrices (fixed)
+        self.A1 = generate_adjacent_matrix(INPUT_LANDMARKS, INSIDE_FINGER_CONNECTIONS)
+        self.A2 = generate_adjacent_matrix(INPUT_LANDMARKS, BETWEEN_FINGER_CONNECTIONS)
 
     def forward(self, x):
         B, T, N, C = x.shape
