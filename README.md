@@ -14,4 +14,11 @@ CAMERA_HEIGHT = 1080
 
 
 
-
+|               | thumb_index_dist | thumb_middle_dist | index_middle_dist |
+| ------------- | ---------------- | ----------------- | ----------------- |
+| left_press    | decreasing       | stable            | increasing        |
+| left_release  | increasing       | stable            | decreasing        |
+| right_press   | stable           | decreasing        | increasing        |
+| right_release | stable           | increasing        | decreasing        |
+| scroll_up     | increasing       | increasing        | stable            |
+| scroll_down   | decreasing       | decreasing        | stable            |

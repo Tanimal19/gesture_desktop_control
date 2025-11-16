@@ -1,5 +1,5 @@
 import torch
-from gesture_model.model import GestureNet, WINDOW_LENGTH
+from gesture_model.graph_tcn.model import GestureModel, WINDOW_LENGTH
 import pandas as pd
 import numpy as np
 from gesture_model.utils import index_to_label, LANDMARKS

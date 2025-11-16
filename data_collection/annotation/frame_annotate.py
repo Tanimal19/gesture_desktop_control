@@ -1,16 +1,29 @@
 import pandas as pd
-import os
 import matplotlib.pyplot as plt
-from gesture_model.utils import index_to_label, LANDMARKS as GM_LANDMARKS
-from data_collection.annotation.utils import split_landmarks
+from gesture_model.share import GestureLabel
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
-csv_file = "./data_collection/datasets/p0/task_result.csv"
+csv_file = "./data_collection/datasets/p0/task_result_processed.csv"
 df = pd.read_csv(csv_file)
 df["label"] = ""  # add label column
 
-df = split_landmarks(df)
 
-LANDMARKS = ["WRIST"] + GM_LANDMARKS
+LANDMARKS = [
+    HandLandmark.WRIST,
+    HandLandmark.THUMB_CMC,
+    HandLandmark.THUMB_MCP,
+    HandLandmark.THUMB_IP,
+    HandLandmark.THUMB_TIP,
+    HandLandmark.INDEX_FINGER_MCP,
+    HandLandmark.INDEX_FINGER_PIP,
+    HandLandmark.INDEX_FINGER_DIP,
+    HandLandmark.INDEX_FINGER_TIP,
+    HandLandmark.MIDDLE_FINGER_MCP,
+    HandLandmark.MIDDLE_FINGER_PIP,
+    HandLandmark.MIDDLE_FINGER_DIP,
+    HandLandmark.MIDDLE_FINGER_TIP,
+]
+
 CONNECTIONS = [
     ("WRIST", "THUMB_CMC"),
     ("THUMB_CMC", "THUMB_MCP"),
@@ -27,8 +40,8 @@ CONNECTIONS = [
 ]
 
 # display settings
-current_frame = int(input("Enter frame index to start (0 - {}): ".format(len(df) - 1)))
-trail_length = 20
+current_frame = int(input("enter frame index to start (0 - {}): ".format(len(df) - 1)))
+trail_length = 12
 
 # plot
 fig, ax = plt.subplots(figsize=(7, 7))
@@ -71,19 +84,19 @@ def draw_frame(frame_idx):
 
         # draw points
         for lm in LANDMARKS:
-            x = row[f"{lm}_x"]
-            y = row[f"{lm}_y"]
+            x = row[f"{lm.name}_x"]
+            y = row[f"{lm.name}_y"]
             p = ax.plot(x, y, "o", color=point_color, alpha=alpha)[0]
             drawn_points.append(p)
 
         # only label current frame (not past frames)
         if is_current:
-            for lm in LANDMARKS:
+            for lm in ["THUMB_TIP", "INDEX_FINGER_TIP", "MIDDLE_FINGER_TIP"]:
                 x, y, z = row[f"{lm}_x"], row[f"{lm}_y"], row[f"{lm}_z"]
                 txt = ax.text(
                     x + 0.005,
                     y + 0.005,
-                    f"{lm}\n({x:.2f}, {y:.2f}, {z:.2f})",
+                    f"{lm}\n({x:.3f}, {y:.3f}, {z:.3f})",
                     fontsize=6,
                     color="darkred",
                 )
@@ -108,10 +121,10 @@ def on_key(event):
             current_frame -= 1
             draw_frame(current_frame)
 
-    elif event.key in list("12345678"):
-        label = index_to_label(int(event.key) - 1)
+    elif event.key in list("1234567"):
+        label = GestureLabel(int(event.key) - 1).name
         df.at[current_frame, "label"] = label
-        print("frame {} labeled as '{}'".format(current_frame, label))
+        print(f"frame {current_frame} -> '{label}'")
 
         # auto-advance to next frame after labeling
         if current_frame < len(df) - 1:
@@ -119,13 +132,9 @@ def on_key(event):
             draw_frame(current_frame)
 
 
-# --------------------------------------------------
-# initialize plot space
-# --------------------------------------------------
 ax.set_xlim(df.filter(regex="_x$").min().min(), df.filter(regex="_x$").max().max())
 ax.set_ylim(df.filter(regex="_y$").min().min(), df.filter(regex="_y$").max().max())
 ax.invert_yaxis()
-ax.set_aspect("equal")
 
 fig.canvas.mpl_connect("key_press_event", on_key)
 
@@ -133,6 +142,8 @@ draw_frame(current_frame)
 plt.show()
 
 # save annotated results
-output_csv = "./data_collection/datasets/p0/_labels.csv"
-df = df[df["label"] != ""]
+output_csv = "./data_collection/datasets/_labels.csv"
+output_cols = ["timestamp", "task", "trail", "label"]
+df = df[output_cols]
+df = df[df["label"] != ""]  # keep only labeled frames
 df.to_csv(output_csv, index=False)
