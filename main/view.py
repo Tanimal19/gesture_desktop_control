@@ -5,8 +5,8 @@ from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QVBoxLayout, QApplication
 from PySide6.QtGui import QPainter, QFont
-from src.ui.camera_preview import CameraPreview
-from src.ui.pointer_overlay import PointerOverlay
+from share.ui.camera_preview import CameraPreview
+from share.ui.pointer_overlay import PointerOverlay
 
 if TYPE_CHECKING:
     from main.controller import MainAppController
@@ -18,7 +18,6 @@ class MainAppView(QWidget):
 
     def __init__(self):
         super().__init__()
-        self.showFullScreen()
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         self.cam_preview = CameraPreview(600)
@@ -58,7 +57,7 @@ class MainAppView(QWidget):
 
     def keyPressEvent(self, event):
         if self.controller:
-            self.controller.update_state(event.key())
+            self.controller.keyPressEvent(event.key())
 
     def closeEvent(self, event):
         if self.controller:

@@ -11,7 +11,7 @@ GCN_HIDDEN_DIM = 16  # GCN hidden dimension
 TCN_HIDDEN_DIM = 64  # TCN hidden dimension
 
 
-INPUT_LANDMARKS = [
+LANDMARKS = [
     HandLandmark.THUMB_CMC,
     HandLandmark.THUMB_MCP,
     HandLandmark.THUMB_IP,
@@ -178,8 +178,8 @@ class GTCNModel(nn.Module):
         self.fc = nn.Linear(TCN_HIDDEN_DIM, len(GestureLabel))
 
         # Adjacency matrices (fixed)
-        self.A1 = generate_adjacent_matrix(INPUT_LANDMARKS, INSIDE_FINGER_CONNECTIONS)
-        self.A2 = generate_adjacent_matrix(INPUT_LANDMARKS, BETWEEN_FINGER_CONNECTIONS)
+        self.A1 = generate_adjacent_matrix(LANDMARKS, INSIDE_FINGER_CONNECTIONS)
+        self.A2 = generate_adjacent_matrix(LANDMARKS, BETWEEN_FINGER_CONNECTIONS)
 
     def forward(self, x):
         B, T, N, C = x.shape

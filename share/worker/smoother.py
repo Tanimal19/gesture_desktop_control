@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +12,8 @@ class EMASmoother:
         self.prev = None
 
     def update(self, landmarks: np.ndarray) -> np.ndarray:
+        assert landmarks.shape == (len(HandLandmark), 3)
+
         if self.prev is None:
             self.prev = landmarks
             return landmarks

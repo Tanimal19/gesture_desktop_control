@@ -41,7 +41,7 @@ CONNECTIONS = [
 
 # display settings
 current_frame = int(input("enter frame index to start (0 - {}): ".format(len(df) - 1)))
-trail_length = 12
+trail_length = 6
 
 # plot
 fig, ax = plt.subplots(figsize=(7, 7))

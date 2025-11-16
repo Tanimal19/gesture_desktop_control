@@ -1,16 +1,18 @@
 import cv2
 import logging
+import numpy as np
 from PySide6.QtCore import Qt
-from src.utils import (
+from share.utils import (
     draw_landmarks_on_frame,
     merge_landmarks,
     np_to_normalized_landmark,
 )
-from src.task import return_tclass
-from src.worker.camera import CameraThread
-from src.worker.landmarker import Landmarker
-from src.worker.smoother import EMASmoother
-from src.worker.mapper import LandmarkMapper
+from share.worker.camera import CameraThread
+from share.worker.landmarker import Landmarker
+from share.worker.smoother import EMASmoother
+from share.worker.mapper import LandmarkMapper
+from share.worker.gesture import GestureModelRunner
+from gesture_model.share import GestureModel
 from main.view import MainAppView
 
 
@@ -18,10 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class MainAppController:
-    def __init__(
-        self,
-        view: MainAppView,
-    ):
+    def __init__(self, view: MainAppView, model: GestureModel, model_path: str):
         self.view = view
 
         self.camera = CameraThread()
@@ -35,10 +34,12 @@ class MainAppController:
         self.mapper = LandmarkMapper(
             self.view.pointer_overlay.width(), self.view.pointer_overlay.height()
         )
+        self.model = model
+        self.gesture_model = GestureModelRunner(self.model, model_path, "cpu")
+        self.landmarks_queue = []
+        self.max_queue_length = self.model.WINDOW_LENGTH + 5  # some buffer
 
         self.camera.start()
-
-        self.update_view()
 
     def _on_frame_ready(self, payload):
         timestamp, frame = payload
@@ -46,7 +47,6 @@ class MainAppController:
 
     def _on_landmark_update(self, payload):
         timestamp, frame, result = payload
-        self.timestamp = timestamp
 
         right_hand_detected = (
             len(result.hand_landmarks) > 0
@@ -67,10 +67,25 @@ class MainAppController:
             frame = draw_landmarks_on_frame(
                 frame, np_to_normalized_landmark(smoothed_landmarks)
             )
+            self.landmarks_queue.append(smoothed_landmarks)
+            if len(self.landmarks_queue) > self.max_queue_length:
+                self.landmarks_queue.pop(0)
 
+            # pointer mapping
             screen_pos = self.mapper.map_to_screen_pos(smoothed_landmarks)
             if screen_pos:
                 self.view.pointer_overlay.update_pointer_position(screen_pos)
+
+            # gesture recognition
+            if len(self.landmarks_queue) >= self.model.WINDOW_LENGTH:
+                landmarks_window = self.landmarks_queue[
+                    -self.model.WINDOW_LENGTH :
+                ]  # get last WINDOW_LENGTH
+                landmarks_window = np.stack(landmarks_window, axis=0)
+                gesture_label = self.gesture_model.run_inference(landmarks_window)
+
+                logger.info(f"Gesture detected: {gesture_label.name}")
+                self.view.set_overlay_text(f"Gesture: {gesture_label.name}")
 
         else:
             self.undetected_count += 1
@@ -78,142 +93,13 @@ class MainAppController:
         frame = cv2.flip(frame, 1)
         self.view.cam_preview.update_camera_preview(frame)
 
-    def update_state(self, key):
-        prev_state = self.state
-
-        if self.state == TaskState.BEGIN and key == Qt.Key.Key_Space:
-            self.state = TaskState.BEFORE_TASK
-
-        elif self.state == TaskState.BEFORE_TASK and key == Qt.Key.Key_Space:
-            self.current_trial_idx = 0
-            self.frame_in_trail = 0
-            self.frame_landmark_detected = 0
-            self.state = TaskState.IN_TRIAL
-
-        elif self.state == TaskState.IN_TRIAL and key == Qt.Key.Key_Q:
-            if self.current_trial_idx + 1 < len(
-                self.tasks[self.current_task_idx]["configs"]
-            ):
-                if (
-                    self._calculate_coverage_rate() > 0.7
-                    and self.frame_in_trail >= 30
-                    and self.frame_in_trail <= 300  # 1 to 10 seconds at 30 fps
-                ):
-                    self.state = TaskState.TRIAL_COMPLETED
-                else:
-                    self.state = TaskState.TRAIL_FAILED
-
+    def keyPressEvent(self, key):
+        if key == Qt.Key.Key_Space:  # toggle view
+            logger.info("Space key pressed.")
+            if self.view.isHidden():
+                self.view.show()
             else:
-                # all trials of current task done
-                if self.current_task_idx + 1 < len(self.tasks):
-                    self.state = TaskState.TASK_COMPLETED
-                else:
-                    self.state = TaskState.ALL_COMPLETED
-
-        elif (
-            self.state == TaskState.TRIAL_COMPLETED and key == Qt.Key.Key_Space
-        ):  # start next trial
-            self.current_trial_idx += 1
-            self.frame_in_trail = 0
-            self.frame_landmark_detected = 0
-            self.state = TaskState.IN_TRIAL
-
-        elif (
-            self.state == TaskState.TRAIL_FAILED and key == Qt.Key.Key_Space
-        ):  # restart current trial
-            self.frame_in_trail = 0
-            self.frame_landmark_detected = 0
-            self.state = TaskState.IN_TRIAL
-
-        elif (
-            self.state == TaskState.TASK_COMPLETED and key == Qt.Key.Key_Space
-        ):  # start next task
-            self.current_task_idx += 1
-            self.state = TaskState.BEFORE_TASK
-
-        if prev_state != self.state:
-            logger.info(
-                f"Key pressed: {key}, Update {prev_state.name} -> {self.state.name}"
-            )
-            self.update_view()
-
-    def update_view(self):
-
-        # update view based on currrent state
-        if self.state == TaskState.BEGIN:
-            self.view.init_sidebar([(t["task"], len(t["configs"])) for t in self.tasks])
-            self.view.show_hint("Welcome. Press 'Space' to start the first task.")
-
-        elif self.state == TaskState.BEFORE_TASK:
-            tclass = self._get_current_task_class()
-            self.view.show_hint(
-                f"Task: {tclass.name}\n{tclass.instruction}\nPress 'Space' to begin."
-            )
-            self.view.mark_task_start(self.tasks[self.current_task_idx]["task"])
-
-        elif self.state == TaskState.IN_TRIAL:
-            tclass = self._get_current_task_class()
-            config = self._get_current_config()
-            elements = tclass.generate_elements(config)
-            self.view.show_elements(elements)
-            self.view.show_hint(f"{tclass.instruction}\nPress 'Q' to end trail.")
-
-        elif self.state == TaskState.TRIAL_COMPLETED:
-            self.view.clear_elements()
-            coverage = self._calculate_coverage_rate() * 100
-            duration = self.frame_in_trail / 30
-            self.view.show_hint(
-                f"Trial completed with coverage: {coverage:.3f}%, time: {duration:.3f}s.\nPress 'Space' to continue."
-            )
-            self.view.increase_task_trial_count(
-                self.tasks[self.current_task_idx]["task"],
-                self.current_trial_idx + 1,
-                len(self.tasks[self.current_task_idx]["configs"]),
-            )
-
-        elif self.state == TaskState.TRAIL_FAILED:
-            self.view.clear_elements()
-            coverage = self._calculate_coverage_rate() * 100
-            duration = self.frame_in_trail / 30
-            self.view.show_hint(
-                f"Trial failed with coverage: {coverage:.3f}%, time: {duration:.3f}s.\nPress 'Space' to retry."
-            )
-
-        elif self.state == TaskState.TASK_COMPLETED:
-            self.view.clear_elements()
-            coverage = self._calculate_coverage_rate() * 100
-            duration = self.frame_in_trail / 30
-            self.view.show_hint(
-                f"Trial completed with coverage: {coverage:.3f}%, time: {duration:.3f}s.\nAll trail completed.\nPress 'Space' to start the next task."
-            )
-            self.view.increase_task_trial_count(
-                self.tasks[self.current_task_idx]["task"],
-                self.current_trial_idx + 1,
-                len(self.tasks[self.current_task_idx]["configs"]),
-            )
-            self.view.mark_task_complete(self.tasks[self.current_task_idx]["task"])
-
-        elif self.state == TaskState.ALL_COMPLETED:
-            self.view.clear_elements()
-            coverage = self._calculate_coverage_rate() * 100
-            duration = self.frame_in_trail / 30
-            self.view.show_hint(
-                f"Trial completed with coverage: {coverage:.3f}%, time: {duration:.3f}s.\nAll tasks completed. Thank you!"
-            )
-            self.view.increase_task_trial_count(
-                self.tasks[self.current_task_idx]["task"],
-                self.current_trial_idx + 1,
-                len(self.tasks[self.current_task_idx]["configs"]),
-            )
-
-    def _calculate_coverage_rate(self):
-        return self.frame_landmark_detected / self.frame_in_trail
-
-    def _get_current_task_class(self):
-        return return_tclass(self.tasks[self.current_task_idx]["task"])
-
-    def _get_current_config(self):
-        return self.tasks[self.current_task_idx]["configs"][self.current_trial_idx]
+                self.view.hide()
 
     def close(self):
         self.camera.stop()

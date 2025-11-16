@@ -15,7 +15,8 @@ class LandmarkMapper:
         self.stationary_detector = StationaryDetector()
         self.scaler = SigmoidScaler()
 
-    def map_to_screen_pos(self, landmarks):
+    def map_to_screen_pos(self, landmarks: np.ndarray) -> tuple[int, int] | None:
+        assert landmarks.shape == (len(HandLandmark), 3)
 
         index_landmarks = np.array(
             [
