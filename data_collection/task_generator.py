@@ -23,9 +23,8 @@ canva_bound = (
 
 def generate_configs():
     basic_tasks = [
-        (TrueTaskType.BA_POINT, 5),  # number of trials
-        (TrueTaskType.BA_LEFT_CLICK, 5),
-        (TrueTaskType.BA_RIGHT_CLICK, 5),
+        (TrueTaskType.BA_LEFT_CLICK, 10),
+        (TrueTaskType.BA_RIGHT_CLICK, 10),
         (TrueTaskType.BA_SCROLL, 5),
     ]
     other_tasks = [

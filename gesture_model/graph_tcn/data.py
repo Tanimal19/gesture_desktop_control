@@ -1,7 +1,17 @@
 import pandas as pd
 import numpy as np
-from gesture_model.share import generate_samples
+from collections import Counter
+from gesture_model.share import generate_samples, GestureLabel
 from gesture_model.graph_tcn.model import GTCNModel
+
+
+def analyze_distribution(labels):
+    from collections import Counter
+
+    counts = Counter(labels)
+    print("Class distribution:")
+    for k, v in counts.items():
+        print(f"Class {k}: {v}")
 
 
 if __name__ == "__main__":
@@ -32,7 +42,14 @@ if __name__ == "__main__":
 
     # save samples as .npy
     X = np.array([sample["features"] for sample in all_samples])  # (N, T, 3)
-    y = np.array([sample["label"] for sample in all_samples])  # (N
-    print(f"X shape: {X.shape}, y shape: {y.shape}")
+    y = np.array([sample["label"] for sample in all_samples])  # (N,)
+
+    print(f"X={X.shape}, y={y.shape}")
+
+    counts = Counter(y)
+    print("label distribution:")
+    for label, count in zip(GestureLabel, counts.values()):
+        print(f"{label}: {count}")
+
     np.save("./gesture_model/graph_tcn/X.npy", X)
     np.save("./gesture_model/graph_tcn/y.npy", y)
