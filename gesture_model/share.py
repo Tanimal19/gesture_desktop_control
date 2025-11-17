@@ -5,6 +5,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader, random_split
+from sklearn.metrics import confusion_matrix, classification_report
 
 
 class GestureLabel(Enum):
@@ -147,6 +148,8 @@ class ModelTrainer:
         total = 0
 
         with torch.no_grad():
+            true_y = []
+            pred_y = []
             for X, y in loader:
                 X, y = X.to(device), y.to(device)
 
@@ -157,5 +160,13 @@ class ModelTrainer:
                 pred = out.argmax(dim=1)
                 total_correct += (pred == y).sum().item()
                 total += X.size(0)
+
+                true_y.extend(y.cpu().numpy())
+                pred_y.extend(pred.cpu().numpy())
+
+            print("Confusion Matrix:")
+            print(confusion_matrix(true_y, pred_y))
+            print("Classification Report:")
+            print(classification_report(true_y, pred_y))
 
         return total_loss / total, total_correct / total

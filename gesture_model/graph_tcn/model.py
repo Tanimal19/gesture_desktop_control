@@ -3,72 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-from gesture_model.share import GestureLabel
-
-# landmark_num = 12, dimension = 3, gesture_num = 7
-WINDOW_LENGTH = 10  # number of frames in input sequence
-GCN_HIDDEN_DIM = 16  # GCN hidden dimension
-TCN_HIDDEN_DIM = 64  # TCN hidden dimension
-
-
-LANDMARKS = [
-    HandLandmark.THUMB_CMC,
-    HandLandmark.THUMB_MCP,
-    HandLandmark.THUMB_IP,
-    HandLandmark.THUMB_TIP,
-    HandLandmark.INDEX_FINGER_MCP,
-    HandLandmark.INDEX_FINGER_PIP,
-    HandLandmark.INDEX_FINGER_DIP,
-    HandLandmark.INDEX_FINGER_TIP,
-    HandLandmark.MIDDLE_FINGER_MCP,
-    HandLandmark.MIDDLE_FINGER_PIP,
-    HandLandmark.MIDDLE_FINGER_DIP,
-    HandLandmark.MIDDLE_FINGER_TIP,
-]
-
-
-INSIDE_FINGER_CONNECTIONS = [
-    ("THUMB_CMC", "THUMB_MCP"),
-    ("THUMB_MCP", "THUMB_IP"),
-    ("THUMB_IP", "THUMB_TIP"),
-    ("INDEX_FINGER_MCP", "INDEX_FINGER_PIP"),
-    ("INDEX_FINGER_PIP", "INDEX_FINGER_DIP"),
-    ("INDEX_FINGER_DIP", "INDEX_FINGER_TIP"),
-    ("MIDDLE_FINGER_MCP", "MIDDLE_FINGER_PIP"),
-    ("MIDDLE_FINGER_PIP", "MIDDLE_FINGER_DIP"),
-    ("MIDDLE_FINGER_DIP", "MIDDLE_FINGER_TIP"),
-]
-
-BETWEEN_FINGER_CONNECTIONS = [
-    ("THUMB_CMC", "INDEX_FINGER_MCP"),
-    ("THUMB_MCP", "INDEX_FINGER_PIP"),
-    ("THUMB_IP", "INDEX_FINGER_DIP"),
-    ("THUMB_TIP", "INDEX_FINGER_TIP"),
-    ("INDEX_FINGER_MCP", "MIDDLE_FINGER_MCP"),
-    ("INDEX_FINGER_PIP", "MIDDLE_FINGER_PIP"),
-    ("INDEX_FINGER_DIP", "MIDDLE_FINGER_DIP"),
-    ("INDEX_FINGER_TIP", "MIDDLE_FINGER_TIP"),
-    ("THUMB_CMC", "MIDDLE_FINGER_MCP"),
-    ("THUMB_MCP", "MIDDLE_FINGER_PIP"),
-    ("THUMB_IP", "MIDDLE_FINGER_DIP"),
-    ("THUMB_TIP", "MIDDLE_FINGER_TIP"),
-]
-
-
-def generate_adjacent_matrix(landmarks: list[HandLandmark], connections):
-
-    N = len(landmarks)
-    adj = np.zeros((N, N), dtype=int)
-
-    node2idx = {lm.name: idx for idx, lm in enumerate(landmarks)}
-    print(node2idx)
-
-    for a, b in connections:
-        i, j = node2idx[a], node2idx[b]
-        adj[i, j] = 1
-        adj[j, i] = 1
-
-    return adj
+from gesture_model.share import GestureLabel, GestureModel
 
 
 class GCNLayer(nn.Module):
@@ -79,10 +14,10 @@ class GCNLayer(nn.Module):
     Output: (12, gcn_hidden_dim)
     """
 
-    def __init__(self):
+    def __init__(self, hidden_dim):
         super().__init__()
         in_dim = 3
-        out_dim = GCN_HIDDEN_DIM
+        out_dim = hidden_dim
 
         self.W1 = nn.Linear(in_dim, out_dim, bias=False)
         self.W2 = nn.Linear(in_dim, out_dim, bias=False)
@@ -124,11 +59,9 @@ class TemporalConvNet(nn.Module):
     Output: (B, tcn_hidden_dim) after GAP
     """
 
-    def __init__(self):
+    def __init__(self, in_ch, out_ch):
         super().__init__()
         layers = []
-        in_ch = 3 * GCN_HIDDEN_DIM
-        out_ch = TCN_HIDDEN_DIM
 
         kernel_size = 3
         dilations = [1, 3, 9]
@@ -157,29 +90,76 @@ class TemporalConvNet(nn.Module):
         return x
 
 
-class GTCNModel(nn.Module):
+class GTCNModel(GestureModel):
     """
     Gesture Recognition Network
     Input: (B, window_length, 12, 3)
     Output: (B, 7)
     """
 
+    WINDOW_LENGTH = 10
+    GCN_HIDDEN_DIM = 16  # GCN hidden dimension
+    TCN_HIDDEN_DIM = 64  # TCN hidden dimension
+    LANDMARKS = [
+        HandLandmark.THUMB_CMC,
+        HandLandmark.THUMB_MCP,
+        HandLandmark.THUMB_IP,
+        HandLandmark.THUMB_TIP,
+        HandLandmark.INDEX_FINGER_MCP,
+        HandLandmark.INDEX_FINGER_PIP,
+        HandLandmark.INDEX_FINGER_DIP,
+        HandLandmark.INDEX_FINGER_TIP,
+        HandLandmark.MIDDLE_FINGER_MCP,
+        HandLandmark.MIDDLE_FINGER_PIP,
+        HandLandmark.MIDDLE_FINGER_DIP,
+        HandLandmark.MIDDLE_FINGER_TIP,
+    ]
+    INSIDE_FINGER_CONNECTIONS = [
+        ("THUMB_CMC", "THUMB_MCP"),
+        ("THUMB_MCP", "THUMB_IP"),
+        ("THUMB_IP", "THUMB_TIP"),
+        ("INDEX_FINGER_MCP", "INDEX_FINGER_PIP"),
+        ("INDEX_FINGER_PIP", "INDEX_FINGER_DIP"),
+        ("INDEX_FINGER_DIP", "INDEX_FINGER_TIP"),
+        ("MIDDLE_FINGER_MCP", "MIDDLE_FINGER_PIP"),
+        ("MIDDLE_FINGER_PIP", "MIDDLE_FINGER_DIP"),
+        ("MIDDLE_FINGER_DIP", "MIDDLE_FINGER_TIP"),
+    ]
+    BETWEEN_FINGER_CONNECTIONS = [
+        ("THUMB_CMC", "INDEX_FINGER_MCP"),
+        ("THUMB_MCP", "INDEX_FINGER_PIP"),
+        ("THUMB_IP", "INDEX_FINGER_DIP"),
+        ("THUMB_TIP", "INDEX_FINGER_TIP"),
+        ("INDEX_FINGER_MCP", "MIDDLE_FINGER_MCP"),
+        ("INDEX_FINGER_PIP", "MIDDLE_FINGER_PIP"),
+        ("INDEX_FINGER_DIP", "MIDDLE_FINGER_DIP"),
+        ("INDEX_FINGER_TIP", "MIDDLE_FINGER_TIP"),
+        ("THUMB_CMC", "MIDDLE_FINGER_MCP"),
+        ("THUMB_MCP", "MIDDLE_FINGER_PIP"),
+        ("THUMB_IP", "MIDDLE_FINGER_DIP"),
+        ("THUMB_TIP", "MIDDLE_FINGER_TIP"),
+    ]
+
     def __init__(self):
         super().__init__()
 
         # GCN
-        self.gcn = GCNLayer()
+        self.gcn = GCNLayer(self.GCN_HIDDEN_DIM)
         self.pool = FingerPooling()
 
         # TCN
-        self.tcn = TemporalConvNet()
+        self.tcn = TemporalConvNet(self.GCN_HIDDEN_DIM * 3, self.TCN_HIDDEN_DIM)
 
         # Classifier
-        self.fc = nn.Linear(TCN_HIDDEN_DIM, len(GestureLabel))
+        self.fc = nn.Linear(self.TCN_HIDDEN_DIM, len(GestureLabel))
 
         # Adjacency matrices (fixed)
-        self.A1 = generate_adjacent_matrix(LANDMARKS, INSIDE_FINGER_CONNECTIONS)
-        self.A2 = generate_adjacent_matrix(LANDMARKS, BETWEEN_FINGER_CONNECTIONS)
+        self.A1 = self.generate_adjacent_matrix(
+            self.LANDMARKS, self.INSIDE_FINGER_CONNECTIONS
+        )
+        self.A2 = self.generate_adjacent_matrix(
+            self.LANDMARKS, self.BETWEEN_FINGER_CONNECTIONS
+        )
 
     def forward(self, x):
         B, T, N, C = x.shape
@@ -193,3 +173,33 @@ class GTCNModel(nn.Module):
         out = self.fc(feat)  # classify
 
         return out
+
+    @staticmethod
+    def generate_adjacent_matrix(landmarks: list[HandLandmark], connections):
+        N = len(landmarks)
+        adj = np.zeros((N, N), dtype=int)
+
+        node2idx = {lm.name: idx for idx, lm in enumerate(landmarks)}
+        for a, b in connections:
+            i, j = node2idx[a], node2idx[b]
+            adj[i, j] = 1
+            adj[j, i] = 1
+
+        adj = torch.tensor(adj, dtype=torch.float32)
+        return adj
+
+    def inference(self, landmarks_window: np.ndarray) -> GestureLabel:
+
+        # filter to required landmarks
+        idxs = [lm.value for lm in self.LANDMARKS]
+        landmarks_window = landmarks_window[:, idxs, :]  # (window_length, 12, 3)
+
+        with torch.no_grad():
+            x_tensor = torch.tensor(landmarks_window, dtype=torch.float32).unsqueeze(0)
+            x_tensor = x_tensor.to(next(self.parameters()).device)
+
+            out = self.forward(x_tensor)  # (1, num_classes)
+            pred_idx = out.argmax(dim=1).item()
+            pred_label = GestureLabel(pred_idx)
+
+        return pred_label

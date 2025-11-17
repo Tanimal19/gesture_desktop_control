@@ -41,7 +41,7 @@ CONNECTIONS = [
 
 # display settings
 current_frame = int(input("enter frame index to start (0 - {}): ".format(len(df) - 1)))
-trail_length = 6
+trail_length = 10
 
 # plot
 fig, ax = plt.subplots(figsize=(7, 7))
@@ -86,7 +86,14 @@ def draw_frame(frame_idx):
         for lm in LANDMARKS:
             x = row[f"{lm.name}_x"]
             y = row[f"{lm.name}_y"]
-            p = ax.plot(x, y, "o", color=point_color, alpha=alpha)[0]
+            if (
+                lm == HandLandmark.INDEX_FINGER_TIP
+                or lm == HandLandmark.MIDDLE_FINGER_TIP
+                or lm == HandLandmark.THUMB_TIP
+            ):
+                p = ax.plot(x, y, "o", color=point_color, alpha=alpha)[0]
+            else:
+                p = ax.plot(x, y, "o", color=line_color, alpha=alpha)[0]
             drawn_points.append(p)
 
         # only label current frame (not past frames)
