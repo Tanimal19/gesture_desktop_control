@@ -5,7 +5,10 @@ from data_collection.src.recorder import DataCollectionRecorder
 from data_collection.task_generator import base_dir
 from PySide6.QtWidgets import QApplication
 
-pid = 0  # change this
+pid = int(input("Enter the participant ID (0-12): "))
+if pid not in range(0, 13):
+    sys.exit(1)
+
 pointer_enabled = True
 
 app = QApplication(sys.argv)
