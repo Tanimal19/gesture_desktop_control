@@ -1,24 +1,12 @@
 import pandas as pd
 import numpy as np
 from collections import Counter
-from gesture_model.share import generate_samples, GestureLabel
-from gesture_model.graph_tcn.model import GTCNModel
-
-
-def analyze_distribution(labels):
-    from collections import Counter
-
-    counts = Counter(labels)
-    print("Class distribution:")
-    for k, v in counts.items():
-        print(f"Class {k}: {v}")
+from gesture_model.utils import generate_samples, GestureLabel
+from gesture_model.graph_tcn.model import GTCNModel, BASE_FOLDER
 
 
 if __name__ == "__main__":
-    label_df = pd.read_csv("./data_collection/datasets/p0/labels.csv")
-    landmark_df = pd.read_csv("./data_collection/datasets/p0/task_result_processed.csv")
-
-    df = pd.merge(landmark_df, label_df, on=["timestamp", "task", "trail"], how="left")
+    df = pd.read_csv("./data_collection/datasets/processed/task_result_labeled.csv")
     df = df[df["label"].notnull()]  # keep only labeled frames
 
     feature_columns = [
@@ -41,15 +29,14 @@ if __name__ == "__main__":
         all_samples.extend(samples)
 
     # save samples as .npy
-    X = np.array([sample["features"] for sample in all_samples])  # (N, T, 3)
-    y = np.array([sample["label"] for sample in all_samples])  # (N,)
-
+    X = np.array([sample["features"] for sample in all_samples])
+    y = np.array([sample["label"] for sample in all_samples])
     print(f"X={X.shape}, y={y.shape}")
 
     counts = Counter(y)
     print("label distribution:")
-    for label, count in zip(GestureLabel, counts.values()):
-        print(f"{label}: {count}")
+    for label_id, count in counts.items():
+        print(f"{GestureLabel(label_id).name}: {count}")
 
-    np.save("./gesture_model/graph_tcn/X.npy", X)
-    np.save("./gesture_model/graph_tcn/y.npy", y)
+    np.save(f"{BASE_FOLDER}X.npy", X)
+    np.save(f"{BASE_FOLDER}y.npy", y)

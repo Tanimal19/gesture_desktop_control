@@ -81,7 +81,7 @@ class LandmarkMapper:
 
 
 class StationaryDetector:
-    def __init__(self, window_size=5, std_thresh=8e-4, vel_thresh=1e-3):
+    def __init__(self, window_size=5, std_thresh=1e-3, vel_thresh=1e-3):
         self.window_size = window_size
         self.window = []
         self.std_thresh = std_thresh

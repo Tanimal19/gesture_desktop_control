@@ -9,18 +9,16 @@ dot_radius = 50
 
 
 class TrueTaskType(Enum):
-    BA_POINT = 0
-    BA_LEFT_CLICK = 1
-    BA_RIGHT_CLICK = 2
-    BA_SCROLL = 3
-    MENU_NAVIGATION = 4
-    DRAGGING = 5
-    POINT_N_CLICK = 6
+    BA_LEFT_CLICK = 0
+    BA_RIGHT_CLICK = 1
+    BA_SCROLL = 2
+    MENU_NAVIGATION = 3
+    DRAGGING = 4
+    POINT_N_CLICK = 5
 
 
 def return_tclass(ttype: TrueTaskType):
     for tclass in [
-        BasicPointTask,
         BasicLeftCLickTask,
         BasicRightClickTask,
         BasicScrollTask,
@@ -52,28 +50,6 @@ class Task(ABC):
         config: tuple,
     ) -> list[DotElement] | list[ArrowElement] | list[DotElement | ArrowElement]:
         pass
-
-
-class BasicPointTask(Task):
-    name = "Basic Point Task"
-    ttype = TrueTaskType.BA_POINT
-    instruction = "Point to the dot with your index finger."
-
-    @staticmethod
-    def generate_configs(count, canva_bound):
-        configs = []
-        for _ in range(count):
-            x = random.randrange(canva_bound[0], canva_bound[1] + 1, step=10)
-            y = random.randrange(canva_bound[2], canva_bound[3] + 1, step=10)
-            configs.append((x, y))
-        return configs
-
-    @staticmethod
-    def generate_elements(config):
-        x, y = config
-        return [
-            DotElement(x, y, dot_radius, "hollow", label="point here"),
-        ]
 
 
 class BasicLeftCLickTask:

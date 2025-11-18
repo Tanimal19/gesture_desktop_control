@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from gesture_model.share import GestureLabel
+from gesture_model.utils import GestureLabel
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 csv_file = "./data_collection/datasets/p0/task_result_processed.csv"

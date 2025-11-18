@@ -5,6 +5,9 @@ CAMERA_WIDTH = 1620
 CAMERA_HEIGHT = 1080  
 
 
+
+
+
 - `data_collection/task_generator.py`: Script to generate data collection tasks
 - `data_collection/app.py`: Main application for data collection
 

@@ -5,7 +5,7 @@ from data_collection.src.recorder import DataCollectionRecorder
 from data_collection.task_generator import base_dir
 from PySide6.QtWidgets import QApplication
 
-pid = 1  # change this
+pid = 0  # change this
 pointer_enabled = True
 
 app = QApplication(sys.argv)

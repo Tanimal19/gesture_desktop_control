@@ -64,7 +64,7 @@ class DataCollectionController:
             )
 
         self.camera.start()
-        self.camera.start_recording(self.recorder.record_video_path)
+        self.camera.start_recording(self.recorder.camera_video_path)
 
         self.update_view()
 
