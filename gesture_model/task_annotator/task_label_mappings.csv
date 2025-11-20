@@ -1,0 +1,4 @@
+task,original,mapped
+BA_LEFT_CLICK,"['LEFT_PRESS', 'LEFT_RELEASE', 'NONE']","[0, 1, 2]"
+BA_RIGHT_CLICK,"['NONE', 'RIGHT_PRESS', 'RIGHT_RELEASE']","[0, 1, 2]"
+BA_SCROLL,"['NONE', 'SCROLL_DOWN', 'SCROLL_UP']","[0, 1, 2]"

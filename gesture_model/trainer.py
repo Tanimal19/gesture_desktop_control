@@ -23,7 +23,7 @@ class ModelTrainer:
 
     def training_epochs(self, criterion, optimizer, epochs: int = 100):
         best_val_loss = float("inf")
-        patience = 10
+        patience = 15
         count = 0
 
         for epoch in range(epochs):

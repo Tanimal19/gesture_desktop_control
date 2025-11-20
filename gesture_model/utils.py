@@ -5,6 +5,10 @@ from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 def generate_samples(
     df, window_length, feature_columns, label_mapping, padding=True
 ) -> list[dict]:
+    """
+    Generate sliding window samples from the dataframe.
+    """
+
     # pad the beginning with the first row to ensure enough frames
     if padding:
         pad = window_length - 1
@@ -21,18 +25,19 @@ def generate_samples(
 
         samples.append(
             {
+                "timestamp": window["timestamp"].values[-1],
                 "features": feature_array,
-                "label": (
-                    label_mapping[window["label"].values[-1]]
-                    if "label" in window.columns
-                    else -1
-                ),
+                "label": (label_mapping[window["label"].values[-1]]),
             }
         )
     return samples
 
 
 def split_landmark_columns(df, landmarks: list[HandLandmark]):
+    """
+    Split specified landmark columns into x, y, z columns, and drop the original columns.
+    """
+
     landmarks_name = [lm.name for lm in landmarks]
     for lm in landmarks_name:
         df[[f"{lm}_x", f"{lm}_y", f"{lm}_z"]] = (

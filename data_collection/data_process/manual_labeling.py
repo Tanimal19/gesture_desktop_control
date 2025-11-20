@@ -1,15 +1,11 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from gesture_model.utils import split_landmark_columns
 from gesture_model.share import GestureLabel
 from data_collection.src.recorder import DataCollectionRecorder
+from data_collection.data_process.utils import RESULT_CSV, update_label_csv
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-
-csv_file = "./data_collection/datasets/task_result_merged.csv"
-df = pd.read_csv(csv_file)
-df["label"] = ""  # add label column
-
-df = split_landmark_columns(df, DataCollectionRecorder.RECORDED_LANDMARKS)
 
 
 CONNECTIONS = [
@@ -27,9 +23,15 @@ CONNECTIONS = [
     ("MIDDLE_FINGER_DIP", "MIDDLE_FINGER_TIP"),
 ]
 
-# display settings
-participant_id = int(input("enter participant ID to annotate (0-12): "))
-df = df[df["participant_id"] == participant_id].reset_index(drop=True)
+
+df = pd.read_csv(RESULT_CSV)
+
+participant = int(input("enter participant ID to annotate (0-12): "))
+df = df[df["participant_id"] == participant].reset_index(drop=True)
+
+df["label"] = ""  # add label column
+df = split_landmark_columns(df, DataCollectionRecorder.RECORDED_LANDMARKS)
+
 
 current_frame = int(input("enter frame index to start (0 - {}): ".format(len(df) - 1)))
 trail_length = 10
@@ -140,8 +142,6 @@ draw_frame(current_frame)
 plt.show()
 
 # save annotated results
-output_csv = f"./data_collection/datasets/p{participant_id}/label.csv"
-output_cols = ["participant_id", "timestamp", "task", "trail", "label"]
-df = df[output_cols]
+df = df[["participant_id", "timestamp", "task", "trail", "label"]]
 df = df[df["label"] != ""]  # keep only labeled frames
-df.to_csv(output_csv, index=False)
+update_label_csv(df)
