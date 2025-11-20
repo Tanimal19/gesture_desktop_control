@@ -2,7 +2,7 @@ import time
 import torch.nn as nn
 import torch.optim as optim
 from gesture_model.graph_tcn.model import GTCNModel, BASE_FOLDER
-from gesture_model.utils import GestureDataset
+from gesture_model.share import GestureDataset
 from gesture_model.trainer import ModelTrainer
 
 
@@ -27,6 +27,6 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-    trainer.training_epochs(criterion, optimizer, epochs=100)
+    trainer.training_epochs(criterion, optimizer, epochs=200)
 
     print(f"Completed in {time.time() - start_time:.2f} seconds.")

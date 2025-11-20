@@ -1,28 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from gesture_model.utils import GestureLabel
+from gesture_model.utils import split_landmark_columns
+from gesture_model.share import GestureLabel
+from data_collection.src.recorder import DataCollectionRecorder
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
-csv_file = "./data_collection/datasets/p0/task_result_processed.csv"
+csv_file = "./data_collection/datasets/task_result_merged.csv"
 df = pd.read_csv(csv_file)
 df["label"] = ""  # add label column
 
+df = split_landmark_columns(df, DataCollectionRecorder.RECORDED_LANDMARKS)
 
-LANDMARKS = [
-    HandLandmark.WRIST,
-    HandLandmark.THUMB_CMC,
-    HandLandmark.THUMB_MCP,
-    HandLandmark.THUMB_IP,
-    HandLandmark.THUMB_TIP,
-    HandLandmark.INDEX_FINGER_MCP,
-    HandLandmark.INDEX_FINGER_PIP,
-    HandLandmark.INDEX_FINGER_DIP,
-    HandLandmark.INDEX_FINGER_TIP,
-    HandLandmark.MIDDLE_FINGER_MCP,
-    HandLandmark.MIDDLE_FINGER_PIP,
-    HandLandmark.MIDDLE_FINGER_DIP,
-    HandLandmark.MIDDLE_FINGER_TIP,
-]
 
 CONNECTIONS = [
     ("WRIST", "THUMB_CMC"),
@@ -40,6 +28,9 @@ CONNECTIONS = [
 ]
 
 # display settings
+participant_id = int(input("enter participant ID to annotate (0-12): "))
+df = df[df["participant_id"] == participant_id].reset_index(drop=True)
+
 current_frame = int(input("enter frame index to start (0 - {}): ".format(len(df) - 1)))
 trail_length = 10
 
@@ -83,7 +74,7 @@ def draw_frame(frame_idx):
             drawn_lines.append(line)
 
         # draw points
-        for lm in LANDMARKS:
+        for lm in DataCollectionRecorder.RECORDED_LANDMARKS:
             x = row[f"{lm.name}_x"]
             y = row[f"{lm.name}_y"]
             if (
@@ -111,7 +102,7 @@ def draw_frame(frame_idx):
 
     row = df.iloc[frame_idx]
     ax.set_title(
-        f"task={row['task']}, trail={row['trail']}:\nframe {frame_idx}/{len(df)-1}, time={row['timestamp']}, label={row['label']}"
+        f"participant={row['participant_id']} task={row['task']}, trail={row['trail']}:\nframe {frame_idx}/{len(df)-1}, time={row['timestamp']}, label={row['label']}"
     )
 
     fig.canvas.draw_idle()
@@ -149,8 +140,8 @@ draw_frame(current_frame)
 plt.show()
 
 # save annotated results
-output_csv = "./data_collection/datasets/_labels.csv"
-output_cols = ["timestamp", "task", "trail", "label"]
+output_csv = f"./data_collection/datasets/p{participant_id}/label.csv"
+output_cols = ["participant_id", "timestamp", "task", "trail", "label"]
 df = df[output_cols]
 df = df[df["label"] != ""]  # keep only labeled frames
 df.to_csv(output_csv, index=False)

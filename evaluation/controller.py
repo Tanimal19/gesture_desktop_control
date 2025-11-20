@@ -12,7 +12,7 @@ from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.mapper import LandmarkMapper
 from share.worker.gesture import GestureModelRunner
-from gesture_model.utils import GestureModel
+from gesture_model.share import GestureModel
 from main.view import MainAppView
 
 

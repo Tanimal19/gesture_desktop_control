@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
 from collections import Counter
-from gesture_model.utils import generate_samples, GestureLabel
+from gesture_model.utils import generate_samples, split_landmark_columns
+from gesture_model.share import GestureLabel
 from gesture_model.graph_tcn.model import GTCNModel, BASE_FOLDER
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("./data_collection/datasets/processed/task_result_labeled.csv")
-    df = df[df["label"].notnull()]  # keep only labeled frames
-
+    df = pd.read_csv("./data_collection/datasets/task_result_labeled.csv")
+    df = split_landmark_columns(df, GTCNModel.LANDMARKS)
     feature_columns = [
         f"{lm.name}_{dim}" for dim in ["x", "y", "z"] for lm in GTCNModel.LANDMARKS
     ]

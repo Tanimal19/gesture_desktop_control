@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader, random_split
 from sklearn.metrics import confusion_matrix, classification_report
-from gesture_model.utils import GestureModel, GestureDataset
+from gesture_model.share import GestureModel, GestureDataset
 
 
 class ModelTrainer:
@@ -98,9 +98,9 @@ class ModelTrainer:
                 true_y.extend(y.cpu().numpy())
                 pred_y.extend(pred.cpu().numpy())
 
-            print("Confusion Matrix:")
-            print(confusion_matrix(true_y, pred_y))
-            print("Classification Report:")
-            print(classification_report(true_y, pred_y))
+            # print("Confusion Matrix:")
+            # print(confusion_matrix(true_y, pred_y))
+            # print("Classification Report:")
+            # print(classification_report(true_y, pred_y))
 
         return total_loss / total, total_correct / total

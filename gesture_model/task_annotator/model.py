@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-from gesture_model.utils import GestureLabel, GestureModel
+from gesture_model.share import GestureLabel, GestureModel
 
 BASE_FOLDER = "./gesture_model/task_annotator/"
 
@@ -46,7 +46,14 @@ class TaskAnnotator(GestureModel):
 
         # filter to required landmarks
         idxs = [lm.value for lm in self.LANDMARKS]
-        landmarks_window = landmarks_window[:, idxs, :]  # (window_length, 12, 3)
+        landmarks_window = landmarks_window[:, idxs, :]  # (window_length, 9, 3)
+
+        for lm1, lm2 in self.DIST_FEATURES:
+            landmarks_window = self._compute_distance_features(
+                landmarks_window,
+                lm1,
+                lm2,
+            )
 
         with torch.no_grad():
             x_tensor = torch.tensor(landmarks_window, dtype=torch.float32).unsqueeze(0)
@@ -57,3 +64,13 @@ class TaskAnnotator(GestureModel):
             pred_label = GestureLabel(pred_idx)
 
         return pred_label
+
+    @staticmethod
+    def _compute_distance_features(landmarks_window, lm1, lm2):
+        vec = landmarks_window[:, lm1.value, :] - landmarks_window[:, lm2.value, :]
+        dist = np.linalg.norm(vec, axis=1)  # (window_length,)
+
+        dist = dist.reshape((-1, 1))  # (window_length, 1)
+        landmarks_window = np.concatenate((landmarks_window, dist), axis=1)
+
+        return landmarks_window

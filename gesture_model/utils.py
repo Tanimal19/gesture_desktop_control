@@ -1,49 +1,10 @@
-from enum import Enum
-from abc import ABC, abstractmethod
-import numpy as np
 import pandas as pd
-import torch
-import torch.nn as nn
-from torch.utils.data import Dataset
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 
-class GestureLabel(Enum):
-    NONE = 0
-    LEFT_PRESS = 1
-    LEFT_RELEASE = 2
-    RIGHT_PRESS = 3
-    RIGHT_RELEASE = 4
-    SCROLL_UP = 5
-    SCROLL_DOWN = 6
-
-
-class GestureModel(ABC, nn.Module):
-    WINDOW_LENGTH: int
-
-    @abstractmethod
-    def inference(self, landmarks_window: np.ndarray) -> GestureLabel:
-        """
-        landmarks_window: np.array of shape (WINDOW_LENGTH, len(HandLandmark), 3)\n
-        subclass should transform input data to their required feature and return predicted GestureLabel
-        """
-        pass
-
-
-class GestureDataset(Dataset):
-    def __init__(self, X_path, y_path):
-        X = np.load(X_path)
-        y = np.load(y_path)
-        self.X = torch.tensor(X, dtype=torch.float32)
-        self.y = torch.tensor(y, dtype=torch.long)
-
-    def __len__(self):
-        return len(self.X)
-
-    def __getitem__(self, idx):
-        return self.X[idx], self.y[idx]
-
-
-def generate_samples(df, window_length, feature_columns, padding=True) -> list[dict]:
+def generate_samples(
+    df, window_length, feature_columns, label_mapping, padding=True
+) -> list[dict]:
     # pad the beginning with the first row to ensure enough frames
     if padding:
         pad = window_length - 1
@@ -61,7 +22,21 @@ def generate_samples(df, window_length, feature_columns, padding=True) -> list[d
         samples.append(
             {
                 "features": feature_array,
-                "label": GestureLabel[window["label"].values[-1].upper()].value,
+                "label": (
+                    label_mapping[window["label"].values[-1]]
+                    if "label" in window.columns
+                    else -1
+                ),
             }
         )
     return samples
+
+
+def split_landmark_columns(df, landmarks: list[HandLandmark]):
+    landmarks_name = [lm.name for lm in landmarks]
+    for lm in landmarks_name:
+        df[[f"{lm}_x", f"{lm}_y", f"{lm}_z"]] = (
+            df[lm].str.split("_", expand=True).astype(float)
+        )
+    df = df.drop(columns=landmarks_name)  # drop original columns
+    return df

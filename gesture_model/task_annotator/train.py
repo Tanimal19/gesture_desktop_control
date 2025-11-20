@@ -2,9 +2,9 @@ import time
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from gesture_model.utils import GestureDataset
+from gesture_model.share import GestureDataset
 from gesture_model.trainer import ModelTrainer
-from gesture_model.nn_annotator.model import NNAnnotator, BASE_FOLDER
+from gesture_model.task_annotator.model import TaskAnnotator, BASE_FOLDER
 
 
 if __name__ == "__main__":
@@ -21,8 +21,7 @@ if __name__ == "__main__":
         )
 
         num_classes = len(torch.unique(dataset.y))
-        print("Labels =", torch.unique(dataset.y))
-        model = NNAnnotator(tname=t.name, num_classes=7)
+        model = TaskAnnotator(num_classes=num_classes)
 
         trainer = ModelTrainer(
             output_path=f"{BASE_FOLDER}models/{t.name}.pth",
