@@ -8,7 +8,6 @@ import torch.optim as optim
 import csv
 from config import ANNOTATOR_BASE_FOLDER
 from data_collection.src.task import TrueTaskType
-from data_collection.postprocess import LABELED_RESULT_CSV
 from gesture_model.utils import extend_landmark_columns
 from gesture_model.model import GestureDataset
 from gesture_model.model_runner import GestureModelTrainer
@@ -43,7 +42,7 @@ def read_y_mapping():
 if __name__ == "__main__":
     print(f"Start training script: {time.asctime()}")
 
-    df = pd.read_csv(LABELED_RESULT_CSV)
+    df = pd.read_csv(ANNOTATOR_BASE_FOLDER + "training_data.csv")
 
     avaliable_tasks = list(df["task"].unique())
     y_mappings = {}

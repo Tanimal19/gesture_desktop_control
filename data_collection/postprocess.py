@@ -4,8 +4,8 @@ from config import DC_DATASET_FOLDER, DC_PARTICIPANT_FOLDER_TEMPLATE
 
 
 RESULT_CSV = DC_DATASET_FOLDER + "task_result_merged.csv"
-LABEL_CSV = DC_DATASET_FOLDER + "labels.csv"
-LABELED_RESULT_CSV = DC_DATASET_FOLDER + "task_result_labeled.csv"
+MANUAL_LABEL_CSV = DC_DATASET_FOLDER + "task_result_labeled_manual.csv"
+AUTO_LABEL_CSV = DC_DATASET_FOLDER + "task_result_labeled_auto.csv"
 
 
 def remove_failed_trails(df):
@@ -33,9 +33,7 @@ def remove_failed_trails(df):
 
 
 def create_task_result_csv():
-
     df = pd.DataFrame()
-
     for participant in range(12):
         p_folder = DC_PARTICIPANT_FOLDER_TEMPLATE.format(pid=participant)
         if not os.path.exists(p_folder):
@@ -58,59 +56,32 @@ def create_task_result_csv():
     df.to_csv(RESULT_CSV, index=False)
 
 
-def create_label_csv():
+def init_labeled_csv():
     df = pd.read_csv(RESULT_CSV)
     df["label"] = -1  # initialize all labels to -1 (unlabeled)
-    label_df = df[["participant_id", "timestamp", "task", "trail", "label"]]
-    label_df.to_csv(LABEL_CSV, index=False)
+    df.to_csv(DC_DATASET_FOLDER + "task_result_labeled_init.csv", index=False)
 
 
-def update_label_csv(new_labels_df, new_file_path=None):
-    label_df = pd.read_csv(LABEL_CSV)
-    updated_label_df = pd.merge(
-        label_df,
-        new_labels_df,
+def update_labeled_result_csv(csv_path, new_df):
+    new_df = new_df[["participant_id", "timestamp", "task", "trail", "label"]]
+
+    old_df = pd.read_csv(csv_path)
+    df = pd.merge(
+        old_df,
+        new_df,
         on=["participant_id", "timestamp", "task", "trail"],
         how="left",
         suffixes=("", "_new"),
     )
 
     # Update labels where new labels are provided
-    updated_label_df["label"] = updated_label_df["label_new"].combine_first(
-        updated_label_df["label"]
-    )
-    updated_label_df = updated_label_df.drop(columns=["label_new"])
+    df["label"] = df["label_new"].combine_first(df["label"])
+    df = df.drop(columns=["label_new"])
 
-    if new_file_path:
-        updated_label_df.to_csv(new_file_path, index=False)
-    else:
-        updated_label_df.to_csv(LABEL_CSV, index=False)
-
-
-def create_labeled_result_csv():
-    result_df = pd.read_csv(RESULT_CSV)
-    label_df = pd.read_csv(LABEL_CSV)
-
-    merged_df = pd.merge(
-        result_df,
-        label_df,
-        on=["participant_id", "timestamp", "task", "trail"],
-        how="left",
-    )
-    merged_df = merged_df[merged_df["label"] != "-1"]  # keep only labeled frames
-    merged_df.to_csv(LABELED_RESULT_CSV, index=False)
+    old_df.to_csv(csv_path + " backup", index=False)
+    df.to_csv(csv_path, index=False)
 
 
 if __name__ == "__main__":
-    id = input(
-        "[1] Merge task result CSV\n[2] Create empty label CSV\n[3] Merge result and label\nSelect a function: "
-    )
-
-    if id == "1":
-        create_task_result_csv()
-    elif id == "2":
-        create_label_csv()
-    elif id == "3":
-        create_labeled_result_csv()
-    else:
-        print("Invalid selection.")
+    create_task_result_csv()
+    init_labeled_csv()

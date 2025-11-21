@@ -1,10 +1,9 @@
-import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from gesture_model.utils import split_landmark_columns
+from config import DC_DATASET_FOLDER
 from gesture_model.model import GestureLabel
 from data_collection.src.recorder import DataCollectionRecorder
-from data_collection.postprocess import RESULT_CSV, update_label_csv
+from data_collection.postprocess import MANUAL_LABEL_CSV, update_labeled_result_csv
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 
@@ -24,16 +23,26 @@ CONNECTIONS = [
 ]
 
 
-df = pd.read_csv(RESULT_CSV)
+df = pd.read_csv(MANUAL_LABEL_CSV)
 
-participant = int(input("enter participant ID to annotate (0-12): "))
+# select participant
+available_participants = df["participant_id"].unique().tolist()
+participant = int(input(f"Select participant ID {available_participants}: "))
+if participant not in available_participants:
+    print("Invalid participant ID.")
+    exit(0)
 df = df[df["participant_id"] == participant].reset_index(drop=True)
 
-df["label"] = ""  # add label column
-df = split_landmark_columns(df, DataCollectionRecorder.RECORDED_LANDMARKS)
 
+# split landmark columns into x, y, z
+landmarks_name = [lm.name for lm in DataCollectionRecorder.RECORDED_LANDMARKS]
+for lm in landmarks_name:
+    df[[f"{lm}_x", f"{lm}_y", f"{lm}_z"]] = (
+        df[lm].str.split("_", expand=True).astype(float)
+    )
+df = df.drop(columns=landmarks_name)  # drop original columns
 
-current_frame = int(input("enter frame index to start (0 - {}): ".format(len(df) - 1)))
+current_frame = int(input("Select frame index (0 - {}): ".format(len(df) - 1)))
 trail_length = 10
 
 # plot
@@ -124,7 +133,7 @@ def on_key(event):
     elif event.key in list("1234567"):
         label = GestureLabel(int(event.key) - 1).name
         df.at[current_frame, "label"] = label
-        print(f"frame {current_frame} -> '{label}'")
+        print(f"> frame {current_frame} set to '{label}'")
 
         # auto-advance to next frame after labeling
         if current_frame < len(df) - 1:
@@ -141,7 +150,5 @@ fig.canvas.mpl_connect("key_press_event", on_key)
 draw_frame(current_frame)
 plt.show()
 
-# save annotated results
-df = df[["participant_id", "timestamp", "task", "trail", "label"]]
 df = df[df["label"] != ""]  # keep only labeled frames
-update_label_csv(df)
+update_labeled_result_csv(MANUAL_LABEL_CSV, df)
