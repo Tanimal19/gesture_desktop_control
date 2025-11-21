@@ -2,8 +2,8 @@ import time
 import torch.nn as nn
 import torch.optim as optim
 from gesture_model.graph_tcn.model import GTCNModel, BASE_FOLDER
-from gesture_model.share import GestureDataset
-from gesture_model.trainer import ModelTrainer
+from gesture_model.model import GestureDataset
+from gesture_model.model_runner import ModelTrainer
 
 
 if __name__ == "__main__":

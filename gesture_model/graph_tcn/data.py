@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 from gesture_model.utils import generate_samples, split_landmark_columns
-from gesture_model.share import GestureLabel
+from gesture_model.model import GestureLabel
 from gesture_model.graph_tcn.model import GTCNModel, BASE_FOLDER
 
 

@@ -2,12 +2,10 @@ import torch
 import torch.nn as nn
 import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-from gesture_model.share import GestureLabel, GestureModel
-
-BASE_FOLDER = "./gesture_model/task_annotator/"
+from gesture_model.model import GestureLabel, AbstractGestureModel
 
 
-class TaskAnnotator(GestureModel):
+class TaskAnnotator(AbstractGestureModel):
     WINDOW_LENGTH = 5
     LANDMARKS = [
         HandLandmark.THUMB_TIP,
@@ -19,10 +17,10 @@ class TaskAnnotator(GestureModel):
         (HandLandmark.THUMB_TIP, HandLandmark.MIDDLE_FINGER_TIP),
         (HandLandmark.INDEX_FINGER_TIP, HandLandmark.MIDDLE_FINGER_TIP),
     ]
+    feature_dim = len(LANDMARKS) * 3 + len(DIST_FEATURES)
 
     def __init__(self, y_mapping):
         super().__init__()
-        self.feature_dim = len(self.LANDMARKS) * 3 + len(self.DIST_FEATURES)
         self.y_mapping = y_mapping
 
         self.net = nn.Sequential(
@@ -42,39 +40,39 @@ class TaskAnnotator(GestureModel):
         x = self.fc(x)
         return x
 
-    def inference(self, landmarks_window: np.ndarray) -> GestureLabel:
+    def landmarks_window_to_X(self, landmarks_window: np.ndarray) -> torch.Tensor:
 
-        # filter to required landmarks
-        idxs = [lm.value for lm in self.LANDMARKS]
-        filtered_window = landmarks_window[:, idxs, :].reshape(
-            (self.WINDOW_LENGTH, -1)
+        # compute distance features
+        dist_features = []
+        for lm1, lm2 in self.DIST_FEATURES:
+            vec = landmarks_window[:, lm1.value, :] - landmarks_window[:, lm2.value, :]
+            dist = np.linalg.norm(vec, axis=1)  # (window_length,)
+            dist_features.append(dist)
+        dist_features = np.stack(
+            dist_features, axis=1
+        )  # (window_length, num_dist_features)
+
+        # convert landmarks position to offset position w.r.t. wrist
+        wrist_landmark = landmarks_window[:, HandLandmark.WRIST.value, :]
+        filtered_window = np.zeros((self.WINDOW_LENGTH, len(self.LANDMARKS), 3))
+        for i, lm in enumerate(self.LANDMARKS):
+            lm_pos = landmarks_window[:, lm.value, :]
+            offset_lm_pos = lm_pos - wrist_landmark
+            filtered_window[:, i, :] = offset_lm_pos
+        filtered_window = filtered_window.reshape(
+            self.WINDOW_LENGTH, -1
         )  # (window_length, num_landmarks * 3)
 
-        for lm1, lm2 in self.DIST_FEATURES:
-            dist = self._compute_distance_features(
-                landmarks_window,
-                lm1,
-                lm2,
-            )  # (window_length, 1)
+        features = np.concatenate(
+            [filtered_window, dist_features], axis=1
+        )  # (window_length, feature_dim)
+        x_tensor = torch.tensor(features, dtype=torch.float32)
+        return x_tensor
 
-            filtered_window = np.concatenate((filtered_window, dist), axis=1)
-
-        with torch.no_grad():
-            x_tensor = torch.tensor(filtered_window, dtype=torch.float32).unsqueeze(
-                0
-            )  # (1, window_length, feature_dim)
-            x_tensor = x_tensor.to(next(self.parameters()).device)
-
-            out = self.forward(x_tensor)
-            pred_idx = out.argmax(dim=1).item()
-            mapped_label = list(self.y_mapping.keys())[pred_idx]
-            pred_label = GestureLabel[mapped_label]
-
-        return pred_label
-
-    @staticmethod
-    def _compute_distance_features(landmarks_window, lm1, lm2):
-        vec = landmarks_window[:, lm1.value, :] - landmarks_window[:, lm2.value, :]
-        dist = np.linalg.norm(vec, axis=1)
-        dist = dist.reshape((-1, 1))
-        return dist
+    def y_to_label(self, y: int) -> GestureLabel:
+        mapped_label = "NONE"
+        for o, m in self.y_mapping.items():
+            if m == y:
+                mapped_label = o
+                break
+        return GestureLabel[mapped_label]

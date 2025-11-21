@@ -1,13 +1,13 @@
 # generating and reading task configuration file
 
-from data_collection.data_process.utils import DATASET_DIR
+from config import DC_DATASET_FOLDER
 from data_collection.src.task import *
 import pandas as pd
 import csv
 import ast
 
 num_participant = 12 + 1
-config_path = DATASET_DIR + "/task_configs.csv"
+config_path = DC_DATASET_FOLDER + "/task_configs.csv"
 
 display_width = 1512
 display_height = 982

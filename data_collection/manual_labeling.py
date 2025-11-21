@@ -2,9 +2,9 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from gesture_model.utils import split_landmark_columns
-from gesture_model.share import GestureLabel
+from gesture_model.model import GestureLabel
 from data_collection.src.recorder import DataCollectionRecorder
-from data_collection.data_process.utils import RESULT_CSV, update_label_csv
+from data_collection.postprocess import RESULT_CSV, update_label_csv
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 

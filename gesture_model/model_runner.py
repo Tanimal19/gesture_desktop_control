@@ -1,11 +1,15 @@
 import torch
+import numpy as np
 from torch.utils.data import DataLoader, random_split
 from sklearn.metrics import confusion_matrix, classification_report
-from gesture_model.share import GestureModel, GestureDataset
+from gesture_model.model import AbstractGestureModel, GestureDataset, GestureLabel
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 
-class ModelTrainer:
-    def __init__(self, output_path: str, model: GestureModel, dataset: GestureDataset):
+class GestureModelTrainer:
+    def __init__(
+        self, output_path: str, model: AbstractGestureModel, dataset: GestureDataset
+    ):
         self.output_path = output_path
         self.model = model
         self.dataset = dataset
@@ -13,29 +17,29 @@ class ModelTrainer:
         print(f"Using device: {self.device}")
         self.model.to(self.device)
 
-    def split_data(self, train_ratio: float = 0.8):
-        train_size = int(train_ratio * len(self.dataset))
+    def train(self, criterion, optimizer, epochs=100):
+        # split dataset
+        train_size = int(0.8 * len(self.dataset))
         val_size = len(self.dataset) - train_size
-        train_ds, val_ds = random_split(self.dataset, [train_size, val_size])
-        self.train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
-        self.val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
         print(f"Train size: {train_size}, Val size: {val_size}")
 
-    def training_epochs(self, criterion, optimizer, epochs: int = 100):
+        train_ds, val_ds = random_split(self.dataset, [train_size, val_size])
+        train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
+        val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
+
         best_val_loss = float("inf")
         patience = 15
         count = 0
 
         for epoch in range(epochs):
             train_loss, train_acc = self.train_one_epoch(
-                self.model, self.train_loader, optimizer, criterion, self.device
+                self.model, train_loader, optimizer, criterion, self.device
             )
             val_loss, val_acc = self.validate(
-                self.model, self.val_loader, criterion, self.device
+                self.model, val_loader, criterion, self.device
             )
-
             print(
-                f"[Epoch {epoch+1}/{epochs}] "
+                f"[Epoch {epoch+1}/{epochs}]"
                 f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} | "
                 f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f}"
             )
@@ -104,3 +108,31 @@ class ModelTrainer:
             # print(classification_report(true_y, pred_y))
 
         return total_loss / total, total_correct / total
+
+
+class GestureModelRunner:
+    def __init__(self, model: AbstractGestureModel, model_path: str, device: str):
+        self.device = device
+        self.model = model
+        self.model.to(self.device)
+        self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+        self.model.eval()
+
+    def inference(self, landmark_window: np.ndarray) -> GestureLabel:
+        """
+        landmarks_window: np.array of shape (WINDOW_LENGTH, len(HandLandmark), 3)\n
+        """
+        assert (
+            landmark_window.shape[1] == len(HandLandmark)
+            and landmark_window.shape[2] == 3
+        )
+
+        with torch.no_grad():
+            x_tensor = self.model.landmarks_window_to_X(landmark_window)
+            x_tensor = x_tensor.unsqueeze(0)  # add batch dimension
+            x_tensor = x_tensor.to(next(self.model.parameters()).device)
+            out = self.model.forward(x_tensor)
+            pred_idx = out.argmax(dim=1).item()
+            mappped_label = self.model.y_to_label(pred_idx)
+
+        return mappped_label

@@ -1,6 +1,7 @@
 import os
 import csv
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+from config import DC_PARTICIPANT_FOLDER_TEMPLATE
 from share.logger import setup_logging
 
 
@@ -21,8 +22,8 @@ class DataCollectionRecorder:
         HandLandmark.MIDDLE_FINGER_TIP,
     ]
 
-    def __init__(self, output_dir, pid):
-        output_dir = os.path.join(output_dir, "p" + str(pid))
+    def __init__(self, pid):
+        output_dir = DC_PARTICIPANT_FOLDER_TEMPLATE.format(pid)
         os.makedirs(output_dir, exist_ok=True)
 
         setup_logging(os.path.join(output_dir, "run.log"))

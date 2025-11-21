@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-from gesture_model.share import GestureLabel, GestureModel
+from gesture_model.model import GestureLabel, GestureModel
 
 BASE_FOLDER = "./gesture_model/graph_tcn/"
 

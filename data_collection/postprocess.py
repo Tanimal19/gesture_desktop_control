@@ -1,11 +1,11 @@
 import pandas as pd
 import os
+from config import DC_DATASET_FOLDER, DC_PARTICIPANT_FOLDER_TEMPLATE
 
 
-DATASET_DIR = "./data_collection/datasets/"
-RESULT_CSV = DATASET_DIR + "task_result_merged.csv"
-LABEL_CSV = DATASET_DIR + "labels.csv"
-LABELED_RESULT_CSV = DATASET_DIR + "task_result_labeled.csv"
+RESULT_CSV = DC_DATASET_FOLDER + "task_result_merged.csv"
+LABEL_CSV = DC_DATASET_FOLDER + "labels.csv"
+LABELED_RESULT_CSV = DC_DATASET_FOLDER + "task_result_labeled.csv"
 
 
 def remove_failed_trails(df):
@@ -37,7 +37,7 @@ def create_task_result_csv():
     df = pd.DataFrame()
 
     for participant in range(12):
-        p_folder = os.path.join(DATASET_DIR, f"p{participant}")
+        p_folder = DC_PARTICIPANT_FOLDER_TEMPLATE.format(pid=participant)
         if not os.path.exists(p_folder):
             print(f"- Skipping participant {participant} (data not found)")
             continue
@@ -65,7 +65,7 @@ def create_label_csv():
     label_df.to_csv(LABEL_CSV, index=False)
 
 
-def update_label_csv(new_labels_df):
+def update_label_csv(new_labels_df, new_file_path=None):
     label_df = pd.read_csv(LABEL_CSV)
     updated_label_df = pd.merge(
         label_df,
@@ -80,7 +80,11 @@ def update_label_csv(new_labels_df):
         updated_label_df["label"]
     )
     updated_label_df = updated_label_df.drop(columns=["label_new"])
-    updated_label_df.to_csv(LABEL_CSV, index=False)
+
+    if new_file_path:
+        updated_label_df.to_csv(new_file_path, index=False)
+    else:
+        updated_label_df.to_csv(LABEL_CSV, index=False)
 
 
 def create_labeled_result_csv():

@@ -1,47 +1,24 @@
 import pandas as pd
+import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 
-def generate_samples(
-    df, window_length, feature_columns, label_mapping, padding=True
-) -> list[dict]:
+def extend_landmark_columns(window: pd.DataFrame, window_length: int) -> np.ndarray:
     """
-    Generate sliding window samples from the dataframe.
-    """
-
-    # pad the beginning with the first row to ensure enough frames
-    if padding:
-        pad = window_length - 1
-        first_row = df.iloc[[0]].copy()
-        padding = pd.concat([first_row] * pad, ignore_index=True)
-        df = pd.concat([padding, df.reset_index(drop=True)], ignore_index=True)
-
-    samples = []
-    num_frames = len(df)
-    for start_idx in range(0, num_frames - window_length + 1):
-        end_idx = start_idx + window_length
-        window = df.iloc[start_idx:end_idx]
-        feature_array = window[feature_columns].copy()
-
-        samples.append(
-            {
-                "timestamp": window["timestamp"].values[-1],
-                "features": feature_array,
-                "label": (label_mapping[window["label"].values[-1]]),
-            }
-        )
-    return samples
-
-
-def split_landmark_columns(df, landmarks: list[HandLandmark]):
-    """
-    Split specified landmark columns into x, y, z columns, and drop the original columns.
+    Extend the landmark columns in the given window to a 3D numpy array of shape.\n
+    Pad with zeros for missing landmarks.
     """
 
-    landmarks_name = [lm.name for lm in landmarks]
-    for lm in landmarks_name:
-        df[[f"{lm}_x", f"{lm}_y", f"{lm}_z"]] = (
-            df[lm].str.split("_", expand=True).astype(float)
-        )
-    df = df.drop(columns=landmarks_name)  # drop original columns
-    return df
+    landmark_window = []
+    for lm in HandLandmark:
+        if lm.name in window.columns:
+            x, y, z = window[lm.name].str.split("_", expand=True).astype(float).values.T
+        else:
+            x = y = z = np.zeros((window_length,))
+
+        landmark_feautures = np.stack([x, y, z], axis=1)  # shape: (frame_window, 3)
+        landmark_window.append(landmark_feautures)
+    landmark_window = np.stack(landmark_window, axis=1).astype(
+        "float32"
+    )  # shape: (frame_window, landmarks, 3)
+    return landmark_window
