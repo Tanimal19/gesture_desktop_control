@@ -1,6 +1,4 @@
 import time
-import os
-import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -42,7 +40,8 @@ def read_y_mapping():
 if __name__ == "__main__":
     print(f"Start training script: {time.asctime()}")
 
-    df = pd.read_csv(ANNOTATOR_BASE_FOLDER + "training_data.csv")
+    df = pd.read_csv(ANNOTATOR_BASE_FOLDER + "task_result_labeled_manual.csv")
+    df = df[df["label"] != "-1"]  # keep only labeled frames
 
     avaliable_tasks = list(df["task"].unique())
     y_mappings = {}
@@ -83,22 +82,21 @@ if __name__ == "__main__":
 
         X_tensor = torch.stack(X)  # (N, window_length, feature_dim)
         y_tensor = torch.tensor(y, dtype=torch.long)  # (N,)
-        print(f"> Dataset shpae: {X_tensor.shape}, {y_tensor.shape}")
+        print(f"> Dataset shape: {X_tensor.shape}, {y_tensor.shape}")
 
         dataset = GestureDataset(X_tensor, y_tensor)
 
         trainer = GestureModelTrainer(
-            output_path=ANNOTATOR_BASE_FOLDER
-            + "models/"
-            + f"{t.name}_wieghted_annotator.pth",
+            output_path=ANNOTATOR_BASE_FOLDER + "models/" + f"{t.name}_annotator.pth",
             model=model,
             dataset=dataset,
         )
 
-        weights = [0.1 if label == "NONE" else 1.0 for label in y_mapping.keys()]
-        print(f"> Using weights: {weights}")
+        # weights = [0.1 if label == "NONE" else 1.0 for label in y_mapping.keys()]
+        # print(f"> Using weights: {weights}")
+        # criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights))
 
-        criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights))
+        criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
         # start training
@@ -109,3 +107,6 @@ if __name__ == "__main__":
 
     # save y mappings
     save_y_mapping(y_mappings)
+
+
+# python -m gesture_model.task_annotator.train | tee -a ./gesture_model/task_annotator/train.log

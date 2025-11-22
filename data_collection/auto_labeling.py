@@ -10,7 +10,7 @@ from gesture_model.model_runner import GestureModelRunner
 
 
 df = pd.read_csv(AUTO_LABEL_CSV)
-df["label"] = ""
+df["label"] = "NONE"
 df["row_id"] = range(len(df))
 
 y_mapping = read_y_mapping()
@@ -42,5 +42,5 @@ for t in TrueTaskType:
             row_id = window.iloc[-1]["row_id"]
             df.at[row_id, "label"] = predict_label.name
 
-df = df[df["label"] != ""]  # keep only labeled frames
+df = df[df["label"] != "-1"]  # keep only labeled frames
 update_labeled_result_csv(AUTO_LABEL_CSV, df)

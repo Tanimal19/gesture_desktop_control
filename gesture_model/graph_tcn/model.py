@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-from gesture_model.model import GestureLabel, GestureModel
+from gesture_model.model import GestureLabel, AbstractGestureModel
 
 BASE_FOLDER = "./gesture_model/graph_tcn/"
 
@@ -92,7 +92,7 @@ class TemporalConvNet(nn.Module):
         return x
 
 
-class GTCNModel(GestureModel):
+class GTCNModel(AbstractGestureModel):
     """
     Gesture Recognition Network
     Input: (B, window_length, 12, 3)
@@ -176,6 +176,23 @@ class GTCNModel(GestureModel):
 
         return out
 
+    def landmarks_window_to_X(self, landmarks_window: np.ndarray) -> torch.Tensor:
+
+        # convert landmarks position to offset position w.r.t. wrist
+        wrist_landmark = landmarks_window[:, HandLandmark.WRIST.value, :]
+        features = np.zeros((self.WINDOW_LENGTH, len(self.LANDMARKS), 3))
+        for i, lm in enumerate(self.LANDMARKS):
+            lm_pos = landmarks_window[:, lm.value, :]
+            offset_lm_pos = lm_pos - wrist_landmark
+            features[:, i, :] = offset_lm_pos
+        # (window_length, 12, 3)
+
+        x_tensor = torch.tensor(features, dtype=torch.float32)
+        return x_tensor
+
+    def y_to_label(self, y: int) -> GestureLabel:
+        return GestureLabel(y)
+
     @staticmethod
     def generate_adjacent_matrix(landmarks: list[HandLandmark], connections):
         N = len(landmarks)
@@ -189,19 +206,3 @@ class GTCNModel(GestureModel):
 
         adj = torch.tensor(adj, dtype=torch.float32)
         return adj
-
-    def inference(self, landmarks_window: np.ndarray) -> GestureLabel:
-
-        # filter to required landmarks
-        idxs = [lm.value for lm in self.LANDMARKS]
-        landmarks_window = landmarks_window[:, idxs, :]  # (window_length, 12, 3)
-
-        with torch.no_grad():
-            x_tensor = torch.tensor(landmarks_window, dtype=torch.float32).unsqueeze(0)
-            x_tensor = x_tensor.to(next(self.parameters()).device)
-
-            out = self.forward(x_tensor)  # (1, num_classes)
-            pred_idx = out.argmax(dim=1).item()
-            pred_label = GestureLabel(pred_idx)
-
-        return pred_label

@@ -11,8 +11,8 @@ from share.worker.camera import CameraThread
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.mapper import LandmarkMapper
-from share.worker.gesture import GestureModelRunner
-from gesture_model.utils import GestureModel
+from gesture_model.model_runner import GestureModelRunner
+from gesture_model.model import AbstractGestureModel
 from main.view import MainAppView
 
 
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class MainAppController:
-    def __init__(self, view: MainAppView, model: GestureModel, model_path: str):
+    def __init__(self, view: MainAppView, model: AbstractGestureModel, model_path: str):
         self.view = view
 
         self.camera = CameraThread()
@@ -82,7 +82,7 @@ class MainAppController:
                     -self.model.WINDOW_LENGTH :
                 ]  # get last WINDOW_LENGTH
                 landmarks_window = np.stack(landmarks_window, axis=0)
-                gesture_label = self.gesture_model.run_inference(landmarks_window)
+                gesture_label = self.gesture_model.inference(landmarks_window)
 
                 logger.info(f"Gesture detected: {gesture_label.name}")
                 self.view.set_overlay_text(f"Gesture: {gesture_label.name}")

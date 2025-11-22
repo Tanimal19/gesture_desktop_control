@@ -150,5 +150,5 @@ fig.canvas.mpl_connect("key_press_event", on_key)
 draw_frame(current_frame)
 plt.show()
 
-df = df[df["label"] != ""]  # keep only labeled frames
+df = df[df["label"] != "-1"]  # keep only labeled frames
 update_labeled_result_csv(MANUAL_LABEL_CSV, df)
