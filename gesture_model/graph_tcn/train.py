@@ -70,7 +70,7 @@ def training():
     # criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights))
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = optim.Adam(model.parameters(), lr=5e-3)
 
     # start training
     start_time = time.time()
@@ -80,7 +80,7 @@ def training():
 
 
 if __name__ == "__main__":
-    # create_dataset(DC_DATASET_FOLDER + "task_result_labeled_auto.csv")
+    create_dataset(DC_DATASET_FOLDER + "task_result_labeled_auto.csv")
     training()
 
 

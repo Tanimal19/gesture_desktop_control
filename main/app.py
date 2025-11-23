@@ -6,8 +6,8 @@ from gesture_model.graph_tcn.model import GTCNModel
 from gesture_model.dist_nn.model import DistNN
 from config import GTCN_BASE_FOLDER, DISTNN_BASE_FOLDER
 
-model = DistNN()
-model_path = DISTNN_BASE_FOLDER + "model_weighted.pth"
+model = GTCNModel()
+model_path = GTCN_BASE_FOLDER + "model.pth"
 
 
 app = QApplication(sys.argv)

@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # start training
     start_time = time.time()
     print(f"+ Start training task annotator")
-    trainer.train(criterion, optimizer, epochs=500)
+    trainer.train(criterion, optimizer, epochs=200)
     print(f"Completed in {time.time() - start_time:.2f} seconds.")
 
 # python -u -m gesture_model.dist_nn.train 2>&1 | tee -a gesture_model/dist_nn/train.log

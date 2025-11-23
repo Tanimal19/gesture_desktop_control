@@ -99,7 +99,7 @@ class GTCNModel(AbstractGestureModel):
     Output: (B, 7)
     """
 
-    WINDOW_LENGTH = 5
+    WINDOW_LENGTH = 6
     GCN_HIDDEN_DIM = 16  # GCN hidden dimension
     TCN_HIDDEN_DIM = 64  # TCN hidden dimension
     LANDMARKS = [
