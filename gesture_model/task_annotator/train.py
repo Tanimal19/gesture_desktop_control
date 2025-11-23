@@ -40,7 +40,7 @@ def read_y_mapping():
 if __name__ == "__main__":
     print(f"Start training script: {time.asctime()}")
 
-    df = pd.read_csv(ANNOTATOR_BASE_FOLDER + "task_result_labeled_manual.csv")
+    df = pd.read_csv(ANNOTATOR_BASE_FOLDER + "task_result_labeled_manual_p0_only.csv")
     df = df[df["label"] != "-1"]  # keep only labeled frames
 
     avaliable_tasks = list(df["task"].unique())

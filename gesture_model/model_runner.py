@@ -102,10 +102,10 @@ class GestureModelTrainer:
                 true_y.extend(y.cpu().numpy())
                 pred_y.extend(pred.cpu().numpy())
 
-            # print("Confusion Matrix:")
-            # print(confusion_matrix(true_y, pred_y))
-            # print("Classification Report:")
-            # print(classification_report(true_y, pred_y))
+            print("Confusion Matrix:")
+            print(confusion_matrix(true_y, pred_y))
+            print("Classification Report:")
+            print(classification_report(true_y, pred_y))
 
         return total_loss / total, total_correct / total
 

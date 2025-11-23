@@ -1,9 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from config import DC_DATASET_FOLDER
 from gesture_model.model import GestureLabel
 from data_collection.src.recorder import DataCollectionRecorder
-from data_collection.postprocess import MANUAL_LABEL_CSV, update_labeled_result_csv
+from data_collection.postprocess import (
+    AUTO_LABEL_CSV,
+    MANUAL_LABEL_CSV,
+    update_labeled_result_csv,
+)
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
 
@@ -23,7 +26,7 @@ CONNECTIONS = [
 ]
 
 
-df = pd.read_csv(MANUAL_LABEL_CSV)
+df = pd.read_csv(AUTO_LABEL_CSV)
 
 # select participant
 available_participants = df["participant_id"].unique().tolist()
