@@ -5,6 +5,9 @@ def setup_logging(filepath):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
+    if logger.handlers:
+        logger.handlers.clear()
+
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
     console_fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")

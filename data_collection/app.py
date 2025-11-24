@@ -4,6 +4,7 @@ from data_collection.src.view import DataCollectionView
 from data_collection.src.recorder import DataCollectionRecorder
 from PySide6.QtWidgets import QApplication
 
+
 pid = int(input("Enter the participant ID (0-12): "))
 if pid not in range(0, 13):
     sys.exit(1)

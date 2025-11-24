@@ -11,6 +11,7 @@ from share.worker.camera import CameraThread
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.mapper import LandmarkMapper
+from share.worker.mouse import MouseController, MouseEvent
 from gesture_model.model_runner import GestureModelRunner
 from gesture_model.model import AbstractGestureModel
 from main.view import MainAppView
@@ -30,6 +31,7 @@ class MainAppController:
         self.smoother = EMASmoother()
         self.reset_after_undetect = 10
         self.undetected_count = 0
+        self.mouse_controller = MouseController()
 
         self.mapper = LandmarkMapper(
             self.view.pointer_overlay.width(), self.view.pointer_overlay.height()
@@ -71,12 +73,8 @@ class MainAppController:
             if len(self.landmarks_queue) > self.max_queue_length:
                 self.landmarks_queue.pop(0)
 
-            # pointer mapping
-            screen_pos = self.mapper.map_to_screen_pos(smoothed_landmarks)
-            if screen_pos:
-                self.view.pointer_overlay.update_pointer_position(screen_pos)
-
             # gesture recognition
+            gesture_label = None
             if len(self.landmarks_queue) >= self.model.WINDOW_LENGTH:
                 landmarks_window = self.landmarks_queue[
                     -self.model.WINDOW_LENGTH :
@@ -84,8 +82,20 @@ class MainAppController:
                 landmarks_window = np.stack(landmarks_window, axis=0)
                 gesture_label = self.gesture_model.inference(landmarks_window)
 
-                logger.info(f"Gesture detected: {gesture_label.name}")
+                logger.debug(f"Gesture detected: {gesture_label.name}")
                 self.view.set_overlay_text(f"Gesture: {gesture_label.name}")
+
+            # pointer mapping
+            screen_pos = self.mapper.map_to_screen_pos(smoothed_landmarks)
+
+            # mouse control
+            if screen_pos and gesture_label:
+                mouse_event = self.mouse_controller.update(gesture_label, screen_pos)
+                self.view.set_overlay_text(
+                    f"Gesture: {gesture_label.name},\t\tMouse Event: {mouse_event.name}"
+                )
+                if mouse_event == MouseEvent.MOVE:
+                    self.view.pointer_overlay.update_pointer_position(screen_pos)
 
         else:
             self.undetected_count += 1
@@ -100,6 +110,10 @@ class MainAppController:
                 self.view.show()
             else:
                 self.view.hide()
+
+        elif key == Qt.Key.Key_Escape:  # exit app
+            logger.info("Escape key pressed. Exiting application.")
+            self.view.close()
 
     def close(self):
         self.camera.stop()

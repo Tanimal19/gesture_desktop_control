@@ -54,7 +54,7 @@ class LandmarkMapper:
         px = int((1 - x) * self.screen_width)
         py = int(y * self.screen_height)
 
-        logger.info(f"mapping pos: ({px}, {py})")
+        logger.debug(f"mapping pos: ({px}, {py})")
 
         return (px, py)
 
@@ -97,7 +97,7 @@ class StationaryDetector:
         logger.debug(f"std={std}, velocity={vel}")
 
         if std < self.std_thresh and vel < self.vel_thresh:
-            logger.info("stationary detected")
+            logger.debug("stationary detected")
             return True
 
         return False
@@ -129,7 +129,7 @@ class SigmoidScaler:
                 1 + np.exp(-self.k * (s - 0.5))
             )
             scaled = self.prev + delta * factor
-            logger.info(f"slow movement detected, applying scaling factor: {factor}")
+            logger.debug(f"slow movement detected, applying scaling factor: {factor}")
 
         self.prev = scaled
         return scaled

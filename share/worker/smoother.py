@@ -21,7 +21,7 @@ class EMASmoother:
         vel = np.linalg.norm(landmarks - self.prev)
         logger.debug(f"velocity={vel}")
         if vel > self.jump_thresh:
-            logger.info("jump detected")
+            logger.debug("jump detected")
             return self.prev
 
         smoothed = self.alpha * landmarks + (1 - self.alpha) * self.prev
