@@ -12,14 +12,14 @@ class DataCollectionRecorder:
         HandLandmark.THUMB_MCP,
         HandLandmark.THUMB_IP,
         HandLandmark.THUMB_TIP,
-        HandLandmark.INDEX_FINGER_MCP,
-        HandLandmark.INDEX_FINGER_PIP,
-        HandLandmark.INDEX_FINGER_DIP,
-        HandLandmark.INDEX_FINGER_TIP,
         HandLandmark.MIDDLE_FINGER_MCP,
         HandLandmark.MIDDLE_FINGER_PIP,
         HandLandmark.MIDDLE_FINGER_DIP,
         HandLandmark.MIDDLE_FINGER_TIP,
+        HandLandmark.RING_FINGER_MCP,
+        HandLandmark.RING_FINGER_PIP,
+        HandLandmark.RING_FINGER_DIP,
+        HandLandmark.RING_FINGER_TIP,
     ]
 
     def __init__(self, pid):

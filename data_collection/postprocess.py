@@ -3,9 +3,9 @@ import os
 from config import DC_DATASET_FOLDER, DC_PARTICIPANT_FOLDER_TEMPLATE
 
 
-RESULT_CSV = DC_DATASET_FOLDER + "task_result_merged.csv"
-MANUAL_LABEL_CSV = DC_DATASET_FOLDER + "task_result_labeled_manual.csv"
-AUTO_LABEL_CSV = DC_DATASET_FOLDER + "task_result_labeled_auto.csv"
+RESULT_CSV = DC_DATASET_FOLDER + "merged.csv"
+FULL_LABEL_CSV = DC_DATASET_FOLDER + "labeled_full.csv"  # for auto labeling
+P1_LABEL_CSV = DC_DATASET_FOLDER + "labeled_p0.csv"  # for manual labeling
 
 
 def remove_failed_trails(df):
@@ -59,7 +59,10 @@ def create_task_result_csv():
 def init_labeled_csv():
     df = pd.read_csv(RESULT_CSV)
     df["label"] = -1  # initialize all labels to -1 (unlabeled)
-    df.to_csv(DC_DATASET_FOLDER + "task_result_labeled_init.csv", index=False)
+    df.to_csv(FULL_LABEL_CSV, index=False)
+
+    df = df["participant_id" == 1]
+    df.to_csv(P1_LABEL_CSV, index=False)
 
 
 def update_labeled_result_csv(csv_path, new_df):

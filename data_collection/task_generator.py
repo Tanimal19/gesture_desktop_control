@@ -6,7 +6,7 @@ import pandas as pd
 import csv
 import ast
 
-num_participant = 12 + 1
+NUM_PARTICIPANT = 6 + 1
 config_path = DC_DATASET_FOLDER + "/task_configs.csv"
 
 display_width = 1512
@@ -37,7 +37,7 @@ def generate_configs():
         writer = csv.writer(file)
         writer.writerow(["pid", "task", "count", "configs"])
 
-        for p in range(num_participant):
+        for p in range(NUM_PARTICIPANT):
             # latin square counterbalance for the order of other tasks
             i = p % len(other_tasks)
             latin_tasks = other_tasks[i:] + other_tasks[:i]

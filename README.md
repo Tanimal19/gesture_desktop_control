@@ -5,23 +5,43 @@ CAMERA_WIDTH = 1620
 CAMERA_HEIGHT = 1080  
 
 
+## Data Collection & Model Training
 
+1. Generate task configuration files
+    ```
+    python data_collection/task_generator.py
+    ```
 
+2. Run data collection app for each participant
+    ```
+    python data_collection/app.py
+    ```
 
-- `data_collection/task_generator.py`: Script to generate data collection tasks
-- `data_collection/app.py`: Main application for data collection
+3. Post-process collected data and manual labeling
+    ```
+    python data_collection/postprocess.py
+    ```
+    - merge all participant data
+    - initialize labeled csv files
 
+4. Manually labeling for participant 1
+    ```
+    python data_collection/manual_labeling.py
+    ```
 
-- `gesture_model/model.py`: Gesture recognition model definition
-- `gesture_model/datasets/.npy`: Training data
+5. Training annotator model for each task using manually labeled data
+    ```
+    python gesture_model/train_annotator.py
+    ```
 
+6. Auto-labeling for all participants using trained annotator models
+    ```
+    python data_collection/auto_labeling.py
+    ```
 
+7. Train gesture recognition model using the fully labeled dataset
+    ```
+    python gesture_model/train_gesture_model.py
+    ```
 
-|               | thumb_index_dist | thumb_middle_dist | index_middle_dist |
-| ------------- | ---------------- | ----------------- | ----------------- |
-| left_press    | decreasing       | stable            | increasing        |
-| left_release  | increasing       | stable            | decreasing        |
-| right_press   | stable           | decreasing        | increasing        |
-| right_release | stable           | increasing        | decreasing        |
-| scroll_up     | increasing       | increasing        | stable            |
-| scroll_down   | decreasing       | decreasing        | stable            |
+## Evaluation Study

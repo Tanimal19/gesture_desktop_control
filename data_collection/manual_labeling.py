@@ -3,8 +3,7 @@ import matplotlib.pyplot as plt
 from gesture_model.model import GestureLabel
 from data_collection.src.recorder import DataCollectionRecorder
 from data_collection.postprocess import (
-    AUTO_LABEL_CSV,
-    MANUAL_LABEL_CSV,
+    P1_LABEL_CSV,
     update_labeled_result_csv,
 )
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
@@ -15,27 +14,18 @@ CONNECTIONS = [
     ("THUMB_CMC", "THUMB_MCP"),
     ("THUMB_MCP", "THUMB_IP"),
     ("THUMB_IP", "THUMB_TIP"),
-    ("WRIST", "INDEX_FINGER_MCP"),
-    ("INDEX_FINGER_MCP", "INDEX_FINGER_PIP"),
-    ("INDEX_FINGER_PIP", "INDEX_FINGER_DIP"),
-    ("INDEX_FINGER_DIP", "INDEX_FINGER_TIP"),
     ("WRIST", "MIDDLE_FINGER_MCP"),
     ("MIDDLE_FINGER_MCP", "MIDDLE_FINGER_PIP"),
     ("MIDDLE_FINGER_PIP", "MIDDLE_FINGER_DIP"),
     ("MIDDLE_FINGER_DIP", "MIDDLE_FINGER_TIP"),
+    ("WRIST", "RING_FINGER_MCP"),
+    ("RING_FINGER_MCP", "RING_FINGER_PIP"),
+    ("RING_FINGER_PIP", "RING_FINGER_DIP"),
+    ("RING_FINGER_DIP", "RING_FINGER_TIP"),
 ]
 
 
-df = pd.read_csv(AUTO_LABEL_CSV)
-
-# select participant
-available_participants = df["participant_id"].unique().tolist()
-participant = int(input(f"Select participant ID {available_participants}: "))
-if participant not in available_participants:
-    print("Invalid participant ID.")
-    exit(0)
-df = df[df["participant_id"] == participant].reset_index(drop=True)
-
+df = pd.read_csv(P1_LABEL_CSV)
 
 # split landmark columns into x, y, z
 landmarks_name = [lm.name for lm in DataCollectionRecorder.RECORDED_LANDMARKS]
@@ -46,7 +36,7 @@ for lm in landmarks_name:
 df = df.drop(columns=landmarks_name)  # drop original columns
 
 current_frame = int(input("Select frame index (0 - {}): ".format(len(df) - 1)))
-trail_length = 10
+trail_length = 6
 
 # plot
 fig, ax = plt.subplots(figsize=(7, 7))
@@ -92,9 +82,9 @@ def draw_frame(frame_idx):
             x = row[f"{lm.name}_x"]
             y = row[f"{lm.name}_y"]
             if (
-                lm == HandLandmark.INDEX_FINGER_TIP
+                lm == HandLandmark.THUMB_TIP
                 or lm == HandLandmark.MIDDLE_FINGER_TIP
-                or lm == HandLandmark.THUMB_TIP
+                or lm == HandLandmark.RING_FINGER_TIP
             ):
                 p = ax.plot(x, y, "o", color=point_color, alpha=alpha)[0]
             else:
@@ -103,7 +93,7 @@ def draw_frame(frame_idx):
 
         # only label current frame (not past frames)
         if is_current:
-            for lm in ["THUMB_TIP", "INDEX_FINGER_TIP", "MIDDLE_FINGER_TIP"]:
+            for lm in ["THUMB_TIP", "MIDDLE_FINGER_TIP", "RING_FINGER_TIP"]:
                 x, y, z = row[f"{lm}_x"], row[f"{lm}_y"], row[f"{lm}_z"]
                 txt = ax.text(
                     x + 0.005,
@@ -154,4 +144,4 @@ draw_frame(current_frame)
 plt.show()
 
 df = df[df["label"] != "-1"]  # keep only labeled frames
-update_labeled_result_csv(MANUAL_LABEL_CSV, df)
+update_labeled_result_csv(P1_LABEL_CSV, df)
