@@ -83,7 +83,7 @@ if __name__ == "__main__":
         TrainingConfig(
             name="weight-5e3",
             weight=[
-                0.2 if label == GestureLabel.NONE.value else 1.0
+                0.1 if label == GestureLabel.NONE.value else 1.0
                 for label in GestureLabel
             ],
             learning_rate=5e-3,

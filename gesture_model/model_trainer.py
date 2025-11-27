@@ -121,7 +121,6 @@ class GestureModelTrainer:
             self.logger.debug(f"\n{test_result['cmat']}")
             self.logger.debug("Classification Report:")
             self.logger.debug(f"\n{test_result['class_report']}")
-            self.logger.info("\n\n")
 
     def _train(self, optimizer, criterion):
         self.model.train()

@@ -157,11 +157,17 @@ class GTCNModel(AbstractGestureModel):
         self.fc = nn.Linear(self.TCN_HIDDEN_DIM, len(GestureLabel))
 
         # Adjacency matrices (fixed)
-        self.A1 = self.generate_adjacent_matrix(
-            self.LANDMARKS, self.INSIDE_FINGER_CONNECTIONS
+        self.register_buffer(
+            "A1",
+            self.generate_adjacent_matrix(
+                self.LANDMARKS, self.INSIDE_FINGER_CONNECTIONS
+            )
         )
-        self.A2 = self.generate_adjacent_matrix(
-            self.LANDMARKS, self.BETWEEN_FINGER_CONNECTIONS
+        self.register_buffer(
+            "A2",
+            self.generate_adjacent_matrix(
+                self.LANDMARKS, self.BETWEEN_FINGER_CONNECTIONS
+            )
         )
 
     def forward(self, x):
