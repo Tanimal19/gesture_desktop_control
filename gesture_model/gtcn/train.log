@@ -708,3 +708,20 @@ Start training with config: weight_08
 [Epoch 56/200] Train Loss: 0.1297 Acc: 0.9509 | Val Loss: 0.1705 Acc: 0.9355
 [Epoch 57/200] Train Loss: 0.1316 Acc: 0.9508 | Val Loss: 0.2058 Acc: 0.9237
 [Epoch 58/200] Train Loss: 0.1292 Acc: 0.9506 | Val Loss: 0.1767 Acc: 0.9346
+Start training script: Thu Nov 27 11:55:50 2025
+dataset shape: torch.Size([27590, 6, 12, 3]), torch.Size([27590])
+Dataset distribution:
+> Train: Counter({np.int64(0): 8116, np.int64(2): 2791, np.int64(1): 1534, np.int64(4): 1372, np.int64(3): 1236, np.int64(5): 757, np.int64(6): 748})
+> Val:   Counter({np.int64(0): 2705, np.int64(2): 930, np.int64(1): 511, np.int64(4): 458, np.int64(3): 412, np.int64(5): 253, np.int64(6): 249})
+> Test:  Counter({np.int64(0): 2705, np.int64(2): 930, np.int64(1): 511, np.int64(4): 458, np.int64(3): 412, np.int64(5): 253, np.int64(6): 249})
+Using device: cuda
+Start training with config: default-1e3
+Start training script: Thu Nov 27 11:56:50 2025
+Generating dataset from labeled CSV.
+dataset shape: torch.Size([27590, 6, 12, 3]), torch.Size([27590])
+Dataset distribution:
+> Train: Counter({np.int64(0): 8116, np.int64(2): 2791, np.int64(1): 1534, np.int64(4): 1372, np.int64(3): 1236, np.int64(5): 757, np.int64(6): 748})
+> Val:   Counter({np.int64(0): 2705, np.int64(2): 930, np.int64(1): 511, np.int64(4): 458, np.int64(3): 412, np.int64(5): 253, np.int64(6): 249})
+> Test:  Counter({np.int64(0): 2705, np.int64(2): 930, np.int64(1): 511, np.int64(4): 458, np.int64(3): 412, np.int64(5): 253, np.int64(6): 249})
+Using device: cuda
+Start training with config: default-1e3

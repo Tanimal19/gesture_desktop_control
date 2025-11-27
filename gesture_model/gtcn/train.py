@@ -21,7 +21,7 @@ if __name__ == "__main__":
     logger.info(f"Start training script: {time.asctime()}")
 
     # TODO: set to False to skip dataset regeneration
-    regenerate_dataset = False
+    regenerate_dataset = True
 
     if regenerate_dataset:
         logger.info(f"Generating dataset from labeled CSV.")
@@ -69,13 +69,19 @@ if __name__ == "__main__":
     # TODO: try different training configs
     configs = [
         TrainingConfig(
-            name="default",
+            name="default-1e3",
+            weight=None,
+            learning_rate=1e-3,
+            max_epochs=100,
+        ),
+        TrainingConfig(
+            name="default-5e3",
             weight=None,
             learning_rate=5e-3,
             max_epochs=100,
         ),
         TrainingConfig(
-            name="weight",
+            name="weight-5e3",
             weight=[
                 0.2 if label == GestureLabel.NONE.value else 1.0
                 for label in GestureLabel
@@ -87,7 +93,7 @@ if __name__ == "__main__":
 
     trainer = GestureModelTrainer(
         output_dir=GTCN_BASE_FOLDER + "models/",
-        model=GTCNModel(),
+        model=GTCNModel,
         dataset=dataset,
         test_size=0.2,
         configs=configs,
