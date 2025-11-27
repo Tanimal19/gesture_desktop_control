@@ -99,7 +99,7 @@ class GTCNModel(AbstractGestureModel):
     Output: (B, 7)
     """
 
-    WINDOW_LENGTH = 6
+    WINDOW_LENGTH = 20
     GCN_HIDDEN_DIM = 16  # GCN hidden dimension
     TCN_HIDDEN_DIM = 64  # TCN hidden dimension
     LANDMARKS = [
@@ -127,7 +127,6 @@ class GTCNModel(AbstractGestureModel):
         (HandLandmark.MIDDLE_FINGER_PIP, HandLandmark.MIDDLE_FINGER_DIP),
         (HandLandmark.MIDDLE_FINGER_DIP, HandLandmark.MIDDLE_FINGER_TIP),
     ]
-
     BETWEEN_FINGER_CONNECTIONS = [
         (HandLandmark.THUMB_CMC, HandLandmark.INDEX_FINGER_MCP),
         (HandLandmark.THUMB_MCP, HandLandmark.INDEX_FINGER_PIP),

@@ -54,12 +54,12 @@ if __name__ == "__main__":
         y_tensor = torch.tensor(y, dtype=torch.long)  # (N,)
 
         # save the dataset to .pkl file
-        X_tensor.numpy().dump(GTCN_BASE_FOLDER + "X.pkl")
-        y_tensor.numpy().dump(GTCN_BASE_FOLDER + "y.pkl")
+        X_tensor.numpy().dump(GTCN_BASE_FOLDER + "datasets/" + f"X{GTCNModel.WINDOW_LENGTH}.pkl")
+        y_tensor.numpy().dump(GTCN_BASE_FOLDER + "datasets/" + f"y{GTCNModel.WINDOW_LENGTH}.pkl")
 
     # start training
-    X_array = np.load(GTCN_BASE_FOLDER + "X.pkl", allow_pickle=True)
-    y_array = np.load(GTCN_BASE_FOLDER + "y.pkl", allow_pickle=True)
+    X_array = np.load(GTCN_BASE_FOLDER + "datasets/" + f"X{GTCNModel.WINDOW_LENGTH}.pkl", allow_pickle=True)
+    y_array = np.load(GTCN_BASE_FOLDER + "datasets/" + f"y{GTCNModel.WINDOW_LENGTH}.pkl", allow_pickle=True)
     X_tensor = torch.tensor(X_array, dtype=torch.float32)
     y_tensor = torch.tensor(y_array, dtype=torch.long)
     logger.info(f"dataset shape: {X_tensor.shape}, {y_tensor.shape}")
@@ -69,13 +69,22 @@ if __name__ == "__main__":
     # TODO: try different training configs
     configs = [
         TrainingConfig(
-            name="default-win10",
+            name=f"win{GTCNModel.WINDOW_LENGTH}-noweight",
             weight=None,
             learning_rate=5e-3,
             max_epochs=100,
         ),
         TrainingConfig(
-            name="weight-win10",
+            name=f"win{GTCNModel.WINDOW_LENGTH}-weight01",
+            weight=[
+                0.1 if label == GestureLabel.NONE.value else 1.0
+                for label in GestureLabel
+            ],
+            learning_rate=5e-3,
+            max_epochs=100,
+        ),
+        TrainingConfig(
+            name=f"win{GTCNModel.WINDOW_LENGTH}-weight05",
             weight=[
                 0.5 if label == GestureLabel.NONE.value else 1.0
                 for label in GestureLabel
