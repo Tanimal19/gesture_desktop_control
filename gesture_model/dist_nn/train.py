@@ -24,6 +24,7 @@ if __name__ == "__main__":
     regenerate_dataset = True
 
     if regenerate_dataset:
+        logger.info(f"Generating dataset from labeled CSV.")
         df = pd.read_csv(DC_FULL_LABEL_CSV)
         df = df[df["label"] != "-1"]  # keep only labeled frames
 
@@ -33,7 +34,7 @@ if __name__ == "__main__":
         groups = df.groupby(["participant_id", "task", "trail"])
 
         for (pid, taskid, trailid), trail in groups:
-            print(f"+ Processing participant {pid}, task {taskid}, trail {trailid}")
+            logger.info(f"+ Processing participant {pid}, task {taskid}, trail {trailid}")
 
             for start_idx in range(0, len(trail) - DistNN.WINDOW_LENGTH + 1):
                 # each window

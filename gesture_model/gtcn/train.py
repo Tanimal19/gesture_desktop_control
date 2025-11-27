@@ -35,7 +35,7 @@ if __name__ == "__main__":
         groups = df.groupby(["participant_id", "task", "trail"])
 
         for (pid, taskid, trailid), trail in groups:
-            print(f"+ Processing participant {pid}, task {taskid}, trail {trailid}")
+            logger.info(f"+ Processing participant {pid}, task {taskid}, trail {trailid}")
 
             for start_idx in range(0, len(trail) - GTCNModel.WINDOW_LENGTH + 1):
                 # each window
@@ -69,13 +69,13 @@ if __name__ == "__main__":
     # TODO: try different training configs
     configs = [
         TrainingConfig(
-            name="default-5e3",
+            name="default-win10",
             weight=None,
             learning_rate=5e-3,
             max_epochs=100,
         ),
         TrainingConfig(
-            name="weight-5e3",
+            name="weight-win10",
             weight=[
                 0.5 if label == GestureLabel.NONE.value else 1.0
                 for label in GestureLabel
