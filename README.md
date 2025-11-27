@@ -7,41 +7,40 @@ CAMERA_HEIGHT = 1080
 
 ## Data Collection & Model Training
 
-1. Generate task configuration files
-    ```
-    python -m data_collection.task_generator
-    ```
+Generate task configuration files
+```bash
+python -m data_collection.task_generator
+```
 
-2. Run data collection app for each participant
-    ```
-    python -m data_collection.app
-    ```
+Run data collection app for each participant 
+```bash
+python -m data_collection.app
+```
 
-3. Post-process collected data and manual labeling
-    ```
-    python data_collection/postprocess.py
-    ```
-    - merge all participant data
-    - initialize labeled csv files
+Post-process collected data and manual labeling:  
+merge all participant data, initialize labeled csv files
+```bash
+python -m data_collection.postprocess
+```
 
-4. Manually labeling for participant 0
-    ```
-    python data_collection/manual_labeling.py
-    ```
+Manually labeling for participant 0
+```bash
+python -m data_collection.manual_labeling
+```
 
-5. Training annotator model for each task using manually labeled data
-    ```
-    python gesture_model/train_annotator.py
-    ```
+Training annotator model for each task using manually labeled data
+```bash
+python -m gesture_model.
+```
 
-6. Auto-labeling for all participants using trained annotator models
-    ```
-    python data_collection/auto_labeling.py
-    ```
+Auto-labeling for all participants using trained annotator models
+```bash
+python data_collection/auto_labeling.py
+```
 
-7. Train gesture recognition model using the fully labeled dataset
-    ```
-    python gesture_model/train_gesture_model.py
-    ```
+Train gesture recognition model using the fully labeled dataset
+```bash
+python gesture_model/train_gesture_model.py
+```
 
 ## Evaluation Study

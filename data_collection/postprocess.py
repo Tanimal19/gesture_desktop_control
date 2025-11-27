@@ -61,7 +61,7 @@ def init_labeled_csv():
     df["label"] = -1  # initialize all labels to -1 (unlabeled)
     df.to_csv(DC_FULL_LABEL_CSV, index=False)
 
-    df = df["participant_id" == 0]
+    df = df[df["participant_id"] == 0]
     df.to_csv(DC_P0_LABEL_CSV, index=False)
 
 
