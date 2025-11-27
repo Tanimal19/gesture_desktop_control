@@ -39,11 +39,12 @@ class DistNN(AbstractGestureModel):
         x = self.fc(x)
         return x
 
-    def landmarks_window_to_X(self, landmarks_window: np.ndarray) -> torch.Tensor:
+    @staticmethod
+    def landmarks_window_to_X(landmarks_window: np.ndarray) -> torch.Tensor:
 
         # compute distance features
         dist_features = []
-        for lm1, lm2 in self.DIST_FEATURES:
+        for lm1, lm2 in DistNN.DIST_FEATURES:
             vec = landmarks_window[:, lm1.value, :] - landmarks_window[:, lm2.value, :]
             dist = np.linalg.norm(vec, axis=1)  # (window_length,)
             dist_features.append(dist)
@@ -53,13 +54,13 @@ class DistNN(AbstractGestureModel):
 
         # convert landmarks position to offset position w.r.t. wrist
         wrist_landmark = landmarks_window[:, HandLandmark.WRIST.value, :]
-        filtered_window = np.zeros((self.WINDOW_LENGTH, len(self.LANDMARKS), 3))
-        for i, lm in enumerate(self.LANDMARKS):
+        filtered_window = np.zeros((DistNN.WINDOW_LENGTH, len(DistNN.LANDMARKS), 3))
+        for i, lm in enumerate(DistNN.LANDMARKS):
             lm_pos = landmarks_window[:, lm.value, :]
             offset_lm_pos = lm_pos - wrist_landmark
             filtered_window[:, i, :] = offset_lm_pos
         filtered_window = filtered_window.reshape(
-            self.WINDOW_LENGTH, -1
+            DistNN.WINDOW_LENGTH, -1
         )  # (window_length, num_landmarks * 3)
 
         features = np.concatenate(

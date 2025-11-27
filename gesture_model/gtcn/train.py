@@ -69,12 +69,6 @@ if __name__ == "__main__":
     # TODO: try different training configs
     configs = [
         TrainingConfig(
-            name="default-1e3",
-            weight=None,
-            learning_rate=1e-3,
-            max_epochs=100,
-        ),
-        TrainingConfig(
             name="default-5e3",
             weight=None,
             learning_rate=5e-3,
@@ -83,7 +77,7 @@ if __name__ == "__main__":
         TrainingConfig(
             name="weight-5e3",
             weight=[
-                0.1 if label == GestureLabel.NONE.value else 1.0
+                0.5 if label == GestureLabel.NONE.value else 1.0
                 for label in GestureLabel
             ],
             learning_rate=5e-3,
