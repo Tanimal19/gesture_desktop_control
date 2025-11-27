@@ -30,17 +30,17 @@ python -m data_collection.manual_labeling
 
 Training annotator model for each task using manually labeled data
 ```bash
-python -m gesture_model.
+python -m gesture_model.task_annotator.train
 ```
 
 Auto-labeling for all participants using trained annotator models
 ```bash
-python data_collection/auto_labeling.py
+python -m data_collection.auto_labeling
 ```
 
 Train gesture recognition model using the fully labeled dataset
 ```bash
-python gesture_model/train_gesture_model.py
+python -m gesture_model.gtcn.train
 ```
 
 ## Evaluation Study

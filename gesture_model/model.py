@@ -18,8 +18,9 @@ class GestureLabel(Enum):
 class AbstractGestureModel(ABC, nn.Module):
     WINDOW_LENGTH: int
 
+    @staticmethod
     @abstractmethod
-    def landmarks_window_to_X(self, landmarks_window: np.ndarray) -> torch.Tensor:
+    def landmarks_window_to_X(landmarks_window: np.ndarray) -> torch.Tensor:
         """
         landmarks_window: np.array of shape (WINDOW_LENGTH, len(HandLandmark), 3)\n
         transform raw landmarks window to model required feature representation.

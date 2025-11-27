@@ -23,7 +23,7 @@ for t in TrueTaskType:
     task_group = df[df["task"] == t.name]
 
     model = TaskAnnotator(y_mapping[t.name])
-    model_path = ANNOTATOR_BASE_FOLDER + "models/" + f"{t.name}_annotator.pth"
+    model_path = ANNOTATOR_BASE_FOLDER + "models/" + t.name + "/best_model_default.pth"
     runner = GestureModelRunner(model, model_path, device="cpu")
 
     for _, trail in task_group.groupby("trail"):
@@ -41,5 +41,5 @@ for t in TrueTaskType:
             row_id = window.iloc[-1]["row_id"]
             df.at[row_id, "label"] = predict_label.name
 
-df = df[df["label"] != "-1"]  # keep only labeled frames
+
 update_labeled_csv(DC_FULL_LABEL_CSV, df)

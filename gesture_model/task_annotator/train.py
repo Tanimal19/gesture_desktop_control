@@ -1,21 +1,25 @@
 import time
 import pandas as pd
 import torch
-import torch.nn as nn
-import torch.optim as optim
+import os
 import csv
 from datapath import ANNOTATOR_BASE_FOLDER, DC_P0_LABEL_CSV
 from data_collection.src.task import TrueTaskType
 from share.utils import extend_landmark_columns
-from gesture_model.model_trainer import GestureModelTrainer
+from gesture_model.model_trainer import (
+    TensorDataset,
+    TrainingConfig,
+    GestureModelTrainer,
+    setup_logging,
+)
 from gesture_model.task_annotator.model import TaskAnnotator
 
 
-y_mapping_csv = ANNOTATOR_BASE_FOLDER + "task_label_mappings.csv"
+ANNOTATOR_MAPPING_CSV = ANNOTATOR_BASE_FOLDER + "task_label_mappings.csv"
 
 
 def save_y_mapping(y_mapping):
-    with open(y_mapping_csv, "w", newline="") as f:
+    with open(ANNOTATOR_MAPPING_CSV, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["task", "original", "mapped"])
         for task, labels in y_mapping.items():
@@ -26,7 +30,7 @@ def save_y_mapping(y_mapping):
 
 def read_y_mapping():
     y_mapping = {}
-    with open(y_mapping_csv, "r") as f:
+    with open(ANNOTATOR_MAPPING_CSV, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             task = row["task"]
@@ -37,7 +41,8 @@ def read_y_mapping():
 
 
 if __name__ == "__main__":
-    print(f"Start training script: {time.asctime()}")
+    logger = setup_logging(ANNOTATOR_BASE_FOLDER + "train.log")
+    logger.info(f"Start training script: {time.asctime()}")
 
     df = pd.read_csv(DC_P0_LABEL_CSV)
     df = df[df["label"] != "-1"]  # keep only labeled frames
@@ -47,9 +52,13 @@ if __name__ == "__main__":
 
     for t in TrueTaskType:
         if t.name not in avaliable_tasks:
-            print(f"- Skipping task: {t.name} (no data found)")
+            logger.warning(f"\n- Skipping task: {t.name} (no data found)")
             continue
-        print(f"+ Generate datasets for task: {t.name}")
+        logger.info(f"\n+ Training model for task: {t.name}")
+
+        output_dir = ANNOTATOR_BASE_FOLDER + "models/" + t.name + "/"
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         task_group = df[df["task"] == t.name]
 
@@ -57,10 +66,8 @@ if __name__ == "__main__":
         original_labels = sorted(task_group["label"].unique())
         mapped_labels = list(range(len(original_labels)))
         y_mapping = {ol: ml for ol, ml in zip(original_labels, mapped_labels)}
-        print(f"> y_mapping: {y_mapping}")
         y_mappings[t.name] = y_mapping
-
-        model = TaskAnnotator(y_mapping)
+        logger.info(f"label mapping: {y_mapping}")
 
         # generate dataset
         X: list[torch.Tensor] = []
@@ -76,36 +83,32 @@ if __name__ == "__main__":
                 )
                 label = window.iloc[-1]["label"]
 
-                X.append(model.landmarks_window_to_X(landmark_window))
+                X.append(TaskAnnotator.landmarks_window_to_X(landmark_window))
                 y.append(y_mapping[label])
 
         X_tensor = torch.stack(X)  # (N, window_length, feature_dim)
         y_tensor = torch.tensor(y, dtype=torch.long)  # (N,)
-        print(f"> Dataset shape: {X_tensor.shape}, {y_tensor.shape}")
+        logger.info(f"dataset shape: {X_tensor.shape}, {y_tensor.shape}")
+        dataset = TensorDataset(X_tensor, y_tensor)
 
-        dataset = GestureDataset(X_tensor, y_tensor)
+        model = TaskAnnotator(y_mapping)
 
-        trainer = GestureModelTrainer(
-            output_path=ANNOTATOR_BASE_FOLDER + "models/" + f"{t.name}_annotator.pth",
-            model=model,
-            dataset=dataset,
+        config = TrainingConfig(
+            name="default",
+            weight=None,
+            learning_rate=1e-3,
+            epochs=200,
         )
 
-        # weights = [0.1 if label == "NONE" else 1.0 for label in y_mapping.keys()]
-        # print(f"> Using weights: {weights}")
-        # criterion = nn.CrossEntropyLoss(weight=torch.tensor(weights))
+        trainer = GestureModelTrainer(
+            output_dir=output_dir,
+            model=model,
+            dataset=dataset,
+            test_size=0.0,
+            configs=[config],
+        )
 
-        criterion = nn.CrossEntropyLoss()
-        optimizer = optim.Adam(model.parameters(), lr=1e-3)
-
-        # start training
-        start_time = time.time()
-        print(f"+ Start training for task {t.name}.")
-        trainer.train(criterion, optimizer, epochs=200)
-        print(f"Completed in {time.time() - start_time:.2f} seconds.")
+        trainer.run_all()
 
     # save y mappings
     save_y_mapping(y_mappings)
-
-
-# python -m gesture_model.task_annotator.train | tee -a ./gesture_model/task_annotator/train.log

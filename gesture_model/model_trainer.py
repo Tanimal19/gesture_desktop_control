@@ -45,11 +45,17 @@ class GestureModelTrainer:
         self.configs = configs
         self.is_test = test_size > 0
 
-        train_ds, val_ds, test_ds = self._stratified_split(dataset, test_size=test_size)
-        self.train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
-        self.val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
         if self.is_test:
+            train_ds, val_ds, test_ds = self._stratified_split(
+                dataset, test_size=test_size
+            )
+            self.train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
+            self.val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
             self.test_loader = DataLoader(test_ds, batch_size=32, shuffle=False)
+        else:
+            train_ds, val_ds = self._stratified_split_no_test(dataset)
+            self.train_loader = DataLoader(train_ds, batch_size=32, shuffle=True)
+            self.val_loader = DataLoader(val_ds, batch_size=32, shuffle=False)
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model.to(self.device)
@@ -63,7 +69,9 @@ class GestureModelTrainer:
         self.logger.info(f"Start training with config: {config.name}")
         optimizer = torch.optim.Adam(self.model.parameters(), lr=config.learning_rate)
         criterion = torch.nn.CrossEntropyLoss(
-            weight=torch.tensor(config.weight).to(self.device)
+            weight=(
+                torch.tensor(config.weight).to(self.device) if config.weight else None
+            )
         )
 
         best_val_loss = float("inf")
@@ -219,24 +227,51 @@ class GestureModelTrainer:
 
         return train_dataset, val_dataset, test_dataset
 
-    @staticmethod
-    def setup_logging(filepath):
-        logger = logging.getLogger("gesture_model_trainer")
-        logger.setLevel(logging.DEBUG)
+    def _stratified_split_no_test(
+        self, dataset: TensorDataset, val_size=0.2
+    ) -> tuple[TensorDataset, TensorDataset]:
+        X = dataset.X
+        y = dataset.y
 
-        if logger.handlers:
-            logger.handlers.clear()
+        N = len(y)
+        indices = list(range(N))
 
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
-        console_fmt = logging.Formatter("%(message)s")
-        console_handler.setFormatter(console_fmt)
-        logger.addHandler(console_handler)
+        # train | val
+        train_size = 1 - val_size
+        train_idx, val_idx = train_test_split(
+            indices,
+            test_size=1 - train_size,
+            stratify=y.numpy(),
+            random_state=42,
+        )
 
-        file_handler = logging.FileHandler(filepath, encoding="utf-8")
-        file_handler.setLevel(logging.DEBUG)
-        file_fmt = logging.Formatter("%(message)s")
-        file_handler.setFormatter(file_fmt)
-        logger.addHandler(file_handler)
+        train_dataset = TensorDataset(X[train_idx], y[train_idx])
+        val_dataset = TensorDataset(X[val_idx], y[val_idx])
 
-        return logger
+        self.logger.debug("Dataset distribution:")
+        self.logger.debug(f"> Train: {Counter(y[train_idx].numpy())}")
+        self.logger.debug(f"> Val:   {Counter(y[val_idx].numpy())}")
+
+        return train_dataset, val_dataset
+
+
+def setup_logging(filepath):
+    logger = logging.getLogger("gesture_model_trainer")
+    logger.setLevel(logging.DEBUG)
+
+    if logger.handlers:
+        logger.handlers.clear()
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_fmt = logging.Formatter("%(message)s")
+    console_handler.setFormatter(console_fmt)
+    logger.addHandler(console_handler)
+
+    file_handler = logging.FileHandler(filepath, encoding="utf-8")
+    file_handler.setLevel(logging.DEBUG)
+    file_fmt = logging.Formatter("%(message)s")
+    file_handler.setFormatter(file_fmt)
+    logger.addHandler(file_handler)
+
+    return logger
