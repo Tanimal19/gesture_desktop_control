@@ -14,7 +14,7 @@ class TrainingConfig:
     name: str
     weight: list[float] | None
     learning_rate: float
-    epochs: int
+    max_epochs: int
 
 
 class TensorDataset(Dataset):
@@ -75,14 +75,16 @@ class GestureModelTrainer:
         )
 
         best_val_loss = float("inf")
+        count = 0
+        patience = 10
         start_time = time.time()
 
-        for epoch in range(config.epochs):
+        for epoch in range(config.max_epochs):
             train_loss, train_acc = self._train(optimizer, criterion)
             val_loss, val_acc = self._validate(criterion)
 
             self.logger.info(
-                f"[Epoch {epoch+1}/{config.epochs}]"
+                f"[Epoch {epoch+1}/{config.max_epochs}]"
                 f" Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} | "
                 f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f}"
             )
@@ -93,6 +95,12 @@ class GestureModelTrainer:
                     self.model.state_dict(),
                     f"{self.output_dir}/best_model_{config.name}.pth",
                 )
+                count = 0
+            else:
+                count += 1
+                if count >= patience:
+                    self.logger.info(f"Early stopped.")
+                    break
 
         self.logger.info(
             f"Training completed in {time.time() - start_time:.2f} seconds."

@@ -84,15 +84,15 @@ class MainAppController:
 
             # pointer mapping
             screen_pos = self.mapper.mapping_use_palm(smoothed_landmarks)
+            if screen_pos:
+                self.view.pointer_overlay.update_pointer_position(screen_pos)
 
             # mouse control
             if screen_pos and gesture_label:
                 mouse_event = self.mouse_controller.update(gesture_label, screen_pos)
                 self.view.set_overlay_text(
-                    f"Gesture: {gesture_label.name},\t\tMouse Event: {mouse_event.name}"
+                    f"Gesture: {gesture_label.name}\t\tMouse Event: {mouse_event.name}"
                 )
-                if mouse_event == MouseEvent.MOVE:
-                    self.view.pointer_overlay.update_pointer_position(screen_pos)
 
         else:
             self.undetected_count += 1

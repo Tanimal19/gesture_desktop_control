@@ -67,27 +67,30 @@ if __name__ == "__main__":
     dataset = TensorDataset(X_tensor, y_tensor)
 
     # TODO: try different training configs
-    config_default = TrainingConfig(
-        name="default_08",
-        weight=None,
-        learning_rate=1e-3,
-        epochs=200,
-    )
-    config_weight = TrainingConfig(
-        name="weight_08",
-        weight=[
-            0.2 if label == GestureLabel.NONE.value else 1.0 for label in GestureLabel
-        ],
-        learning_rate=1e-3,
-        epochs=200,
-    )
+    configs = [
+        TrainingConfig(
+            name="default",
+            weight=None,
+            learning_rate=5e-3,
+            max_epochs=100,
+        ),
+        TrainingConfig(
+            name="weight",
+            weight=[
+                0.2 if label == GestureLabel.NONE.value else 1.0
+                for label in GestureLabel
+            ],
+            learning_rate=5e-3,
+            max_epochs=100,
+        ),
+    ]
 
     trainer = GestureModelTrainer(
         output_dir=GTCN_BASE_FOLDER + "models/",
         model=GTCNModel(),
         dataset=dataset,
         test_size=0.2,
-        configs=[config_default, config_weight],
+        configs=configs,
     )
 
     trainer.run_all()

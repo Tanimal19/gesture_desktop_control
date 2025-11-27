@@ -97,7 +97,7 @@ if __name__ == "__main__":
             name="default",
             weight=None,
             learning_rate=1e-3,
-            epochs=200,
+            max_epochs=200,
         )
 
         trainer = GestureModelTrainer(

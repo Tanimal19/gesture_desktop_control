@@ -7,14 +7,13 @@ logger = logging.getLogger(__name__)
 
 
 class MouseEvent(Enum):
-    IDLE = 0
-    MOVE = 1
-    LEFT_PRESS = 2
-    LEFT_RELEASE = 3
-    RIGHT_PRESS = 4
-    RIGHT_RELEASE = 5
-    SCROLL_UP = 6
-    SCROLL_DOWN = 7
+    NONE = 0
+    LEFT_PRESS = 1
+    LEFT_RELEASE = 2
+    RIGHT_PRESS = 3
+    RIGHT_RELEASE = 4
+    SCROLL_UP = 5
+    SCROLL_DOWN = 6
 
 
 class MouseController:
@@ -53,15 +52,8 @@ class MouseController:
         else:
             self.non_scroll_count = 0
 
-        # ------ default move ------
-        if new_label == GestureLabel.NONE:
-            if self.scroll_direction is None:
-                return self._move_mouse(*pointer_pos)
-            else:
-                return MouseEvent.IDLE
-
         # ------ gesture transition ------
-        mouse_event = MouseEvent.IDLE
+        event = MouseEvent.NONE
         if new_label != self.current_gesture:
             prev_gesture = self.current_gesture
             prev_count = self.current_consecutive_count
@@ -71,11 +63,14 @@ class MouseController:
             self.current_start_pos = pointer_pos
 
             if self._is_valid_gesture(prev_gesture, prev_count):
-                mouse_event = self._perform_gesture(prev_gesture)
+                event = self._perform_gesture(prev_gesture)
         else:
             self.current_consecutive_count += 1
 
-        return mouse_event
+        if event == MouseEvent.NONE:
+            self._move_mouse(*pointer_pos)
+
+        return event
 
     def _is_valid_gesture(self, gesture: GestureLabel, consecutive_frame: int) -> bool:
         if gesture == GestureLabel.NONE:
@@ -86,75 +81,81 @@ class MouseController:
         else:
             return False
 
-    def _perform_gesture(self, gesture: GestureLabel):
+    def _perform_gesture(self, gesture: GestureLabel) -> MouseEvent:
+        event = MouseEvent.NONE
+
         if gesture == GestureLabel.LEFT_PRESS:
-            return self._left_press(*self.current_start_pos)
+            self._left_press(*self.current_start_pos)
+            event = MouseEvent.LEFT_PRESS
+
         elif gesture == GestureLabel.LEFT_RELEASE:
-            return self._left_release()
+            self._left_release()
+            event = MouseEvent.LEFT_RELEASE
+
         elif gesture == GestureLabel.RIGHT_PRESS:
-            return self._right_press(*self.current_start_pos)
+            self._right_press(*self.current_start_pos)
+            event = MouseEvent.RIGHT_PRESS
+
         elif gesture == GestureLabel.RIGHT_RELEASE:
-            return self._right_release()
+            self._right_release()
+            event = MouseEvent.RIGHT_RELEASE
+
         elif gesture == GestureLabel.SCROLL_UP:
             if self.scroll_direction is None:
                 self.scroll_direction = "UP"
             if self.scroll_direction == "UP":
-                return self._scroll_up()
+                self._scroll_up()
+                event = MouseEvent.SCROLL_UP
+
         elif gesture == GestureLabel.SCROLL_DOWN:
             if self.scroll_direction is None:
                 self.scroll_direction = "DOWN"
             if self.scroll_direction == "DOWN":
-                return self._scroll_down()
-        return MouseEvent.IDLE
+                self._scroll_down()
+                event = MouseEvent.SCROLL_DOWN
+
+        return event
 
     @staticmethod
     def _move_mouse(x, y):
         logger.info(f"Moving mouse to ({x}, {y})")
         mouse_move(x, y)
-        return MouseEvent.MOVE
 
     @staticmethod
     def _left_press(x, y):
         logger.info("Left mouse button pressed")
         # pyautogui.mouseDown(x, y, button="left")
-        return MouseEvent.LEFT_PRESS
 
     @staticmethod
     def _left_release():
         logger.info("Left mouse button released")
         # pyautogui.mouseUp(button="left")
-        return MouseEvent.LEFT_RELEASE
 
     @staticmethod
     def _right_press(x, y):
         logger.info("Right mouse button pressed")
         # pyautogui.mouseDown(x, y, button="right")
-        return MouseEvent.RIGHT_PRESS
 
     @staticmethod
     def _right_release():
         logger.info("Right mouse button released")
         # pyautogui.mouseUp(button="right")
-        return MouseEvent.RIGHT_RELEASE
 
     @staticmethod
     def _scroll_up(amount=100):
         logger.info("Scrolling up")
         # pyautogui.scroll(amount)
-        return MouseEvent.SCROLL_UP
 
     @staticmethod
     def _scroll_down(amount=100):
         logger.info("Scrolling down")
         # pyautogui.scroll(-amount)
-        return MouseEvent.SCROLL_DOWN
 
 
 def mouse_move(x, y):
     # macOS coordinate: origin bottom-left; need convert
     # Get screen height to flip coordinate
     screen = Quartz.CGDisplayBounds(Quartz.CGMainDisplayID())
-    screen_height = screen.size.height
 
     Quartz.CGWarpMouseCursorPosition((x, y))
     Quartz.CGAssociateMouseAndMouseCursorPosition(True)
