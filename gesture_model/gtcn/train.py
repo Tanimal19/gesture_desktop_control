@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
     trainer = GestureModelTrainer(
         output_dir=GTCN_BASE_FOLDER + "models/",
-        model=GTCNModel,
+        model=GTCNModel(),
         dataset=dataset,
         test_size=0.2,
         configs=configs,
