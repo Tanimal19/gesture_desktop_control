@@ -5,7 +5,7 @@ from main.view import MainAppView
 from share.logger import setup_logging
 from gesture_model.graph_tcn.model import GTCNModel
 from gesture_model.dist_nn.model import DistNN
-from config import GTCN_BASE_FOLDER, DISTNN_BASE_FOLDER
+from datapath import GTCN_BASE_FOLDER, DISTNN_BASE_FOLDER
 
 model = GTCNModel()
 model_path = GTCN_BASE_FOLDER + "model.pth"

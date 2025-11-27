@@ -55,7 +55,7 @@ class Task(ABC):
 class BasicLeftCLickTask:
     name = "Basic Left Click Task"
     ttype = TrueTaskType.BA_LEFT_CLICK
-    instruction = "Pinch with your thumb and middle finger to left click."
+    instruction = "Pinch with your thumb and index finger to left click."
 
     @staticmethod
     def generate_configs(count, canva_bound):
@@ -77,7 +77,7 @@ class BasicLeftCLickTask:
 class BasicRightClickTask:
     name = "Basic Right Click Task"
     ttype = TrueTaskType.BA_RIGHT_CLICK
-    instruction = "Pinch with your thumb and ring finger to right click."
+    instruction = "Pinch with your thumb and middle finger to right click."
 
     @staticmethod
     def generate_configs(count, canva_bound):
@@ -99,7 +99,7 @@ class BasicRightClickTask:
 class BasicScrollTask:
     name = "Basic Scroll Task"
     ttype = TrueTaskType.BA_SCROLL
-    instruction = "Swing your middle and ring fingers up and down, repeat 5 times."
+    instruction = "Swing your index and middle fingers up and down, repeat 5 times."
 
     @staticmethod
     def generate_configs(count, canva_bound):

@@ -1,7 +1,7 @@
 import os
 import csv
-from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
-from config import DC_PARTICIPANT_FOLDER_TEMPLATE
+from share.utils import HandLandmark
+from datapath import DC_PARTICIPANT_FOLDER_TEMPLATE
 from share.logger import setup_logging
 
 
@@ -12,18 +12,18 @@ class DataCollectionRecorder:
         HandLandmark.THUMB_MCP,
         HandLandmark.THUMB_IP,
         HandLandmark.THUMB_TIP,
+        HandLandmark.INDEX_FINGER_MCP,
+        HandLandmark.INDEX_FINGER_PIP,
+        HandLandmark.INDEX_FINGER_DIP,
+        HandLandmark.INDEX_FINGER_TIP,
         HandLandmark.MIDDLE_FINGER_MCP,
         HandLandmark.MIDDLE_FINGER_PIP,
         HandLandmark.MIDDLE_FINGER_DIP,
         HandLandmark.MIDDLE_FINGER_TIP,
-        HandLandmark.RING_FINGER_MCP,
-        HandLandmark.RING_FINGER_PIP,
-        HandLandmark.RING_FINGER_DIP,
-        HandLandmark.RING_FINGER_TIP,
     ]
 
     def __init__(self, pid):
-        output_dir = DC_PARTICIPANT_FOLDER_TEMPLATE.format(pid)
+        output_dir = DC_PARTICIPANT_FOLDER_TEMPLATE.format(pid=pid)
         os.makedirs(output_dir, exist_ok=True)
 
         setup_logging(os.path.join(output_dir, "run.log"))

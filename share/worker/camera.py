@@ -14,7 +14,7 @@ class CameraThread(QThread):
     def __init__(self):
         super().__init__()
         self.cap = cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FPS, 60)
+        self.cap.set(cv2.CAP_PROP_FPS, 30)
         if not self.cap.isOpened():
             logger.error("Cannot open camera")
             return

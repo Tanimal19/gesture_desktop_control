@@ -2,11 +2,8 @@ import cv2
 import logging
 import numpy as np
 from PySide6.QtCore import Qt
-from share.utils import (
-    draw_landmarks_on_frame,
-    merge_landmarks,
-    np_to_normalized_landmark,
-)
+from share.utils import merge_landmarks
+from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
 from share.worker.camera import CameraThread
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
@@ -86,7 +83,7 @@ class MainAppController:
                 self.view.set_overlay_text(f"Gesture: {gesture_label.name}")
 
             # pointer mapping
-            screen_pos = self.mapper.map_to_screen_pos(smoothed_landmarks)
+            screen_pos = self.mapper.mapping_use_palm(smoothed_landmarks)
 
             # mouse control
             if screen_pos and gesture_label:

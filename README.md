@@ -9,12 +9,12 @@ CAMERA_HEIGHT = 1080
 
 1. Generate task configuration files
     ```
-    python data_collection/task_generator.py
+    python -m data_collection.task_generator
     ```
 
 2. Run data collection app for each participant
     ```
-    python data_collection/app.py
+    python -m data_collection.app
     ```
 
 3. Post-process collected data and manual labeling
@@ -24,7 +24,7 @@ CAMERA_HEIGHT = 1080
     - merge all participant data
     - initialize labeled csv files
 
-4. Manually labeling for participant 1
+4. Manually labeling for participant 0
     ```
     python data_collection/manual_labeling.py
     ```

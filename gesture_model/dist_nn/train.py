@@ -3,7 +3,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from config import DISTNN_BASE_FOLDER, DC_DATASET_FOLDER
+from datapath import DISTNN_BASE_FOLDER, DC_DATASET_FOLDER
 from gesture_model.utils import extend_landmark_columns
 from gesture_model.model import GestureDataset, GestureLabel
 from gesture_model.model_runner import GestureModelTrainer

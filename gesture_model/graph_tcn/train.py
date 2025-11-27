@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-from config import GTCN_BASE_FOLDER, DC_DATASET_FOLDER
+from datapath import GTCN_BASE_FOLDER, DC_DATASET_FOLDER
 from gesture_model.utils import extend_landmark_columns
 from gesture_model.model import GestureDataset, GestureLabel
 from gesture_model.model_runner import GestureModelTrainer

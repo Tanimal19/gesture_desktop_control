@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+from share.utils import HandLandmark
 from gesture_model.model import GestureLabel, AbstractGestureModel
 
 

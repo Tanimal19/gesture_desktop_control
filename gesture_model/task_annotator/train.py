@@ -4,11 +4,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import csv
-from config import ANNOTATOR_BASE_FOLDER
+from datapath import ANNOTATOR_BASE_FOLDER, DC_P0_LABEL_CSV
 from data_collection.src.task import TrueTaskType
-from gesture_model.utils import extend_landmark_columns
-from gesture_model.model import GestureDataset
-from gesture_model.model_runner import GestureModelTrainer
+from share.utils import extend_landmark_columns
+from gesture_model.model_trainer import GestureModelTrainer
 from gesture_model.task_annotator.model import TaskAnnotator
 
 
@@ -40,7 +39,7 @@ def read_y_mapping():
 if __name__ == "__main__":
     print(f"Start training script: {time.asctime()}")
 
-    df = pd.read_csv(ANNOTATOR_BASE_FOLDER + "task_result_labeled_manual_p0_only.csv")
+    df = pd.read_csv(DC_P0_LABEL_CSV)
     df = df[df["label"] != "-1"]  # keep only labeled frames
 
     avaliable_tasks = list(df["task"].unique())

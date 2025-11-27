@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+from share.utils import HandLandmark
 from gesture_model.model import GestureLabel, AbstractGestureModel
 
 BASE_FOLDER = "./gesture_model/graph_tcn/"
@@ -117,29 +117,30 @@ class GTCNModel(AbstractGestureModel):
         HandLandmark.MIDDLE_FINGER_TIP,
     ]
     INSIDE_FINGER_CONNECTIONS = [
-        ("THUMB_CMC", "THUMB_MCP"),
-        ("THUMB_MCP", "THUMB_IP"),
-        ("THUMB_IP", "THUMB_TIP"),
-        ("INDEX_FINGER_MCP", "INDEX_FINGER_PIP"),
-        ("INDEX_FINGER_PIP", "INDEX_FINGER_DIP"),
-        ("INDEX_FINGER_DIP", "INDEX_FINGER_TIP"),
-        ("MIDDLE_FINGER_MCP", "MIDDLE_FINGER_PIP"),
-        ("MIDDLE_FINGER_PIP", "MIDDLE_FINGER_DIP"),
-        ("MIDDLE_FINGER_DIP", "MIDDLE_FINGER_TIP"),
+        (HandLandmark.THUMB_CMC, HandLandmark.THUMB_MCP),
+        (HandLandmark.THUMB_MCP, HandLandmark.THUMB_IP),
+        (HandLandmark.THUMB_IP, HandLandmark.THUMB_TIP),
+        (HandLandmark.INDEX_FINGER_MCP, HandLandmark.INDEX_FINGER_PIP),
+        (HandLandmark.INDEX_FINGER_PIP, HandLandmark.INDEX_FINGER_DIP),
+        (HandLandmark.INDEX_FINGER_DIP, HandLandmark.INDEX_FINGER_TIP),
+        (HandLandmark.MIDDLE_FINGER_MCP, HandLandmark.MIDDLE_FINGER_PIP),
+        (HandLandmark.MIDDLE_FINGER_PIP, HandLandmark.MIDDLE_FINGER_DIP),
+        (HandLandmark.MIDDLE_FINGER_DIP, HandLandmark.MIDDLE_FINGER_TIP),
     ]
+
     BETWEEN_FINGER_CONNECTIONS = [
-        ("THUMB_CMC", "INDEX_FINGER_MCP"),
-        ("THUMB_MCP", "INDEX_FINGER_PIP"),
-        ("THUMB_IP", "INDEX_FINGER_DIP"),
-        ("THUMB_TIP", "INDEX_FINGER_TIP"),
-        ("INDEX_FINGER_MCP", "MIDDLE_FINGER_MCP"),
-        ("INDEX_FINGER_PIP", "MIDDLE_FINGER_PIP"),
-        ("INDEX_FINGER_DIP", "MIDDLE_FINGER_DIP"),
-        ("INDEX_FINGER_TIP", "MIDDLE_FINGER_TIP"),
-        ("THUMB_CMC", "MIDDLE_FINGER_MCP"),
-        ("THUMB_MCP", "MIDDLE_FINGER_PIP"),
-        ("THUMB_IP", "MIDDLE_FINGER_DIP"),
-        ("THUMB_TIP", "MIDDLE_FINGER_TIP"),
+        (HandLandmark.THUMB_CMC, HandLandmark.INDEX_FINGER_MCP),
+        (HandLandmark.THUMB_MCP, HandLandmark.INDEX_FINGER_PIP),
+        (HandLandmark.THUMB_IP, HandLandmark.INDEX_FINGER_DIP),
+        (HandLandmark.THUMB_TIP, HandLandmark.INDEX_FINGER_TIP),
+        (HandLandmark.THUMB_CMC, HandLandmark.MIDDLE_FINGER_MCP),
+        (HandLandmark.THUMB_MCP, HandLandmark.MIDDLE_FINGER_PIP),
+        (HandLandmark.THUMB_IP, HandLandmark.MIDDLE_FINGER_DIP),
+        (HandLandmark.THUMB_TIP, HandLandmark.MIDDLE_FINGER_TIP),
+        (HandLandmark.INDEX_FINGER_MCP, HandLandmark.MIDDLE_FINGER_MCP),
+        (HandLandmark.INDEX_FINGER_PIP, HandLandmark.MIDDLE_FINGER_PIP),
+        (HandLandmark.INDEX_FINGER_DIP, HandLandmark.MIDDLE_FINGER_DIP),
+        (HandLandmark.INDEX_FINGER_TIP, HandLandmark.MIDDLE_FINGER_TIP),
     ]
 
     def __init__(self):
@@ -194,13 +195,16 @@ class GTCNModel(AbstractGestureModel):
         return GestureLabel(y)
 
     @staticmethod
-    def generate_adjacent_matrix(landmarks: list[HandLandmark], connections):
+    def generate_adjacent_matrix(
+        landmarks: list[HandLandmark],
+        connections: list[tuple[HandLandmark, HandLandmark]],
+    ):
         N = len(landmarks)
         adj = np.zeros((N, N), dtype=int)
 
         node2idx = {lm.name: idx for idx, lm in enumerate(landmarks)}
         for a, b in connections:
-            i, j = node2idx[a], node2idx[b]
+            i, j = node2idx[a.name], node2idx[b.name]
             adj[i, j] = 1
             adj[j, i] = 1
 

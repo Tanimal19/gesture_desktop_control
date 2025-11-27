@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+from share.utils import HandLandmark
 from gesture_model.model import GestureLabel, AbstractGestureModel
 
 
@@ -9,13 +9,13 @@ class TaskAnnotator(AbstractGestureModel):
     WINDOW_LENGTH = 5
     LANDMARKS = [
         HandLandmark.THUMB_TIP,
+        HandLandmark.INDEX_FINGER_TIP,
         HandLandmark.MIDDLE_FINGER_TIP,
-        HandLandmark.RING_FINGER_TIP,
     ]
     DIST_FEATURES = [
+        (HandLandmark.THUMB_TIP, HandLandmark.INDEX_FINGER_TIP),
         (HandLandmark.THUMB_TIP, HandLandmark.MIDDLE_FINGER_TIP),
-        (HandLandmark.THUMB_TIP, HandLandmark.RING_FINGER_TIP),
-        (HandLandmark.MIDDLE_FINGER_TIP, HandLandmark.RING_FINGER_TIP),
+        (HandLandmark.INDEX_FINGER_TIP, HandLandmark.MIDDLE_FINGER_TIP),
     ]
     feature_dim = len(LANDMARKS) * 3 + len(DIST_FEATURES)
 

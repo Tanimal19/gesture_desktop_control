@@ -1,6 +1,6 @@
 import numpy as np
 import logging
-from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+from share.utils import HandLandmark
 
 logger = logging.getLogger(__name__)
 
@@ -9,13 +9,54 @@ class LandmarkMapper:
     def __init__(self, screen_width, screen_height):
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.margin = (0.2, 0.4, 0.3, 0.1)  # right, left, top, bottom
-        self.screenz = -0.1
+        self.margin = (0.2, 0.4, 0.4, 0.1)  # right, left, top, bottom
+        self.screenz = -0.2
+        self.sensitivity = (1.0, 3.0)  # x, y
 
-        self.stationary_detector = StationaryDetector()
+        self.stationary_detector = StationaryDetector(window_size=10)
         self.scaler = SigmoidScaler()
 
-    def map_to_screen_pos(self, landmarks: np.ndarray) -> tuple[int, int] | None:
+    def mapping_use_palm(self, landmarks: np.ndarray) -> tuple[int, int] | None:
+
+        assert landmarks.shape == (len(HandLandmark), 3)
+
+        palm_landmarks = np.array(
+            [
+                landmarks[HandLandmark.WRIST.value],
+                landmarks[HandLandmark.INDEX_FINGER_MCP.value],
+                landmarks[HandLandmark.PINKY_MCP.value],
+            ]
+        )
+
+        if self.stationary_detector.update_and_detect(palm_landmarks):
+            return None
+
+        palm_landmarks = self.scaler.update_and_compute(palm_landmarks)
+
+        WRIST = palm_landmarks[0]
+        INDEX_MCP = palm_landmarks[1]
+        PINKY_MCP = palm_landmarks[2]
+
+        # find center of palm (center of mass)
+        M = (WRIST + INDEX_MCP + PINKY_MCP) / 3.0
+
+        # calculate normal vector of palm plane
+        u = INDEX_MCP - WRIST
+        v = PINKY_MCP - WRIST
+        normal = np.cross(u, v)
+
+        # compute intersection with screenz plane
+        t = (self.screenz - M[2]) / normal[2]
+        x = M[0] + normal[0] * t * self.sensitivity[0]
+        y = M[1] + normal[1] * t * self.sensitivity[1]
+
+        x, y = self.corp_and_rescale(x, y)
+        px = int((1 - x) * self.screen_width)
+        py = int(y * self.screen_height)
+        logger.debug(f"mapping pos: ({px}, {py})")
+        return (px, py)
+
+    def mapping_use_index(self, landmarks: np.ndarray) -> tuple[int, int] | None:
         assert landmarks.shape == (len(HandLandmark), 3)
 
         index_landmarks = np.array(
@@ -24,7 +65,6 @@ class LandmarkMapper:
                 landmarks[HandLandmark.INDEX_FINGER_DIP.value],
             ]
         )
-        logger.debug(f"Index finger landmarks: {index_landmarks}")
 
         if self.stationary_detector.update_and_detect(index_landmarks):
             return None

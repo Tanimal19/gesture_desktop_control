@@ -1,11 +1,11 @@
 import pandas as pd
 import os
-from config import DC_DATASET_FOLDER, DC_PARTICIPANT_FOLDER_TEMPLATE
-
-
-RESULT_CSV = DC_DATASET_FOLDER + "merged.csv"
-FULL_LABEL_CSV = DC_DATASET_FOLDER + "labeled_full.csv"  # for auto labeling
-P1_LABEL_CSV = DC_DATASET_FOLDER + "labeled_p0.csv"  # for manual labeling
+from datapath import (
+    DC_PARTICIPANT_FOLDER_TEMPLATE,
+    DC_RESULT_CSV,
+    DC_FULL_LABEL_CSV,
+    DC_P0_LABEL_CSV,
+)
 
 
 def remove_failed_trails(df):
@@ -53,19 +53,19 @@ def create_task_result_csv():
     cols.insert(0, cols.pop(cols.index("participant_id")))
     df = df[cols]
 
-    df.to_csv(RESULT_CSV, index=False)
+    df.to_csv(DC_RESULT_CSV, index=False)
 
 
 def init_labeled_csv():
-    df = pd.read_csv(RESULT_CSV)
+    df = pd.read_csv(DC_RESULT_CSV)
     df["label"] = -1  # initialize all labels to -1 (unlabeled)
-    df.to_csv(FULL_LABEL_CSV, index=False)
+    df.to_csv(DC_FULL_LABEL_CSV, index=False)
 
-    df = df["participant_id" == 1]
-    df.to_csv(P1_LABEL_CSV, index=False)
+    df = df["participant_id" == 0]
+    df.to_csv(DC_P0_LABEL_CSV, index=False)
 
 
-def update_labeled_result_csv(csv_path, new_df):
+def update_labeled_csv(csv_path, new_df):
     new_df = new_df[["participant_id", "timestamp", "task", "trail", "label"]]
 
     old_df = pd.read_csv(csv_path)

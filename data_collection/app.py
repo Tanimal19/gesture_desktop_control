@@ -7,7 +7,7 @@ from data_collection.task_generator import NUM_PARTICIPANT
 
 
 pid = int(input(f"Enter the participant ID (0 for testing, 1-{NUM_PARTICIPANT-1}): "))
-if pid not in range(0, NUM_PARTICIPANT - 1):
+if pid not in range(0, NUM_PARTICIPANT):
     sys.exit(1)
 
 pointer_enabled = True

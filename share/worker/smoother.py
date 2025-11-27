@@ -1,6 +1,6 @@
 import numpy as np
 import logging
-from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+from share.utils import HandLandmark
 
 logger = logging.getLogger(__name__)
 

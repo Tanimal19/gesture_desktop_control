@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset
 
 
 class GestureLabel(Enum):
@@ -14,18 +13,6 @@ class GestureLabel(Enum):
     RIGHT_RELEASE = 4
     SCROLL_UP = 5
     SCROLL_DOWN = 6
-
-
-class GestureDataset(Dataset):
-    def __init__(self, X: torch.Tensor, y: torch.Tensor):
-        self.X = X
-        self.y = y
-
-    def __len__(self):
-        return len(self.X)
-
-    def __getitem__(self, idx):
-        return self.X[idx], self.y[idx]
 
 
 class AbstractGestureModel(ABC, nn.Module):

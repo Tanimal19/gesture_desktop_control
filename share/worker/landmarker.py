@@ -5,12 +5,12 @@ from mediapipe.tasks.python.vision.hand_landmarker import (
     HandLandmarker,
     HandLandmarkerOptions,
     HandLandmarkerResult,
-    HandLandmark,
 )
 from mediapipe.tasks.python.vision.core.vision_task_running_mode import (
     VisionTaskRunningMode as RunningMode,
 )
 from numpy.typing import NDArray as Mat
+from share.utils import HandLandmark
 import logging
 
 
