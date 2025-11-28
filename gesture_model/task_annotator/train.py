@@ -4,7 +4,7 @@ import torch
 import os
 import csv
 from datapath import ANNOTATOR_BASE_FOLDER, DC_P0_LABEL_CSV
-from data_collection.src.task import TrueTaskType
+from data_collection_study.src.task import TrueTaskType
 from share.utils import extend_landmark_columns
 from gesture_model.model_trainer import (
     TensorDataset,

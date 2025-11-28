@@ -4,10 +4,10 @@ from enum import Enum
 from PySide6.QtCore import Qt
 from share.utils import merge_landmarks
 from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
-from data_collection.src.task import return_tclass, TrueTaskType, Task
-from data_collection.task_generator import read_configs
-from data_collection.src.view import DataCollectionView
-from data_collection.src.recorder import DataCollectionRecorder
+from data_collection_study.src.task import return_tclass, TrueTaskType, Task
+from data_collection_study.task_generator import read_configs
+from data_collection_study.src.view import DataCollectionView
+from data_collection_study.src.recorder import DataCollectionRecorder
 from share.worker.camera import CameraThread
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother

@@ -1,6 +1,6 @@
 # defining different task types and their configurations
 
-from data_collection.src.ui import ArrowElement, DotElement
+from data_collection_study.src.ui import ArrowElement, DotElement
 from abc import ABC, abstractmethod
 import random
 from enum import Enum
