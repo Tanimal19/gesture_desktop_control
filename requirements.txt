@@ -2,6 +2,6 @@ opencv-python
 mediapipe
 numpy
 pyside6
-pyautogui
 pandas
 pynput
+torch

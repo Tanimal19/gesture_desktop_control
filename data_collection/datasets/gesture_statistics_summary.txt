@@ -1,0 +1,81 @@
+============================================================
+CONSECUTIVE FRAMES ANALYSIS BY GESTURE
+============================================================
+
+SUMMARY STATISTICS:
+               total_sequences  avg_consecutive_frames  std_dev  min_frames  max_frames  median_frames
+label                                                                                                 
+LEFT_PRESS                 301                    8.83     6.46           1          52            8.0
+LEFT_RELEASE               340                   14.21    14.99           1         109           12.0
+NONE                       647                   22.20    20.34           1         184           18.0
+RIGHT_PRESS                184                   11.86    11.46           1          56            8.0
+RIGHT_RELEASE              183                   13.17    11.08           1          64           11.0
+SCROLL_DOWN                142                    8.79     3.26           2          23            9.0
+SCROLL_UP                  156                    8.31     2.78           1          13            9.0
+
+============================================================
+DETAILED BREAKDOWN BY GESTURE:
+============================================================
+
+LEFT_PRESS:
+  Total sequences: 301
+  Average consecutive frames: 8.83
+  Standard deviation: 6.46
+  Min: 1 frames
+  Max: 52 frames
+  Median: 8.00 frames
+  Percentiles: {25: np.float64(4.0), 50: np.float64(8.0), 75: np.float64(10.0), 90: np.float64(14.0), 95: np.float64(22.0)}
+
+LEFT_RELEASE:
+  Total sequences: 340
+  Average consecutive frames: 14.21
+  Standard deviation: 14.99
+  Min: 1 frames
+  Max: 109 frames
+  Median: 12.00 frames
+  Percentiles: {25: np.float64(5.75), 50: np.float64(12.0), 75: np.float64(15.0), 90: np.float64(24.100000000000023), 95: np.float64(41.150000000000034)}
+
+NONE:
+  Total sequences: 647
+  Average consecutive frames: 22.20
+  Standard deviation: 20.34
+  Min: 1 frames
+  Max: 184 frames
+  Median: 18.00 frames
+  Percentiles: {25: np.float64(7.0), 50: np.float64(18.0), 75: np.float64(34.0), 90: np.float64(45.0), 95: np.float64(53.69999999999993)}
+
+RIGHT_PRESS:
+  Total sequences: 184
+  Average consecutive frames: 11.86
+  Standard deviation: 11.46
+  Min: 1 frames
+  Max: 56 frames
+  Median: 8.00 frames
+  Percentiles: {25: np.float64(4.0), 50: np.float64(8.0), 75: np.float64(13.25), 90: np.float64(31.700000000000017), 95: np.float64(36.0)}
+
+RIGHT_RELEASE:
+  Total sequences: 183
+  Average consecutive frames: 13.17
+  Standard deviation: 11.08
+  Min: 1 frames
+  Max: 64 frames
+  Median: 11.00 frames
+  Percentiles: {25: np.float64(4.0), 50: np.float64(11.0), 75: np.float64(17.0), 90: np.float64(25.80000000000001), 95: np.float64(34.900000000000006)}
+
+SCROLL_DOWN:
+  Total sequences: 142
+  Average consecutive frames: 8.79
+  Standard deviation: 3.26
+  Min: 2 frames
+  Max: 23 frames
+  Median: 9.00 frames
+  Percentiles: {25: np.float64(6.0), 50: np.float64(9.0), 75: np.float64(11.0), 90: np.float64(12.900000000000006), 95: np.float64(13.949999999999989)}
+
+SCROLL_UP:
+  Total sequences: 156
+  Average consecutive frames: 8.31
+  Standard deviation: 2.78
+  Min: 1 frames
+  Max: 13 frames
+  Median: 9.00 frames
+  Percentiles: {25: np.float64(7.0), 50: np.float64(9.0), 75: np.float64(10.0), 90: np.float64(11.0), 95: np.float64(12.0)}
