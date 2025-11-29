@@ -4,11 +4,11 @@ import numpy as np
 from PySide6.QtCore import Qt
 from share.utils import merge_landmarks
 from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
-from share.worker.camera import CameraThread
+from share.singleton.camera import CameraThread
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
-from share.worker.mapper import LandmarkMapper
-from share.worker.mouse import MouseController, MouseEvent
+from share.worker.landmark_mapper import LandmarkMapper
+from share.worker.mouse_controller import MouseController, MouseEvent
 from gesture_model.model_runner import GestureModelRunner
 from gesture_model.model import AbstractGestureModel
 from main.view import MainAppView

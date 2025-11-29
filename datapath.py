@@ -12,3 +12,4 @@ DISTNN_BASE_FOLDER = "./gesture_model/dist_nn/"
 
 
 EVA_DATASET_FOLDER = "./evaluation_study/datasets/"
+EVA_PARTICIPANT_FOLDER_TEMPLATE = EVA_DATASET_FOLDER + "p{pid}/"

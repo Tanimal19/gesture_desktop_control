@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class CameraThread(QThread):
+class CameraSingleton(QThread):
     frame_ready = Signal(object)
 
     def __init__(self):
@@ -69,3 +69,14 @@ class CameraThread(QThread):
         self.running = False
         if self.recording:
             self.stop_recording()
+
+
+_camera_singleton = None
+
+
+def get_camera_singleton():
+    global _camera_singleton
+    if _camera_singleton is None:
+        _camera_singleton = CameraSingleton()
+        _camera_singleton.start()
+    return _camera_singleton

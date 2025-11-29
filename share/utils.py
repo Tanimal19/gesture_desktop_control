@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-from numpy.typing import NDArray as Mat
 from enum import Enum
 
 
@@ -42,10 +41,6 @@ def merge_landmarks(hand_landmarks, world_landmarks):
             )
         ]
     )
-
-
-def landmark_to_np(landmarks):
-    return np.array([[lm.x, lm.y, lm.z] for lm in landmarks])
 
 
 def extend_landmark_columns(window: pd.DataFrame, window_length: int) -> np.ndarray:
