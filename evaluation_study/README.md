@@ -14,6 +14,6 @@ tasks:
    - moving the cursor into the target area
    - clicking the cursor inside the target area
 1. **Menu Selection**: user open a menu and select a specified target item (T).
-2. **Drag Drop**: user rearrange three objects (A, B, C) to match a target arrangement (T) by dragging them.
+2. **Drag Drop**: user drag a square object and drop it into a target area (T).
 3. **Keyboard Input**: user use the virtual keyboard to type a target word (T).
 

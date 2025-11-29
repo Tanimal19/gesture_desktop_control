@@ -66,7 +66,10 @@ class KeyboardInputTaskWidget(TaskWidget):
         assert isinstance(config["target_text"], str)
         assert len(config["target_text"]) > 0
 
-    def init(self, config: dict):
+    def __init__(self, config: dict, parent=None):
+        super().__init__(parent)
+        self.check_config_valid(config)
+
         self.target_text = config["target_text"]
         self.current_text = ""
         self.start_time = None

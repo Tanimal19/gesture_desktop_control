@@ -4,6 +4,7 @@ from evaluation_study.src.config import (
     TaskWidget,
     MyColor,
 )
+from evaluation_study.src.utils import calculate_distance
 from PySide6.QtCore import Qt, Signal, QPoint
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 from share.singleton.mouse_listener import get_mouse_listener
@@ -13,7 +14,6 @@ logger = logging.getLogger(__name__)
 
 
 class MenuSelectTaskWidget(TaskWidget):
-    ttype = TrueTaskType.MenuSelect
     payload_header = [
         "menu_length",
         "target_index",
@@ -25,20 +25,35 @@ class MenuSelectTaskWidget(TaskWidget):
     on_completed = Signal(object)
 
     @staticmethod
-    def generate_configs(count: int) -> list[dict]:
+    def generate_configs(count: int) -> str:
         configs = []
         for _ in range(count):
             menu_length = random.randint(5, 10)
             target_index = random.randint(0, menu_length - 1)
             config = {"menu_length": menu_length, "target_index": target_index}
             configs.append(config)
-        return configs
+        return str(configs)
 
-    def check_config_valid(self, config: dict):
-        assert "menu_length" in config and "target_index" in config
-        assert 0 <= config["target_index"] < config["menu_length"]
+    @staticmethod
+    def parse_configs(configs_str: str) -> list[dict]:
+        import ast
 
-    def init(self, config: dict):
+        try:
+            configs = ast.literal_eval(configs_str)
+            assert isinstance(configs, list)
+            for config in configs:
+                assert "menu_length" in config
+                assert "target_index" in config
+                assert 5 <= config["menu_length"] <= 10
+                assert 0 <= config["target_index"] < config["menu_length"]
+            return configs
+        except (ValueError, SyntaxError, AssertionError) as e:
+            logger.error(f"Failed to parse MenuSelect configs: {e}")
+            return []
+
+    def __init__(self, config: dict, parent=None):
+        super().__init__(parent)
+
         self.setFixedSize(800, 600)
         self.setStyleSheet(f"background-color: {MyColor.white.value};")
 
@@ -111,9 +126,7 @@ class MenuWidget(QWidget):
         super().__init__(parent)
         self.items = items
         self.target_idx = target_idx
-        self.setupUI()
 
-    def setupUI(self):
         self.setWindowFlags(Qt.WindowType.Popup)
         self.setStyleSheet(
             f"""
@@ -163,9 +176,3 @@ class MenuWidget(QWidget):
                 pos = btn.mapToGlobal(btn.rect().center())
                 return (pos.x(), pos.y())
         return (0, 0)
-
-
-def calculate_distance(pos1: tuple[int, int], pos2: tuple[int, int]) -> float:
-    dx = pos1[0] - pos2[0]
-    dy = pos1[1] - pos2[1]
-    return (dx**2 + dy**2) ** 0.5
