@@ -1,9 +1,5 @@
 import random
-from evaluation_study.src.config import (
-    TrueTaskType,
-    TaskWidget,
-    MyColor,
-)
+from evaluation_study.src.task_widget.abstract_task_widget import AbstractTaskWidget
 from evaluation_study.src.utils import calculate_distance
 from PySide6.QtCore import Qt, Signal, QPoint
 from PySide6.QtWidgets import (
@@ -19,19 +15,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class DragDropTaskWidget(TaskWidget):
+class DragDropTaskWidget(AbstractTaskWidget):
     payload_header = [
         "target_area",
         "dropped_area",
         "error_distance",  # pixels between dropped point and target area center
         "target_distance",  # pixels between start point and target area center
         "drag_distance",  # pixels between drag start point and drop point
-        "moving_distance",  # pixels moving bewteen drag start and drop
+        "moving_distance",  # pixels of pointer moving bewteen drag start and drop
     ]
     on_completed = Signal(object)
-
     AREAS = ["A", "B", "C"]
-    AREA_SIZE = 150
 
     @staticmethod
     def generate_configs(count: int) -> str:
@@ -61,60 +55,68 @@ class DragDropTaskWidget(TaskWidget):
             logger.error(f"Failed to parse configs: {e}")
             return []
 
-    def __init__(self, config: dict, parent=None):
-        super().__init__(parent)
+    @staticmethod
+    def compute_correctness(payload: dict) -> bool:
+        return payload["dropped_area"] == payload["target_area"]
+
+    def get_instructions(self) -> str:
+        return (
+            f"Drag the dark square to the highlighted target area: <{self.target_area}>\n"
+            "Release the mouse button when over the target area\n"
+        )
+
+    def custom_init(self, config: dict):
+        self.setFixedSize(DragDropTaskWidget.WIDTH, DragDropTaskWidget.HEIGHT)
+
         self.target_area = config["target_area"]
+        self.target_area_pos = (0, 0)
 
-        self.setFixedSize(800, 600)
-        self.setStyleSheet(f"background-color: rgb{MyColor.white.value};")
         layout = QVBoxLayout(self)
-
-        # Drag area
-        self.drag_area = DragArea(self)
-        layout.addWidget(self.drag_area)
 
         # Create three drop areas
         self.drop_areas: list[DropArea] = []
         for i, label in enumerate(DragDropTaskWidget.AREAS):
-            color = (
-                MyColor.blue_translucent if label == self.target_area else MyColor.gray
-            )
-            area = DropArea(label, color, self)
-            x = 50 + i * 200
-            y = 50
-            area.setGeometry(
-                x,
-                y,
-                DragDropTaskWidget.AREA_SIZE,
-                DragDropTaskWidget.AREA_SIZE,
-            )
+            is_target = label == self.target_area
+            area = DropArea(label, is_target, self)
             self.drop_areas.append(area)
 
-            if label == self.target_area:
-                self.target_pos = (
-                    x + DragDropTaskWidget.AREA_SIZE // 2,
-                    y + DragDropTaskWidget.AREA_SIZE // 2,
+            # right aligned, spaced vertically
+            x = DragDropTaskWidget.WIDTH - DropArea.SIZE - 50
+            y = DragDropTaskWidget.HEIGHT // 4 * (i + 1) - DropArea.SIZE // 2
+            area.move(x, y)
+
+            if is_target:
+                self.target_area_pos = (
+                    x + DropArea.SIZE // 2,
+                    y + DropArea.SIZE // 2,
                 )
+            layout.addWidget(area)
 
         # Create draggable square
         self.draggable_square = DraggableSquare(self)
-        self.draggable_square.move(350, 250)
-        self.draggable_square.drag_started.connect(self.on_drag_started)
-        self.draggable_square.dropped_in_area.connect(self.on_object_dropped)
+        self.draggable_square.move(
+            50, DragDropTaskWidget.HEIGHT // 2 - DraggableSquare.SIZE // 2
+        )
+        self.draggable_square.dragged.connect(self.on_drag)
+        self.draggable_square.dropped.connect(self.on_drop)
 
-    def on_drag_started(self):
+    def on_drag(self):
+        logger.debug("Drag started")
         listener = get_mouse_listener()
         listener.start_record_distance()
 
-    def on_object_dropped(self, dropped_area):
+    def on_drop(self, dropped_area):
+        logger.debug(
+            f"Dropped in area: {dropped_area.area_label if dropped_area else 'None'}"
+        )
 
         listener = get_mouse_listener()
 
         error_distance = calculate_distance(
-            self.draggable_square.drag_end_pos, self.target_pos
+            self.draggable_square.drag_end_pos, self.target_area_pos
         )
         target_distance = calculate_distance(
-            self.draggable_square.drag_start_pos, self.target_pos
+            self.draggable_square.drag_start_pos, self.target_area_pos
         )
         drag_distance = calculate_distance(
             self.draggable_square.drag_start_pos, self.draggable_square.drag_end_pos
@@ -133,70 +135,34 @@ class DragDropTaskWidget(TaskWidget):
         self.on_completed.emit(payload)
 
 
-class DragArea(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.draggable_square = None
-
-        self.setFixedHeight(400)
-        self.setAcceptDrops(True)
-        self.setStyleSheet(
-            f"""
-            QWidget {{
-                background-color: rgb{MyColor.white.value};
-                border: 2px solid rgb{MyColor.gray_dark.value};
-                border-radius: 10px;
-            }}
-        """
-        )
-
-
 class DropArea(QLabel):
-    def __init__(self, label: str, color: MyColor, parent=None):
+    SIZE = 200
+
+    def __init__(self, label: str, is_target: bool, parent=None):
         super().__init__(label, parent)
         self.area_label = label
 
-        self.setFixedSize(150, 150)
+        self.setFixedSize(DropArea.SIZE, DropArea.SIZE)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setFont(QFont("Arial", 48, QFont.Weight.Bold))
-        self.setStyleSheet(
-            f"""
-            QLabel {{
-                background-color: rgb{color.value};
-                color: white;
-                border: 3px solid rgb{MyColor.black.value};
-                border-radius: 15px;
-                opacity: 0.7;
-            }}
-        """
-        )
+        # TODO: style the drop area
 
 
 class DraggableSquare(QLabel):
-    drag_started = Signal()
-    dropped_in_area = Signal(object)
+    dragged = Signal()
+    dropped = Signal(object)
+    SIZE = 80
 
     def __init__(self, parent=None):
-        super().__init__("■", parent)
+        super().__init__(parent)
 
         self.drag_start_pos = QPoint()
         self.drag_end_pos = QPoint()
         self.is_dragging = False
         self.can_drag = True
 
-        self.setFixedSize(60, 60)
+        self.setFixedSize(DraggableSquare.SIZE, DraggableSquare.SIZE)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setFont(QFont("Arial", 40, QFont.Weight.Bold))
-        self.setStyleSheet(
-            f"""
-            QLabel {{
-                background-color: rgb{MyColor.gray_dark.value};
-                color: white;
-                border: 2px solid rgb{MyColor.black.value};
-                border-radius: 10px;
-            }}
-        """
-        )
+        # TODO: style the draggable square
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton and self.can_drag:
@@ -213,7 +179,7 @@ class DraggableSquare(QLabel):
 
         if not self.is_dragging:
             self.is_dragging = True
-            self.drag_started.emit()
+            self.dragged.emit()
 
         # Move the widget
         self.move(self.mapToParent(event.position().toPoint() - self.drag_start_pos))
@@ -235,8 +201,8 @@ class DraggableSquare(QLabel):
             square_center = self.geometry().center()
             for area in widget.drop_areas:
                 if area.geometry().contains(square_center):
-                    self.dropped_in_area.emit(area)
+                    self.dropped.emit(area)
                     return
 
             # If not dropped in any area, emit empty string or handle as miss
-            self.dropped_in_area.emit(None)
+            self.dropped.emit(None)

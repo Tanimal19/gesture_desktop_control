@@ -1,10 +1,12 @@
 import os
 import csv
 from datapath import EVA_PARTICIPANT_FOLDER_TEMPLATE
+from evaluation_study.src.task_widget import TrueTaskType, TASK_WIDGET_MAP
 
 
 class EvaluationRecorder:
     def __init__(self, pid):
+        self.pid = pid
         output_dir = EVA_PARTICIPANT_FOLDER_TEMPLATE.format(pid=pid)
         os.makedirs(output_dir, exist_ok=True)
 
@@ -16,22 +18,39 @@ class EvaluationRecorder:
                 "task_type",
                 "trial_index",
                 "complete_time",
-                "correct",
-                "precision",
+                "correctness",
             ]
+            task_headers = [
+                ttype.name + "-" + item
+                for ttype in TrueTaskType
+                for item in TASK_WIDGET_MAP[ttype].payload_header
+            ]
+            header = global_header + task_headers
+            writer.writerow(header)
+            self.header_index = {name: i for i, name in enumerate(header)}
 
-    def write_task_result(self, timestamp, task_type, trail_n, landmarks):
+    def write_trial_result(
+        self,
+        task_type: TrueTaskType,
+        trail_index: int,
+        complete_time: float,
+        correctness: bool,
+        payload: dict,
+    ):
         with open(self.task_result_csv, "a", newline="") as f:
             writer = csv.writer(f)
-            row = [timestamp, task_type.name, trail_n]
-            for lt in self.RECORDED_LANDMARKS:
-                lm = landmarks[lt.value]
-                row.append(f"{lm[0]}_{lm[1]}_{lm[2]}")
+            row = [
+                self.pid,
+                task_type.name,
+                trail_index,
+                complete_time,
+                correctness,
+            ]
+            row += [""] * (len(self.header_index) - len(row))
+
+            for key, value in payload.items():
+                col_index = self.header_index.get(f"{task_type.name}-{key}")
+                if col_index is not None:
+                    row[col_index] = value
+
             writer.writerow(row)
-
-    def mark_task_start(self, task_type, trail_n):
-        with open(self.task_result_csv, "a", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(
-                [-1, task_type.name, trail_n] + ["" for _ in self.RECORDED_LANDMARKS]
-            )

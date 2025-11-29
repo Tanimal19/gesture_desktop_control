@@ -4,28 +4,22 @@ import csv
 import os
 
 from datapath import EVA_DATASET_FOLDER
-from evaluation_study.src.config import TrueTaskType
-from evaluation_study.src.task_widget.menu_select import MenuSelectTaskWidget
-from evaluation_study.src.task_widget.dragdrop import DragDropTaskWidget
+from evaluation_study.src.task_widget import TrueTaskType, TASK_WIDGET_MAP
 
-NUM_PARTICIPANT = 8
+NUM_PARTICIPANT = 9
 config_path = EVA_DATASET_FOLDER + "/task_configs.csv"
-
-TASK_TYPE_TO_CLASS = {
-    TrueTaskType.MenuSelect: MenuSelectTaskWidget,
-    TrueTaskType.DragDrop: DragDropTaskWidget,
-}
 
 
 def generate_configs():
     tasks = [
         (TrueTaskType.MenuSelect, 5),
         (TrueTaskType.DragDrop, 5),
+        (TrueTaskType.KeyboardInput, 5),
     ]
 
     with open(config_path, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["pid", "task_type", "trial_index", "configs"])
+        writer.writerow(["pid", "task_type", "trial_num", "configs"])
 
         for p in range(NUM_PARTICIPANT):
             # latin square counterbalance for the order of other tasks
@@ -33,12 +27,16 @@ def generate_configs():
             latin_tasks = tasks[i:] + tasks[:i]
 
             for t in latin_tasks:
-                tclass = TASK_TYPE_TO_CLASS[t[0]]
+                tclass = TASK_WIDGET_MAP[t[0]]
                 configs_str = tclass.generate_configs(t[1])
                 writer.writerow([p, t[0].name, t[1], configs_str])
 
 
-def read_configs(pid=0):
+def read_configs(pid=0) -> list[tuple[TrueTaskType, int, list[dict]]]:
+    """
+    output: (TrueTaskType, trial_num, [list of config dict])
+    """
+
     task_configs = []
 
     if not os.path.exists(config_path):
@@ -49,12 +47,12 @@ def read_configs(pid=0):
         for row in reader:
             if int(row["pid"]) == pid:
                 task_type = TrueTaskType[row["task_type"]]
-                tclass = TASK_TYPE_TO_CLASS[task_type]
+                tclass = TASK_WIDGET_MAP[task_type]
                 configs = tclass.parse_configs(row["configs"])
                 task_configs.append(
                     (
                         task_type,
-                        int(row["trial_index"]),
+                        int(row["trial_num"]),
                         configs,
                     )
                 )
@@ -64,3 +62,4 @@ def read_configs(pid=0):
 
 if __name__ == "__main__":
     generate_configs()
+    # print(read_configs(0))
