@@ -8,7 +8,7 @@ from data_collection_study.src.task import return_tclass, TrueTaskType, Task
 from data_collection_study.task_generator import read_configs
 from data_collection_study.src.view import DataCollectionView
 from data_collection_study.src.recorder import DataCollectionRecorder
-from share.singleton.camera import CameraThread
+from share.singleton.camera import get_camera_singleton, close_camera_singleton
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.landmark_mapper import LandmarkMapper
@@ -46,7 +46,7 @@ class DataCollectionController:
         self.frame_in_trail = 0
         self.frame_landmark_detected = 0
 
-        self.camera = CameraThread()
+        self.camera = get_camera_singleton()
         self.camera.frame_ready.connect(self._on_frame_ready)
         self.landmarker = Landmarker(self.recorder.raw_landmarks_csv)
         self.landmarker.landmark_update.connect(self._on_landmark_update)
@@ -60,7 +60,6 @@ class DataCollectionController:
                 self.view.pointer_overlay.width(), self.view.pointer_overlay.height()
             )
 
-        self.camera.start()
         self.camera.start_recording(self.recorder.camera_video_path)
 
         self.update_view()
@@ -270,6 +269,5 @@ class DataCollectionController:
         return self.tasks[self.current_task_idx]["configs"][self.current_trial_idx]
 
     def close(self):
-        self.camera.stop()
-        self.camera.wait()
+        close_camera_singleton()
         self.landmarker.close()

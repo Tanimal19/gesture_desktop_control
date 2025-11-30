@@ -43,4 +43,10 @@ Train gesture recognition model using the fully labeled dataset
 python -m gesture_model.gtcn.train
 ```
 
+Post analysis for labeled dataset and trained models
+```bash
+python -m data_collection.post_analysis
+```
+
+
 ## Evaluation Study
