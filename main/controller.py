@@ -4,13 +4,14 @@ import numpy as np
 from PySide6.QtCore import Qt
 from share.utils import merge_landmarks
 from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
-from share.singleton.camera import CameraThread
+from share.singleton.camera import get_camera_singleton, close_camera_singleton
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.landmark_mapper import LandmarkMapper
-from share.worker.mouse_controller import MouseController, MouseEvent
+from share.worker.gesture_mapper import GestureMapper, MouseEvent
+from share.worker.mouse_controller import MouseController
 from gesture_model.model_runner import GestureModelRunner
-from gesture_model.model import AbstractGestureModel
+from gesture_model import AbstractGestureModel
 from main.view import MainAppView
 
 
@@ -21,24 +22,22 @@ class MainAppController:
     def __init__(self, view: MainAppView, model: AbstractGestureModel, model_path: str):
         self.view = view
 
-        self.camera = CameraThread()
+        self.camera = get_camera_singleton()
         self.camera.frame_ready.connect(self._on_frame_ready)
         self.landmarker = Landmarker()
         self.landmarker.landmark_update.connect(self._on_landmark_update)
         self.smoother = EMASmoother()
         self.reset_after_undetect = 10
         self.undetected_count = 0
-        self.mouse_controller = MouseController()
 
-        self.mapper = LandmarkMapper(
+        self.landmark_mapper = LandmarkMapper(
             self.view.pointer_overlay.width(), self.view.pointer_overlay.height()
         )
         self.model = model
         self.gesture_model = GestureModelRunner(self.model, model_path, "cpu")
+        self.gesture_mapper = GestureMapper()
         self.landmarks_queue = []
         self.max_queue_length = self.model.WINDOW_LENGTH + 5  # some buffer
-
-        self.camera.start()
 
     def _on_frame_ready(self, payload):
         timestamp, frame = payload
@@ -55,7 +54,7 @@ class MainAppController:
         if right_hand_detected:
             if self.undetected_count > self.reset_after_undetect:
                 self.smoother.reset()
-                self.mapper.reset()
+                self.landmark_mapper.reset()
             self.undetected_count = 0
 
             # process landmarks
@@ -70,29 +69,25 @@ class MainAppController:
             if len(self.landmarks_queue) > self.max_queue_length:
                 self.landmarks_queue.pop(0)
 
-            # gesture recognition
-            gesture_label = None
-            if len(self.landmarks_queue) >= self.model.WINDOW_LENGTH:
-                landmarks_window = self.landmarks_queue[
-                    -self.model.WINDOW_LENGTH :
-                ]  # get last WINDOW_LENGTH
-                landmarks_window = np.stack(landmarks_window, axis=0)
-                gesture_label = self.gesture_model.inference(landmarks_window)
-
-                logger.debug(f"Gesture detected: {gesture_label.name}")
-                self.view.set_overlay_text(f"Gesture: {gesture_label.name}")
-
             # pointer mapping
-            screen_pos = self.mapper.mapping_use_palm(smoothed_landmarks)
-            if screen_pos:
-                self.view.pointer_overlay.update_pointer_position(screen_pos)
+            screen_pos = self.landmark_mapper.mapping_use_palm(smoothed_landmarks)
+            logger.debug(f"Pointer mapped to screen position: {screen_pos}")
 
-            # mouse control
-            if screen_pos and gesture_label:
-                mouse_event = self.mouse_controller.update(gesture_label, screen_pos)
-                self.view.set_overlay_text(
-                    f"Gesture: {gesture_label.name}\t\tMouse Event: {mouse_event.name}"
-                )
+            # gesture recognition
+            if len(self.landmarks_queue) < self.model.WINDOW_LENGTH:
+                return
+            landmarks_window = self.landmarks_queue[
+                -self.model.WINDOW_LENGTH :
+            ]  # get last WINDOW_LENGTH frames
+            landmarks_window = np.stack(landmarks_window, axis=0)
+            gesture_label = self.gesture_model.inference(landmarks_window)
+            logger.debug(f"Gesture detected: {gesture_label.name}")
+
+            mouse_event = self.gesture_mapper.update(gesture_label)
+            self.perform_mouse_event(mouse_event, screen_pos)
+            self.view.set_overlay_text(
+                f"Pointer: {screen_pos}\t\tGesture: {gesture_label.name}\t\tMouse Event: {mouse_event.name}"
+            )
 
         else:
             self.undetected_count += 1
@@ -100,19 +95,26 @@ class MainAppController:
         frame = cv2.flip(frame, 1)
         self.view.cam_preview.update_camera_preview(frame)
 
-    def keyPressEvent(self, key):
-        if key == Qt.Key.Key_Space:  # toggle view
-            logger.info("Space key pressed.")
-            if self.view.isHidden():
-                self.view.show()
-            else:
-                self.view.hide()
+    def perform_mouse_event(
+        self, mouse_event: MouseEvent, pointer_pos: tuple[int, int]
+    ):
+        if mouse_event == MouseEvent.MOVE:
+            MouseController.mouse_move(*pointer_pos)
+            self.view.pointer_overlay.update_pointer_position(pointer_pos)
+        elif mouse_event == MouseEvent.LEFT_PRESS:
+            MouseController.mouse_button_event(*pointer_pos, down=True, button="left")
+        elif mouse_event == MouseEvent.LEFT_RELEASE:
+            MouseController.mouse_button_event(*pointer_pos, down=False, button="left")
+        elif mouse_event == MouseEvent.RIGHT_PRESS:
+            MouseController.mouse_button_event(*pointer_pos, down=True, button="right")
+        elif mouse_event == MouseEvent.RIGHT_RELEASE:
+            MouseController.mouse_button_event(*pointer_pos, down=False, button="right")
 
-        elif key == Qt.Key.Key_Escape:  # exit app
-            logger.info("Escape key pressed. Exiting application.")
+    def keyPressEvent(self, key):
+        if key == Qt.Key.Key_Escape:  # exit app
+            logger.debug("Escape key pressed. Exiting application.")
             self.view.close()
 
     def close(self):
-        self.camera.stop()
-        self.camera.wait()
+        close_camera_singleton()
         self.landmarker.close()

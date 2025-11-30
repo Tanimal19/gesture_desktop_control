@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from gesture_model.model import AbstractGestureModel, GestureLabel
+from gesture_model import AbstractGestureModel, GestureLabel
 from share.utils import HandLandmark
 
 

@@ -3,7 +3,7 @@ from torch.utils.data import DataLoader, Dataset
 import time
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
-from gesture_model.model import AbstractGestureModel
+from gesture_model import AbstractGestureModel
 from dataclasses import dataclass
 from collections import Counter
 import logging

@@ -20,7 +20,7 @@ class CameraSingleton(QThread):
             return
 
         self.fps = self.cap.get(cv2.CAP_PROP_FPS) or 30.0
-        logger.info(f"camera fps: {self.fps}")
+        logger.debug(f"camera fps: {self.fps}")
 
         self.video_writer = None
         self.recording = False
@@ -56,14 +56,14 @@ class CameraSingleton(QThread):
                 int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),
             ),
         )
-        logger.info(f"Started recording to {output_video}")
+        logger.debug(f"Started recording to {output_video}")
 
     def stop_recording(self):
         self.recording = False
         if self.video_writer is not None:
             self.video_writer.release()
             self.video_writer = None
-        logger.info("Stopped recording")
+        logger.debug("Stopped recording")
 
     def stop(self):
         self.running = False
@@ -79,4 +79,13 @@ def get_camera_singleton():
     if _camera_singleton is None:
         _camera_singleton = CameraSingleton()
         _camera_singleton.start()
+        logger.debug("CameraSingleton started.")
     return _camera_singleton
+
+
+def close_camera_singleton():
+    global _camera_singleton
+    if _camera_singleton is not None:
+        _camera_singleton.stop()
+        _camera_singleton = None
+        logger.debug("CameraSingleton stopped.")

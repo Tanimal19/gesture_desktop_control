@@ -2,11 +2,13 @@ import torch
 import torch.nn as nn
 import numpy as np
 from share.utils import HandLandmark
-from gesture_model.model import GestureLabel, AbstractGestureModel
+from gesture_model import GestureLabel, AbstractGestureModel
 
 
 class TaskAnnotator(AbstractGestureModel):
     WINDOW_LENGTH = 5
+    DEFAULT_PATH = ""  # no default model path
+
     LANDMARKS = [
         HandLandmark.THUMB_TIP,
         HandLandmark.INDEX_FINGER_TIP,

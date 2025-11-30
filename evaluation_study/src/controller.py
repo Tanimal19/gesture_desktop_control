@@ -1,10 +1,10 @@
 import time
 import logging
-from typing import Optional
-from PySide6.QtCore import QObject, QTimer
+from PySide6.QtCore import QObject
 from evaluation_study.src.recorder import EvaluationRecorder
 from evaluation_study.src.view import EvaluationView
-from evaluation_study.src.task_widget import TrueTaskType, TASK_WIDGET_MAP
+from evaluation_study.src.task_widget import TASK_WIDGET_MAP
+from share.singleton.mouse_listener import close_mouse_listener
 
 logger = logging.getLogger(__name__)
 
@@ -88,3 +88,6 @@ class EvaluationController(QObject):
         # move to next trial
         self.current_trial_index += 1
         self.start_next_trial()
+
+    def close(self):
+        close_mouse_listener()

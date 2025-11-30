@@ -39,15 +39,15 @@ class MouseController:
             f"{'Pressed' if down else 'Released'} {button} mouse button at ({x}, {y})"
         )
 
-    @staticmethod
-    def mouse_scroll(amount):
-        # Positive = up, negative = down
-        event = Quartz.CGEventCreateScrollWheelEvent(
-            None,
-            Quartz.kCGScrollEventUnitLine,
-            1,  # number of wheels (vertical only)
-            amount,  # positive = up
-        )
-        Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
+    # @staticmethod
+    # def mouse_scroll(amount):
+    #     # Positive = up, negative = down
+    #     event = Quartz.CGEventCreateScrollWheelEvent(
+    #         None,
+    #         Quartz.kCGScrollEventUnitLine,
+    #         1,  # number of wheels (vertical only)
+    #         amount,  # positive = up
+    #     )
+    #     Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
 
-        logger.debug(f"Scrolled mouse by amount: {amount}")
+    #     logger.debug(f"Scrolled mouse by amount: {amount}")

@@ -13,11 +13,12 @@ class LandmarkMapper:
         self.screenz = -0.2
         self.sensitivity = (1.0, 3.0)  # x, y
 
-        self.stationary_detector = StationaryDetector(window_size=10)
+        self.stationary_detector = StationaryDetector(window_size=5)
         self.scaler = SigmoidScaler()
 
-    def mapping_use_palm(self, landmarks: np.ndarray) -> tuple[int, int] | None:
+        self.last_pos = (0, 0)
 
+    def mapping_use_palm(self, landmarks: np.ndarray) -> tuple[int, int]:
         assert landmarks.shape == (len(HandLandmark), 3)
 
         palm_landmarks = np.array(
@@ -28,10 +29,10 @@ class LandmarkMapper:
             ]
         )
 
-        if self.stationary_detector.update_and_detect(palm_landmarks):
-            return None
+        if self.stationary_detector.update(palm_landmarks):
+            return self.last_pos
 
-        palm_landmarks = self.scaler.update_and_compute(palm_landmarks)
+        palm_landmarks = self.scaler.update(palm_landmarks)
 
         WRIST = palm_landmarks[0]
         INDEX_MCP = palm_landmarks[1]
@@ -53,10 +54,11 @@ class LandmarkMapper:
         x, y = self.corp_and_rescale(x, y)
         px = int((1 - x) * self.screen_width)
         py = int(y * self.screen_height)
-        logger.debug(f"mapping pos: ({px}, {py})")
+
+        self.last_pos = (px, py)
         return (px, py)
 
-    def mapping_use_index(self, landmarks: np.ndarray) -> tuple[int, int] | None:
+    def mapping_use_index(self, landmarks: np.ndarray) -> tuple[int, int]:
         assert landmarks.shape == (len(HandLandmark), 3)
 
         index_landmarks = np.array(
@@ -66,10 +68,10 @@ class LandmarkMapper:
             ]
         )
 
-        if self.stationary_detector.update_and_detect(index_landmarks):
-            return None
+        if self.stationary_detector.update(index_landmarks):
+            return self.last_pos
 
-        index_landmarks = self.scaler.update_and_compute(index_landmarks)
+        index_landmarks = self.scaler.update(index_landmarks)
 
         tipx = index_landmarks[0][0]
         tipy = index_landmarks[0][1]
@@ -79,7 +81,7 @@ class LandmarkMapper:
         dipz = index_landmarks[1][2]
 
         if tipz >= dipz:
-            return None
+            return self.last_pos
 
         # compute intersection with screenz plane
         vx = tipx - dipx
@@ -94,8 +96,7 @@ class LandmarkMapper:
         px = int((1 - x) * self.screen_width)
         py = int(y * self.screen_height)
 
-        logger.debug(f"mapping pos: ({px}, {py})")
-
+        self.last_pos = (px, py)
         return (px, py)
 
     def corp_and_rescale(self, x, y):
@@ -127,7 +128,7 @@ class StationaryDetector:
         self.std_thresh = std_thresh
         self.vel_thresh = vel_thresh
 
-    def update_and_detect(self, landmarks: np.ndarray) -> bool:
+    def update(self, landmarks: np.ndarray) -> bool:
         self.window.append(landmarks)
         if len(self.window) >= self.window_size:
             self.window.pop(0)
@@ -153,7 +154,7 @@ class SigmoidScaler:
         self.k = k
         self.gain_min = gain_min
 
-    def update_and_compute(self, landmarks: np.ndarray) -> np.ndarray:
+    def update(self, landmarks: np.ndarray) -> np.ndarray:
         if self.prev is None:
             self.prev = landmarks
             return landmarks

@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from gesture_model.model import GestureLabel
+from gesture_model import GestureLabel
 from datapath import DC_P0_LABEL_CSV
 from data_collection_study.src.recorder import DataCollectionRecorder
 from data_collection_study.postprocess import update_labeled_csv

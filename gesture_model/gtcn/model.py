@@ -3,9 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from share.utils import HandLandmark
-from gesture_model.model import GestureLabel, AbstractGestureModel
-
-BASE_FOLDER = "./gesture_model/graph_tcn/"
+from gesture_model import GestureLabel, AbstractGestureModel
+from datapath import GTCN_BASE_FOLDER
 
 
 class GCNLayer(nn.Module):
@@ -100,6 +99,8 @@ class GTCNModel(AbstractGestureModel):
     """
 
     WINDOW_LENGTH = 20
+    DEFAULT_PATH = GTCN_BASE_FOLDER + "models/" + "best_model_win10-weight01.pth"
+
     GCN_HIDDEN_DIM = 16  # GCN hidden dimension
     TCN_HIDDEN_DIM = 64  # TCN hidden dimension
     LANDMARKS = [
@@ -160,13 +161,13 @@ class GTCNModel(AbstractGestureModel):
             "A1",
             self.generate_adjacent_matrix(
                 self.LANDMARKS, self.INSIDE_FINGER_CONNECTIONS
-            )
+            ),
         )
         self.register_buffer(
             "A2",
             self.generate_adjacent_matrix(
                 self.LANDMARKS, self.BETWEEN_FINGER_CONNECTIONS
-            )
+            ),
         )
 
     def forward(self, x):

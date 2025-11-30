@@ -12,7 +12,7 @@ from gesture_model.model_trainer import (
     GestureModelTrainer,
     setup_logging,
 )
-from gesture_model.model import GestureLabel
+from gesture_model import GestureLabel
 from gesture_model.gtcn.model import GTCNModel
 
 
@@ -35,7 +35,9 @@ if __name__ == "__main__":
         groups = df.groupby(["participant_id", "task", "trail"])
 
         for (pid, taskid, trailid), trail in groups:
-            logger.info(f"+ Processing participant {pid}, task {taskid}, trail {trailid}")
+            logger.info(
+                f"+ Processing participant {pid}, task {taskid}, trail {trailid}"
+            )
 
             for start_idx in range(0, len(trail) - GTCNModel.WINDOW_LENGTH + 1):
                 # each window
@@ -54,12 +56,22 @@ if __name__ == "__main__":
         y_tensor = torch.tensor(y, dtype=torch.long)  # (N,)
 
         # save the dataset to .pkl file
-        X_tensor.numpy().dump(GTCN_BASE_FOLDER + "datasets/" + f"X{GTCNModel.WINDOW_LENGTH}.pkl")
-        y_tensor.numpy().dump(GTCN_BASE_FOLDER + "datasets/" + f"y{GTCNModel.WINDOW_LENGTH}.pkl")
+        X_tensor.numpy().dump(
+            GTCN_BASE_FOLDER + "datasets/" + f"X{GTCNModel.WINDOW_LENGTH}.pkl"
+        )
+        y_tensor.numpy().dump(
+            GTCN_BASE_FOLDER + "datasets/" + f"y{GTCNModel.WINDOW_LENGTH}.pkl"
+        )
 
     # start training
-    X_array = np.load(GTCN_BASE_FOLDER + "datasets/" + f"X{GTCNModel.WINDOW_LENGTH}.pkl", allow_pickle=True)
-    y_array = np.load(GTCN_BASE_FOLDER + "datasets/" + f"y{GTCNModel.WINDOW_LENGTH}.pkl", allow_pickle=True)
+    X_array = np.load(
+        GTCN_BASE_FOLDER + "datasets/" + f"X{GTCNModel.WINDOW_LENGTH}.pkl",
+        allow_pickle=True,
+    )
+    y_array = np.load(
+        GTCN_BASE_FOLDER + "datasets/" + f"y{GTCNModel.WINDOW_LENGTH}.pkl",
+        allow_pickle=True,
+    )
     X_tensor = torch.tensor(X_array, dtype=torch.float32)
     y_tensor = torch.tensor(y_array, dtype=torch.long)
     logger.info(f"dataset shape: {X_tensor.shape}, {y_tensor.shape}")
