@@ -1,4 +1,3 @@
-from PySide6.QtGui import QCloseEvent, QResizeEvent
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -10,7 +9,7 @@ from PySide6.QtWidgets import (
     QStackedWidget,
 )
 from PySide6.QtCore import Qt, Signal, SignalInstance
-from evaluation_study.src.task_widget import (
+from evaluation_study.src.task import (
     TrueTaskType,
     AbstractTaskWidget,
     TASK_WIDGET_MAP,

@@ -1,7 +1,7 @@
 import os
 import csv
 from datapath import EVA_PARTICIPANT_FOLDER_TEMPLATE
-from evaluation_study.src.task_widget import TrueTaskType, TASK_WIDGET_MAP
+from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
 import logging
 
 

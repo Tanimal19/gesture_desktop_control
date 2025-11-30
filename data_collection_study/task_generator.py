@@ -1,7 +1,7 @@
 # generating and reading task configuration file
 
 from datapath import DC_DATASET_FOLDER
-from data_collection_study.src.task import *
+from data_collection_study.src.task import TrueTaskType, TASK_BUILDER_MAP
 import pandas as pd
 import csv
 import ast
@@ -23,9 +23,8 @@ canva_bound = (
 
 def generate_configs():
     basic_tasks = [
-        (TrueTaskType.BA_LEFT_CLICK, 10),
-        (TrueTaskType.BA_RIGHT_CLICK, 10),
-        (TrueTaskType.BA_SCROLL, 5),
+        (TrueTaskType.LEFT_CLICK, 10),
+        (TrueTaskType.RIGHT_CLICK, 10),
     ]
     other_tasks = [
         (TrueTaskType.MENU_NAVIGATION, 5),
@@ -43,7 +42,7 @@ def generate_configs():
             latin_tasks = other_tasks[i:] + other_tasks[:i]
 
             for t in basic_tasks + latin_tasks:
-                tclass = return_tclass(t[0])
+                tclass = TASK_BUILDER_MAP[t[0]]
                 configs = tclass.generate_configs(t[1], canva_bound)
                 writer.writerow([p, t[0].name, t[1], configs])
 

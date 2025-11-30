@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QApplication
 from main.controller import MainAppController
 from main.view import MainAppView
 from gesture_model import AbstractGestureModel
-from gesture_model.gtcn.model import GTCNModel
+from gesture_model.gtcn import GTCNModel
 
 
 def setup_logging(filepath):

@@ -12,9 +12,10 @@ import logging
 @dataclass
 class TrainingConfig:
     name: str
-    weight: list[float] | None
-    learning_rate: float
-    max_epochs: int
+    weight: list[float] | None = None
+    learning_rate: float = 1e-3
+    max_epochs: int = 100
+    early_stopping_patience: int = 10
 
 
 class TensorDataset(Dataset):
@@ -67,6 +68,8 @@ class GestureModelTrainer:
 
     def run_config(self, config: TrainingConfig):
         self.logger.info(f"Start training with config: {config.name}")
+        self.logger.debug(f"Config details: {config}")
+
         optimizer = torch.optim.Adam(self.model.parameters(), lr=config.learning_rate)
         criterion = torch.nn.CrossEntropyLoss(
             weight=(
@@ -76,7 +79,6 @@ class GestureModelTrainer:
 
         best_val_loss = float("inf")
         count = 0
-        patience = 10
         start_time = time.time()
 
         for epoch in range(config.max_epochs):
@@ -98,7 +100,7 @@ class GestureModelTrainer:
                 count = 0
             else:
                 count += 1
-                if count >= patience:
+                if count >= config.early_stopping_patience:
                     self.logger.info(f"Early stopped.")
                     break
 

@@ -4,7 +4,7 @@ import csv
 import os
 
 from datapath import EVA_DATASET_FOLDER
-from evaluation_study.src.task_widget import TrueTaskType, TASK_WIDGET_MAP
+from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
 
 NUM_PARTICIPANT = 9
 config_path = EVA_DATASET_FOLDER + "/task_configs.csv"

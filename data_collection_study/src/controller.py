@@ -4,7 +4,11 @@ from enum import Enum
 from PySide6.QtCore import Qt
 from share.utils import merge_landmarks
 from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
-from data_collection_study.src.task import return_tclass, TrueTaskType, Task
+from data_collection_study.src.task import (
+    TrueTaskType,
+    TASK_BUILDER_MAP,
+    AbstractTaskBuilder,
+)
 from data_collection_study.task_generator import read_configs
 from data_collection_study.src.view import DataCollectionView
 from data_collection_study.src.recorder import DataCollectionRecorder
@@ -259,8 +263,8 @@ class DataCollectionController:
     def _get_current_task(self) -> TrueTaskType:
         return self.tasks[self.current_task_idx]["task"]
 
-    def _get_current_task_class(self) -> Task:
-        return return_tclass(self._get_current_task())
+    def _get_current_task_class(self) -> type[AbstractTaskBuilder]:
+        return TASK_BUILDER_MAP[self._get_current_task()]
 
     def _get_current_config_length(self):
         return len(self.tasks[self.current_task_idx]["configs"])

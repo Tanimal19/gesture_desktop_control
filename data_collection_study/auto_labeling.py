@@ -3,7 +3,7 @@ from datapath import ANNOTATOR_BASE_FOLDER, DC_FULL_LABEL_CSV
 from data_collection_study.src.task import TrueTaskType
 from data_collection_study.post_process import update_labeled_csv
 from share.utils import extend_landmark_columns
-from gesture_model.task_annotator.model import TaskAnnotator
+from gesture_model.task_annotator import TaskAnnotator
 from gesture_model.task_annotator.train import read_y_mapping
 from gesture_model.model_runner import GestureModelRunner
 

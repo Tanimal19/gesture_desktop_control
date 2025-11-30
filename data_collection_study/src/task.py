@@ -9,30 +9,14 @@ dot_radius = 50
 
 
 class TrueTaskType(Enum):
-    BA_LEFT_CLICK = 0
-    BA_RIGHT_CLICK = 1
-    BA_SCROLL = 2
+    LEFT_CLICK = 0
+    RIGHT_CLICK = 1
     MENU_NAVIGATION = 3
     DRAGGING = 4
     POINT_N_CLICK = 5
 
 
-def return_tclass(ttype: TrueTaskType):
-    for tclass in [
-        BasicLeftCLickTask,
-        BasicRightClickTask,
-        BasicScrollTask,
-        MenuNavigationTask,
-        DraggingTask,
-        PointAndClickTask,
-    ]:
-        if tclass.ttype == ttype:
-            return tclass
-
-    raise ValueError("Unsupported task type")
-
-
-class Task(ABC):
+class AbstractTaskBuilder(ABC):
     name: str
     ttype: TrueTaskType
     instruction: str
@@ -52,9 +36,9 @@ class Task(ABC):
         pass
 
 
-class BasicLeftCLickTask:
-    name = "Basic Left Click Task"
-    ttype = TrueTaskType.BA_LEFT_CLICK
+class LeftCLickTask(AbstractTaskBuilder):
+    ttype = TrueTaskType.LEFT_CLICK
+    name = "Left Click Task"
     instruction = "Pinch with your thumb and index finger to left click."
 
     @staticmethod
@@ -74,9 +58,9 @@ class BasicLeftCLickTask:
         ]
 
 
-class BasicRightClickTask:
-    name = "Basic Right Click Task"
-    ttype = TrueTaskType.BA_RIGHT_CLICK
+class RightClickTask(AbstractTaskBuilder):
+    ttype = TrueTaskType.RIGHT_CLICK
+    name = "Right Click Task"
     instruction = "Pinch with your thumb and middle finger to right click."
 
     @staticmethod
@@ -96,35 +80,9 @@ class BasicRightClickTask:
         ]
 
 
-class BasicScrollTask:
-    name = "Basic Scroll Task"
-    ttype = TrueTaskType.BA_SCROLL
-    instruction = "Swing your index and middle fingers up and down, repeat 5 times."
-
-    @staticmethod
-    def generate_configs(count, canva_bound):
-        configs = []
-        line_length = 600
-        for _ in range(count):
-            x1 = (canva_bound[0] + canva_bound[1]) // 2
-            y1 = (canva_bound[2] + canva_bound[3]) // 2 + (line_length // 2)
-            x2 = x1
-            y2 = y1 - line_length
-            configs.append((x1, y1, x2, y2))
-        return configs
-
-    @staticmethod
-    def generate_elements(config):
-        x1, y1, x2, y2 = config
-        return [
-            ArrowElement(x1, y1, x2, y2),
-            ArrowElement(x2, y2, x1, y1),
-        ]
-
-
-class MenuNavigationTask:
-    name = "Menu Navigation Task"
+class MenuNavigationTask(AbstractTaskBuilder):
     ttype = TrueTaskType.MENU_NAVIGATION
+    name = "Menu Navigation Task"
     instruction = "Right click at dot 1, then left click at dot 2."
 
     @staticmethod
@@ -159,9 +117,9 @@ class MenuNavigationTask:
         ]
 
 
-class DraggingTask:
-    name = "Dragging Task"
+class DraggingTask(AbstractTaskBuilder):
     ttype = TrueTaskType.DRAGGING
+    name = "Dragging Task"
     instruction = "Left press on dot 1, then dragging to dot 2 and release."
 
     @staticmethod
@@ -192,9 +150,9 @@ class DraggingTask:
         ]
 
 
-class PointAndClickTask:
-    name = "Point And Click Task"
+class PointAndClickTask(AbstractTaskBuilder):
     ttype = TrueTaskType.POINT_N_CLICK
+    name = "Point And Click Task"
     instruction = "Left click on dot 1~3 in order."
 
     @staticmethod
@@ -233,3 +191,12 @@ class PointAndClickTask:
             DotElement(x2, y2, dot_radius, "transparent", inner_label="2"),
             DotElement(x3, y3, dot_radius, "transparent", inner_label="3"),
         ]
+
+
+TASK_BUILDER_MAP: dict[TrueTaskType, type[AbstractTaskBuilder]] = {
+    TrueTaskType.LEFT_CLICK: LeftCLickTask,
+    TrueTaskType.RIGHT_CLICK: RightClickTask,
+    TrueTaskType.MENU_NAVIGATION: MenuNavigationTask,
+    TrueTaskType.DRAGGING: DraggingTask,
+    TrueTaskType.POINT_N_CLICK: PointAndClickTask,
+}

@@ -13,14 +13,13 @@ from gesture_model.model_trainer import (
     setup_logging,
 )
 from gesture_model import GestureLabel
-from gesture_model.gtcn.model import GTCNModel
+from gesture_model.gtcn import GTCNModel
 
 
 if __name__ == "__main__":
     logger = setup_logging(GTCN_BASE_FOLDER + "train.log")
     logger.info(f"Start training script: {time.asctime()}")
 
-    # TODO: set to False to skip dataset regeneration
     regenerate_dataset = True
 
     if regenerate_dataset:
@@ -78,13 +77,10 @@ if __name__ == "__main__":
 
     dataset = TensorDataset(X_tensor, y_tensor)
 
-    # TODO: try different training configs
     configs = [
         TrainingConfig(
             name=f"win{GTCNModel.WINDOW_LENGTH}-noweight",
-            weight=None,
             learning_rate=5e-3,
-            max_epochs=100,
         ),
         TrainingConfig(
             name=f"win{GTCNModel.WINDOW_LENGTH}-weight01",
@@ -93,7 +89,6 @@ if __name__ == "__main__":
                 for label in GestureLabel
             ],
             learning_rate=5e-3,
-            max_epochs=100,
         ),
         TrainingConfig(
             name=f"win{GTCNModel.WINDOW_LENGTH}-weight05",
@@ -102,7 +97,6 @@ if __name__ == "__main__":
                 for label in GestureLabel
             ],
             learning_rate=5e-3,
-            max_epochs=100,
         ),
     ]
 

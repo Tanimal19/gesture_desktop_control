@@ -3,7 +3,11 @@ import pandas as pd
 import torch
 import os
 import csv
-from datapath import ANNOTATOR_BASE_FOLDER, DC_P0_LABEL_CSV
+from datapath import (
+    ANNOTATOR_BASE_FOLDER,
+    ANNOTATOR_MODEL_FOLDER_TEMPLATE,
+    DC_P0_LABEL_CSV,
+)
 from data_collection_study.src.task import TrueTaskType
 from share.utils import extend_landmark_columns
 from gesture_model.model_trainer import (
@@ -12,14 +16,14 @@ from gesture_model.model_trainer import (
     GestureModelTrainer,
     setup_logging,
 )
-from gesture_model.task_annotator.model import TaskAnnotator
+from gesture_model.task_annotator import TaskAnnotator
 
 
-ANNOTATOR_MAPPING_CSV = ANNOTATOR_BASE_FOLDER + "task_label_mappings.csv"
+mapping_csv = ANNOTATOR_BASE_FOLDER + "task_label_mappings.csv"
 
 
 def save_y_mapping(y_mapping):
-    with open(ANNOTATOR_MAPPING_CSV, "w", newline="") as f:
+    with open(mapping_csv, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["task", "original", "mapped"])
         for task, labels in y_mapping.items():
@@ -30,7 +34,7 @@ def save_y_mapping(y_mapping):
 
 def read_y_mapping():
     y_mapping = {}
-    with open(ANNOTATOR_MAPPING_CSV, "r") as f:
+    with open(mapping_csv, "r") as f:
         reader = csv.DictReader(f)
         for row in reader:
             task = row["task"]
@@ -56,7 +60,7 @@ if __name__ == "__main__":
             continue
         logger.info(f"\n+ Training model for task: {t.name}")
 
-        output_dir = ANNOTATOR_BASE_FOLDER + "models/" + t.name + "/"
+        output_dir = ANNOTATOR_MODEL_FOLDER_TEMPLATE.format(task=t.name)
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
@@ -97,7 +101,8 @@ if __name__ == "__main__":
             name="default",
             weight=None,
             learning_rate=1e-3,
-            max_epochs=200,
+            max_epochs=150,
+            early_stopping_patience=10,
         )
 
         trainer = GestureModelTrainer(
