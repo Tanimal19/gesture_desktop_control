@@ -1,5 +1,3 @@
-# TODO: return none if clicked outside the menu
-
 import random
 from evaluation_study.src.task_widget.abstract_task_widget import AbstractTaskWidget
 from evaluation_study.src.styles import MyColor, get_instruction_style
@@ -32,8 +30,12 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
     @staticmethod
     def generate_configs_str(count: int) -> str:
         configs = []
+        prev_index = None
         for _ in range(count):
-            target_index = random.randint(0, MenuSelectTaskWidget._menu_length - 1)
+            choices = [
+                i for i in range(MenuSelectTaskWidget._menu_length) if i != prev_index
+            ]
+            target_index = random.choice(choices)
             config = {"target_index": target_index}
             configs.append(config)
         return str(configs)
@@ -55,13 +57,13 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
 
         # setup context menu
         self.menu_widget = MenuWidget(menu_items, self)
-        self.menu_widget.item_clicked.connect(self.on_menu_item_selected)
+        self.menu_widget.item_clicked.connect(self.on_menu_clicked)
         self.menu_widget.hide()
 
         # prevent default context menu
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
-        self.has_opened = False
+        self.menu_clicked = False
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -73,10 +75,6 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         layout.addWidget(instruction_label)
 
     def show_context_menu(self, position: QPoint):
-        if self.has_opened:
-            return
-        self.has_opened = True
-
         logger.debug(f"show context menu at {position}")
 
         global_pos = self.mapToGlobal(position)
@@ -87,7 +85,11 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         listener = get_mouse_listener()
         listener.start_record_distance()
 
-    def on_menu_item_selected(self, selected_index: int):
+    def on_menu_clicked(self, selected_index: int | None):
+        if self.menu_clicked:  # only allow one emit
+            return
+        self.menu_clicked = True
+
         logger.debug(f"item idx {selected_index} is selected")
         self.menu_widget.close()
 
@@ -120,8 +122,10 @@ class MenuWidget(QWidget):
         super().__init__(parent)
         self.items = items
 
-        # STYLE: menu appearance
         self.setWindowFlags(Qt.WindowType.Popup)
+        self.setFocusPolicy(
+            Qt.FocusPolicy.StrongFocus
+        )  # Ensure widget can receive focus
         self.setStyleSheet(
             f"""
             QWidget {{
@@ -139,9 +143,7 @@ class MenuWidget(QWidget):
         self.btn = []
         for i, item in enumerate(self.items):
             btn = QPushButton(item)
-            btn.clicked.connect(lambda checked, i=i: self.item_clicked.emit(i))
-
-            # STYLE: menu item appearance
+            btn.clicked.connect(lambda checked, i=i: self._item_button_clicked(i))
             btn.setFixedSize(200, 50)
             btn.setStyleSheet(
                 f"""
@@ -164,6 +166,26 @@ class MenuWidget(QWidget):
 
             layout.addWidget(btn)
             self.btn.append(btn)
+
+        self._closed_by_selection = False
+
+    def show(self):
+        super().show()
+        self.setFocus()  # Ensure widget receives focus
+        self._closed_by_selection = False
+
+    def closeEvent(self, event):
+        # emit when menu closes without selection (clicked outside or lost focus)
+        if not self._closed_by_selection:
+            logger.debug(
+                "MenuWidget closed without selection, emitting None for item_clicked"
+            )
+            self.item_clicked.emit(None)
+        super().closeEvent(event)
+
+    def _item_button_clicked(self, index):
+        self._closed_by_selection = True
+        self.item_clicked.emit(index)
 
     def get_item_position(self, index) -> tuple[int, int]:
         btn = self.btn[index]

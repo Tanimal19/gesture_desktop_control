@@ -39,12 +39,15 @@ class DragDropTaskWidget(AbstractTaskWidget):
     @staticmethod
     def generate_configs_str(count: int) -> str:
         configs = []
+        prev_area = None
         for _ in range(count):
-            target_area = random.choice(DragDropTaskWidget._areas)
+            choices = [area for area in DragDropTaskWidget._areas if area != prev_area]
+            target_area = random.choice(choices)
             config = {
                 "target_area": target_area,
             }
             configs.append(config)
+            prev_area = target_area
 
         configs_str = str(configs)
         return configs_str

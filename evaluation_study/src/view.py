@@ -1,4 +1,4 @@
-from PySide6.QtGui import QResizeEvent
+from PySide6.QtGui import QCloseEvent, QResizeEvent
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,

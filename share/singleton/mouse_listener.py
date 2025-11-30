@@ -13,6 +13,7 @@ class MouseListenerSingleton(QThread):
         self.listener = mouse.Listener(on_move=self.on_move, on_click=self.on_click)
         self.recording_distance = False
         self.last_pos = (0, 0)
+        self.total_distance = 0
 
     def run(self):
         self.listener.start()
@@ -35,6 +36,7 @@ class MouseListenerSingleton(QThread):
         return self.total_distance
 
     def on_move(self, x, y):
+        logger.debug(f"Mouse moved to ({x}, {y})")
         if self.recording_distance:
             dx = x - self.last_pos[0]
             dy = y - self.last_pos[1]
@@ -59,4 +61,14 @@ def get_mouse_listener():
     global _mouse_listener_singleton
     if _mouse_listener_singleton is None:
         _mouse_listener_singleton = MouseListenerSingleton()
+        _mouse_listener_singleton.start()
+        logger.debug("Started MouseListenerSingleton thread.")
     return _mouse_listener_singleton
+
+
+def close_mouse_listener():
+    global _mouse_listener_singleton
+    if _mouse_listener_singleton is not None:
+        _mouse_listener_singleton.stop()
+        _mouse_listener_singleton = None
+        logger.debug("Stopped MouseListenerSingleton thread.")
