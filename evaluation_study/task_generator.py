@@ -28,7 +28,7 @@ def generate_configs():
 
             for t in latin_tasks:
                 tclass = TASK_WIDGET_MAP[t[0]]
-                configs_str = tclass.generate_configs(t[1])
+                configs_str = tclass.generate_configs_str(t[1])
                 writer.writerow([p, t[0].name, t[1], configs_str])
 
 

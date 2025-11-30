@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import sys
 import argparse
 from PySide6.QtWidgets import QApplication
@@ -7,7 +5,9 @@ from evaluation_study.src.controller import EvaluationController
 from evaluation_study.src.view import EvaluationView
 from evaluation_study.src.recorder import EvaluationRecorder
 from evaluation_study.task_generator import read_configs
-from datapath import EVA_DATASET_FOLDER
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def main():
@@ -17,15 +17,17 @@ def main():
     )
     args = parser.parse_args()
 
-    # read config
+    recorder = EvaluationRecorder(args.pid)
+
     try:
         task_configs = read_configs(args.pid)
+        logger.info(f"Loaded task configs {task_configs}")
     except Exception as e:
+        logger.error(f"Failed to read task configs for pid {args.pid}: {e}")
         return
 
     app = QApplication(sys.argv)
 
-    recorder = EvaluationRecorder(args.pid)
     view = EvaluationView(
         [(task_type, trial_num) for task_type, trial_num, _ in task_configs]
     )

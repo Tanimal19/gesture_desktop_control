@@ -1,7 +1,6 @@
 from abc import abstractmethod
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QSizePolicy
 from PySide6.QtCore import Signal
-from evaluation_study.src.styles import CENTRAL_WIDGET_STYLE
 
 
 class AbstractTaskWidget(QWidget):
@@ -11,7 +10,7 @@ class AbstractTaskWidget(QWidget):
 
     @staticmethod
     @abstractmethod
-    def generate_configs(count: int) -> str:
+    def generate_configs_str(count: int) -> str:
         """Generate a list of configurations for the task."""
         pass
 
@@ -21,21 +20,11 @@ class AbstractTaskWidget(QWidget):
         """Parse the configuration string into a list of configuration dictionaries."""
         pass
 
-    @staticmethod
-    @abstractmethod
-    def compute_correctness(payload: dict) -> bool:
-        """Compute whether the task was completed correctly based on the payload."""
-        pass
-
-    @abstractmethod
-    def get_instructions(self) -> str:
-        """Return the instructions for the task."""
-        pass
-
     def __init__(self, config: dict, parent=None):
         super().__init__(parent)
-        self.custom_init(config)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.setup(config)
 
     @abstractmethod
-    def custom_init(self, config: dict):
+    def setup(self, config: dict):
         pass

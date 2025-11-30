@@ -32,6 +32,8 @@ class EvaluationController(QObject):
         self.start_next_task()
 
     def start_next_task(self):
+        self.view.update_topbar("")
+
         if self.current_task_index >= len(self.task_configs):
             logger.info("All tasks completed.")
             self.view.show_completion_view()
@@ -60,8 +62,9 @@ class EvaluationController(QObject):
         self.current_task_widget = task_widget(trial_config)
         self.current_task_widget.on_completed.connect(self.on_trial_completed)
 
-        self.view.show_trial_view(
-            self.current_trial_index + 1, self.current_task_widget
+        self.view.show_trial_view(self.current_task_widget)
+        self.view.update_topbar(
+            f"{self.current_task_type.value}, Trial {self.current_trial_index + 1} of {len(self.current_trial_configs)}"
         )
         self.trial_start_time = time.time()
 
@@ -71,13 +74,12 @@ class EvaluationController(QObject):
 
     def on_trial_completed(self, payload: dict):
         complete_time = time.time() - self.trial_start_time
-        correctness = self.current_task_widget.compute_correctness(payload)
 
         self.recorder.write_trial_result(
             self.current_task_type,
             self.current_trial_index,
             complete_time,
-            correctness,
+            payload["is_correct"],
             payload,
         )
 

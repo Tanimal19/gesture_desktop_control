@@ -1,764 +1,102 @@
-2025-11-29 17:11:01,437 [INFO] controller.start_study(): Study started.
-2025-11-29 17:11:02,709 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:11:03,627 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(487, 313)
-2025-11-29 17:11:03,640 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:04,737 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:11:04,739 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:04,739 [INFO] controller.on_trial_completed(): Current trail completed in 2.03s
-2025-11-29 17:11:04,747 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:11:05,630 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(554, 261)
-2025-11-29 17:11:05,637 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:07,078 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:11:07,078 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:07,079 [INFO] controller.on_trial_completed(): Current trail completed in 2.33s
-2025-11-29 17:11:07,086 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:11:07,467 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(480, 273)
-2025-11-29 17:11:07,473 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:08,315 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:11:08,316 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:08,316 [INFO] controller.on_trial_completed(): Current trail completed in 1.23s
-2025-11-29 17:11:08,327 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:11:08,629 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(537, 351)
-2025-11-29 17:11:08,634 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:09,703 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:11:09,703 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:09,704 [INFO] controller.on_trial_completed(): Current trail completed in 1.38s
-2025-11-29 17:11:09,714 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:11:10,025 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(544, 372)
-2025-11-29 17:11:10,031 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:11,001 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:11:11,001 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:11,002 [INFO] controller.on_trial_completed(): Current trail completed in 1.29s
-2025-11-29 17:11:11,002 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:11:12,100 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:11:13,873 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:11:13,874 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:15,127 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:11:15,127 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:15,128 [INFO] controller.on_trial_completed(): Current trail completed in 3.03s
-2025-11-29 17:11:15,136 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:11:16,394 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:11:16,394 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:16,565 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:11:16,565 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:16,566 [INFO] controller.on_trial_completed(): Current trail completed in 1.43s
-2025-11-29 17:11:16,574 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:11:17,504 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:11:17,504 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:17,764 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:11:17,764 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:17,765 [INFO] controller.on_trial_completed(): Current trail completed in 1.19s
-2025-11-29 17:11:17,773 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 17:11:18,456 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:11:18,456 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:18,808 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:11:18,808 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:18,808 [INFO] controller.on_trial_completed(): Current trail completed in 1.04s
-2025-11-29 17:11:18,814 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
-2025-11-29 17:11:19,572 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:11:19,572 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:11:19,702 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:11:19,702 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:11:19,703 [INFO] controller.on_trial_completed(): Current trail completed in 0.89s
-2025-11-29 17:11:19,703 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:13:05,926 [INFO] controller.start_study(): Study started.
-2025-11-29 17:13:07,255 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:13:08,506 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(419, 329)
-2025-11-29 17:13:08,519 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:13:09,652 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:13:09,654 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:13:09,655 [INFO] controller.on_trial_completed(): Current trail completed in 2.40s
-2025-11-29 17:13:09,663 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:13:13,306 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(435, 202)
-2025-11-29 17:13:13,311 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:13:15,779 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:13:15,779 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:13:15,779 [INFO] controller.on_trial_completed(): Current trail completed in 6.12s
-2025-11-29 17:13:15,786 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:13:16,418 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(651, 241)
-2025-11-29 17:13:16,422 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:13:17,261 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:13:17,262 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:13:17,262 [INFO] controller.on_trial_completed(): Current trail completed in 1.48s
-2025-11-29 17:13:17,273 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:13:17,752 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(345, 283)
-2025-11-29 17:13:17,758 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:13:18,540 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:13:18,540 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:13:18,541 [INFO] controller.on_trial_completed(): Current trail completed in 1.27s
-2025-11-29 17:13:18,548 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:13:18,906 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(379, 314)
-2025-11-29 17:13:18,911 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:13:19,635 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:13:19,636 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:13:19,636 [INFO] controller.on_trial_completed(): Current trail completed in 1.09s
-2025-11-29 17:13:19,636 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:13:21,291 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:21:09,090 [INFO] controller.start_study(): Study started.
-2025-11-29 17:21:15,455 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:21:18,272 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(404, 197)
-2025-11-29 17:21:18,285 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:22:16,405 [INFO] controller.start_study(): Study started.
-2025-11-29 17:22:17,546 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:22:31,726 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(411, 327)
-2025-11-29 17:22:31,740 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:23:19,930 [INFO] controller.start_study(): Study started.
-2025-11-29 17:23:20,540 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:23:20,867 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(503, 233)
-2025-11-29 17:23:20,878 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:24:30,716 [INFO] controller.start_study(): Study started.
-2025-11-29 17:24:31,243 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:24:31,655 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(486, 254)
-2025-11-29 17:24:31,664 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:25:00,117 [INFO] controller.start_study(): Study started.
-2025-11-29 17:25:00,659 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:25:01,010 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(464, 258)
-2025-11-29 17:25:01,020 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:25:39,935 [INFO] controller.start_study(): Study started.
-2025-11-29 17:25:40,404 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:25:40,746 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(509, 226)
-2025-11-29 17:25:40,758 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:26:42,653 [INFO] controller.start_study(): Study started.
-2025-11-29 17:26:43,166 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:26:43,597 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(511, 260)
-2025-11-29 17:26:43,609 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:27:00,466 [INFO] controller.start_study(): Study started.
-2025-11-29 17:27:01,142 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:27:01,515 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(494, 246)
-2025-11-29 17:27:01,525 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:27:11,044 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(613, 336)
-2025-11-29 17:27:11,049 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:28:37,235 [INFO] controller.start_study(): Study started.
-2025-11-29 17:28:37,711 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:28:38,104 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(492, 196)
-2025-11-29 17:28:38,114 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:21,886 [INFO] controller.start_study(): Study started.
-2025-11-29 17:29:22,484 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:29:22,879 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(507, 320)
-2025-11-29 17:29:22,894 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:31,572 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(580, 154)
-2025-11-29 17:29:31,577 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:35,960 [DEBUG] menu_select.on_menu_item_selected(): item idx 4 is selected
-2025-11-29 17:29:35,963 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:35,963 [INFO] controller.on_trial_completed(): Current trail completed in 13.48s
-2025-11-29 17:29:35,970 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:29:36,787 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(610, 301)
-2025-11-29 17:29:36,791 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:38,084 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:29:38,084 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:38,085 [INFO] controller.on_trial_completed(): Current trail completed in 2.11s
-2025-11-29 17:29:38,091 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:29:38,735 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(293, 261)
-2025-11-29 17:29:38,739 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:39,718 [DEBUG] menu_select.on_menu_item_selected(): item idx 4 is selected
-2025-11-29 17:29:39,718 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:39,719 [INFO] controller.on_trial_completed(): Current trail completed in 1.63s
-2025-11-29 17:29:39,729 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:29:40,399 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(273, 248)
-2025-11-29 17:29:40,406 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:41,346 [DEBUG] menu_select.on_menu_item_selected(): item idx 3 is selected
-2025-11-29 17:29:41,346 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:41,346 [INFO] controller.on_trial_completed(): Current trail completed in 1.62s
-2025-11-29 17:29:41,351 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:29:41,854 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(242, 264)
-2025-11-29 17:29:41,860 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:43,040 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:29:43,040 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:43,041 [INFO] controller.on_trial_completed(): Current trail completed in 1.69s
-2025-11-29 17:29:43,043 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:29:44,852 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:29:46,095 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:29:46,095 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:46,545 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:29:46,545 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:46,546 [INFO] controller.on_trial_completed(): Current trail completed in 1.69s
-2025-11-29 17:29:46,549 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:29:47,325 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:29:47,325 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:29:48,576 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:29:48,576 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:29:48,577 [INFO] controller.on_trial_completed(): Current trail completed in 2.03s
-2025-11-29 17:29:48,581 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:30:39,676 [INFO] controller.start_study(): Study started.
-2025-11-29 17:30:40,171 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:30:40,709 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(527, 272)
-2025-11-29 17:30:40,727 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:31:09,819 [INFO] controller.start_study(): Study started.
-2025-11-29 17:31:10,502 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:31:10,930 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(419, 216)
-2025-11-29 17:31:10,943 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:31:14,439 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:31:14,440 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:31:14,441 [INFO] controller.on_trial_completed(): Current trail completed in 3.94s
-2025-11-29 17:31:14,451 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:31:15,045 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(625, 224)
-2025-11-29 17:31:15,052 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:31:24,788 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:31:24,789 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:31:24,790 [INFO] controller.on_trial_completed(): Current trail completed in 10.34s
-2025-11-29 17:31:24,796 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:31:25,405 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(492, 214)
-2025-11-29 17:31:25,410 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:33,028 [INFO] controller.start_study(): Study started.
-2025-11-29 17:34:33,516 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:34:33,792 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(494, 236)
-2025-11-29 17:34:33,805 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:34,311 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:34:34,313 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:34,313 [INFO] controller.on_trial_completed(): Current trail completed in 0.80s
-2025-11-29 17:34:34,321 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:34:34,625 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(505, 257)
-2025-11-29 17:34:34,630 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:35,726 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:34:35,727 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:35,727 [INFO] controller.on_trial_completed(): Current trail completed in 1.41s
-2025-11-29 17:34:35,735 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:34:36,093 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(373, 342)
-2025-11-29 17:34:36,098 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:36,695 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:34:36,696 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:36,696 [INFO] controller.on_trial_completed(): Current trail completed in 0.96s
-2025-11-29 17:34:36,704 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:34:37,032 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(292, 311)
-2025-11-29 17:34:37,038 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:37,670 [DEBUG] menu_select.on_menu_item_selected(): item idx 3 is selected
-2025-11-29 17:34:37,671 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:37,671 [INFO] controller.on_trial_completed(): Current trail completed in 0.97s
-2025-11-29 17:34:37,677 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:34:38,105 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(475, 480)
-2025-11-29 17:34:38,111 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:38,712 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:34:38,712 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:38,713 [INFO] controller.on_trial_completed(): Current trail completed in 1.04s
-2025-11-29 17:34:38,715 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:34:39,610 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:34:40,722 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:34:40,722 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:42,036 [DEBUG] dragdrop.on_drop(): Dropped in area: None
-2025-11-29 17:34:42,037 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:42,037 [INFO] controller.on_trial_completed(): Current trail completed in 2.43s
-2025-11-29 17:34:42,041 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:34:43,152 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:34:43,152 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:43,437 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:34:43,437 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:43,438 [INFO] controller.on_trial_completed(): Current trail completed in 1.40s
-2025-11-29 17:34:43,441 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:34:44,174 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:34:44,174 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:34:44,339 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:34:44,339 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:34:44,340 [INFO] controller.on_trial_completed(): Current trail completed in 0.90s
-2025-11-29 17:34:44,344 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 17:39:24,478 [INFO] controller.start_study(): Study started.
-2025-11-29 17:39:25,278 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:39:25,590 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(511, 231)
-2025-11-29 17:39:25,604 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:26,106 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:39:26,109 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:26,110 [INFO] controller.on_trial_completed(): Current trail completed in 0.83s
-2025-11-29 17:39:26,117 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:39:26,414 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(537, 274)
-2025-11-29 17:39:26,419 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:26,953 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:39:26,954 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:26,954 [INFO] controller.on_trial_completed(): Current trail completed in 0.84s
-2025-11-29 17:39:26,962 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:39:27,282 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(470, 317)
-2025-11-29 17:39:27,284 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:27,757 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:39:27,757 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:27,758 [INFO] controller.on_trial_completed(): Current trail completed in 0.80s
-2025-11-29 17:39:27,767 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:39:28,408 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(463, 368)
-2025-11-29 17:39:28,415 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:29,175 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:39:29,175 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:29,176 [INFO] controller.on_trial_completed(): Current trail completed in 1.41s
-2025-11-29 17:39:29,183 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:39:29,480 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(490, 396)
-2025-11-29 17:39:29,486 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:30,000 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:39:30,000 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:30,001 [INFO] controller.on_trial_completed(): Current trail completed in 0.82s
-2025-11-29 17:39:30,004 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:39:30,935 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:39:31,913 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:39:31,913 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:32,544 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:39:32,544 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:32,544 [INFO] controller.on_trial_completed(): Current trail completed in 1.61s
-2025-11-29 17:39:32,548 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:39:34,275 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:39:34,275 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:35,308 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:39:35,308 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:35,309 [INFO] controller.on_trial_completed(): Current trail completed in 2.76s
-2025-11-29 17:39:35,313 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:39:48,748 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:39:48,749 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:49,460 [DEBUG] dragdrop.on_drop(): Dropped in area: C
-2025-11-29 17:39:49,460 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:49,461 [INFO] controller.on_trial_completed(): Current trail completed in 14.15s
-2025-11-29 17:39:49,466 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 17:39:51,741 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:39:51,741 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:52,784 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:39:52,784 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:52,785 [INFO] controller.on_trial_completed(): Current trail completed in 3.32s
-2025-11-29 17:39:52,788 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
-2025-11-29 17:39:53,856 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:39:53,857 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:39:54,592 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:39:54,592 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:39:54,593 [INFO] controller.on_trial_completed(): Current trail completed in 1.80s
-2025-11-29 17:39:54,594 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:45:52,864 [INFO] controller.start_study(): Study started.
-2025-11-29 17:45:53,323 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:45:54,048 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(523, 294)
-2025-11-29 17:45:54,062 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:45:54,971 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:45:54,974 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:45:54,975 [INFO] controller.on_trial_completed(): Current trail completed in 1.65s
-2025-11-29 17:45:54,983 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:45:55,360 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(478, 315)
-2025-11-29 17:45:55,365 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:45:56,148 [DEBUG] menu_select.on_menu_item_selected(): item idx 3 is selected
-2025-11-29 17:45:56,148 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:45:56,148 [INFO] controller.on_trial_completed(): Current trail completed in 1.16s
-2025-11-29 17:45:56,155 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:45:56,531 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(477, 337)
-2025-11-29 17:45:56,536 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:45:57,130 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:45:57,130 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:45:57,131 [INFO] controller.on_trial_completed(): Current trail completed in 0.98s
-2025-11-29 17:45:57,139 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:45:57,370 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(496, 350)
-2025-11-29 17:45:57,375 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:45:57,896 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:45:57,896 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:45:57,897 [INFO] controller.on_trial_completed(): Current trail completed in 0.76s
-2025-11-29 17:45:57,902 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:45:58,195 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(483, 218)
-2025-11-29 17:45:58,200 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:45:58,908 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:45:58,908 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:45:58,909 [INFO] controller.on_trial_completed(): Current trail completed in 1.01s
-2025-11-29 17:45:58,911 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:46:01,006 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:46:02,606 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:46:02,607 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:46:03,427 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:46:03,427 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:46:03,427 [INFO] controller.on_trial_completed(): Current trail completed in 2.42s
-2025-11-29 17:46:03,430 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:46:04,390 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:46:04,391 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:46:05,328 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:46:05,328 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:46:05,328 [INFO] controller.on_trial_completed(): Current trail completed in 1.90s
-2025-11-29 17:46:05,331 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:46:06,927 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:46:06,927 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:46:09,431 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:46:09,431 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:46:09,432 [INFO] controller.on_trial_completed(): Current trail completed in 4.10s
-2025-11-29 17:46:09,437 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 17:47:37,942 [INFO] controller.start_study(): Study started.
-2025-11-29 17:47:39,310 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:47:40,407 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(515, 307)
-2025-11-29 17:47:40,420 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:47:41,172 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:47:41,174 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:47:41,175 [INFO] controller.on_trial_completed(): Current trail completed in 1.86s
-2025-11-29 17:47:41,184 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:47:41,509 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(456, 338)
-2025-11-29 17:47:41,516 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:47:42,522 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:47:42,522 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:47:42,523 [INFO] controller.on_trial_completed(): Current trail completed in 1.34s
-2025-11-29 17:47:42,530 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:47:42,836 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(410, 362)
-2025-11-29 17:47:42,842 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:47:43,453 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 17:47:43,453 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:47:43,454 [INFO] controller.on_trial_completed(): Current trail completed in 0.92s
-2025-11-29 17:47:43,460 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:47:43,738 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(375, 329)
-2025-11-29 17:47:43,744 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:47:44,547 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:47:44,548 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:47:44,548 [INFO] controller.on_trial_completed(): Current trail completed in 1.09s
-2025-11-29 17:47:44,554 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:47:44,842 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(370, 362)
-2025-11-29 17:47:44,846 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:47:45,470 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:47:45,470 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:47:45,471 [INFO] controller.on_trial_completed(): Current trail completed in 0.92s
-2025-11-29 17:47:45,473 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:47:47,544 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:47:49,167 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:47:49,167 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:47:49,995 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:47:49,995 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:47:49,996 [INFO] controller.on_trial_completed(): Current trail completed in 2.45s
-2025-11-29 17:47:50,000 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:49:43,477 [INFO] controller.start_study(): Study started.
-2025-11-29 17:49:46,443 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:50:35,058 [INFO] controller.start_study(): Study started.
-2025-11-29 17:51:12,843 [INFO] controller.start_study(): Study started.
-2025-11-29 17:52:15,793 [INFO] controller.start_study(): Study started.
-2025-11-29 17:52:22,254 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:54:08,386 [INFO] controller.start_study(): Study started.
-2025-11-29 17:54:12,591 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:55:06,731 [INFO] controller.start_study(): Study started.
-2025-11-29 17:55:10,324 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:55:24,760 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(499, 298)
-2025-11-29 17:55:24,773 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:26,170 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:55:26,172 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:26,173 [INFO] controller.on_trial_completed(): Current trail completed in 15.85s
-2025-11-29 17:55:26,180 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:55:26,558 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(385, 243)
-2025-11-29 17:55:26,565 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:27,280 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:55:27,281 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:27,281 [INFO] controller.on_trial_completed(): Current trail completed in 1.10s
-2025-11-29 17:55:27,284 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:55:27,580 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(433, 262)
-2025-11-29 17:55:27,586 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:28,300 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:55:28,301 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:28,301 [INFO] controller.on_trial_completed(): Current trail completed in 1.02s
-2025-11-29 17:55:28,309 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:55:28,689 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(510, 313)
-2025-11-29 17:55:28,694 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:29,793 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:55:29,794 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:29,794 [INFO] controller.on_trial_completed(): Current trail completed in 1.48s
-2025-11-29 17:55:29,800 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:55:31,067 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(355, 232)
-2025-11-29 17:55:31,073 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:32,081 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:55:32,081 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:32,082 [INFO] controller.on_trial_completed(): Current trail completed in 2.28s
-2025-11-29 17:55:32,086 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:55:40,916 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:55:43,992 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:55:43,992 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:45,959 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:55:45,959 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:45,959 [INFO] controller.on_trial_completed(): Current trail completed in 5.04s
-2025-11-29 17:55:45,963 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:55:46,714 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:55:46,714 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:47,568 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:55:47,568 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:47,569 [INFO] controller.on_trial_completed(): Current trail completed in 1.61s
-2025-11-29 17:55:47,572 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:55:48,400 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:55:48,400 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:50,598 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:55:50,599 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:50,599 [INFO] controller.on_trial_completed(): Current trail completed in 3.03s
-2025-11-29 17:55:50,603 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 17:55:51,439 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:55:51,439 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:52,074 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:55:52,074 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:52,075 [INFO] controller.on_trial_completed(): Current trail completed in 1.47s
-2025-11-29 17:55:52,078 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
-2025-11-29 17:55:52,780 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:55:52,780 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:55:53,419 [DEBUG] dragdrop.on_drop(): Dropped in area: C
-2025-11-29 17:55:53,420 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:55:53,420 [INFO] controller.on_trial_completed(): Current trail completed in 1.34s
-2025-11-29 17:55:53,421 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:57:49,687 [INFO] controller.start_study(): Study started.
-2025-11-29 17:58:00,111 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:58:03,299 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(455, 332)
-2025-11-29 17:58:03,313 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:58:04,822 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:58:04,824 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:58:04,825 [INFO] controller.on_trial_completed(): Current trail completed in 4.71s
-2025-11-29 17:58:04,833 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:58:10,042 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(446, 327)
-2025-11-29 17:58:10,048 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:58:11,167 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:58:11,167 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:58:11,168 [INFO] controller.on_trial_completed(): Current trail completed in 6.33s
-2025-11-29 17:58:11,176 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:58:55,231 [INFO] controller.start_study(): Study started.
-2025-11-29 17:59:00,608 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:59:29,027 [INFO] controller.start_study(): Study started.
-2025-11-29 17:59:30,265 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 17:59:34,238 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(449, 214)
-2025-11-29 17:59:34,251 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:35,971 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 17:59:35,973 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:35,974 [INFO] controller.on_trial_completed(): Current trail completed in 5.71s
-2025-11-29 17:59:35,981 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 17:59:36,638 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(570, 248)
-2025-11-29 17:59:36,642 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:37,389 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:59:37,390 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:37,390 [INFO] controller.on_trial_completed(): Current trail completed in 1.41s
-2025-11-29 17:59:37,396 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 17:59:37,739 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(428, 281)
-2025-11-29 17:59:37,744 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:38,439 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:59:38,439 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:38,440 [INFO] controller.on_trial_completed(): Current trail completed in 1.04s
-2025-11-29 17:59:38,447 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 17:59:38,746 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(454, 297)
-2025-11-29 17:59:38,751 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:39,571 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 17:59:39,572 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:39,572 [INFO] controller.on_trial_completed(): Current trail completed in 1.12s
-2025-11-29 17:59:39,579 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 17:59:39,803 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(503, 321)
-2025-11-29 17:59:39,808 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:40,576 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 17:59:40,576 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:40,577 [INFO] controller.on_trial_completed(): Current trail completed in 1.00s
-2025-11-29 17:59:40,579 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 17:59:46,002 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 17:59:48,863 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:59:48,863 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:49,339 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:59:49,339 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:49,339 [INFO] controller.on_trial_completed(): Current trail completed in 3.34s
-2025-11-29 17:59:49,342 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 17:59:50,066 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:59:50,066 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:50,393 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:59:50,393 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:50,394 [INFO] controller.on_trial_completed(): Current trail completed in 1.05s
-2025-11-29 17:59:50,397 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 17:59:51,207 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:59:51,207 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:51,585 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 17:59:51,586 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:51,586 [INFO] controller.on_trial_completed(): Current trail completed in 1.19s
-2025-11-29 17:59:51,590 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 17:59:52,435 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:59:52,435 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:52,757 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:59:52,757 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:52,757 [INFO] controller.on_trial_completed(): Current trail completed in 1.17s
-2025-11-29 17:59:52,760 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
-2025-11-29 17:59:53,583 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 17:59:53,583 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 17:59:53,902 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 17:59:53,902 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 17:59:53,903 [INFO] controller.on_trial_completed(): Current trail completed in 1.14s
-2025-11-29 17:59:53,904 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 18:02:06,249 [INFO] controller.start_study(): Study started.
-2025-11-29 18:02:06,944 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 18:02:12,883 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(581, 436)
-2025-11-29 18:02:12,896 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:14,122 [DEBUG] menu_select.on_menu_item_selected(): item idx 6 is selected
-2025-11-29 18:02:14,125 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:14,126 [INFO] controller.on_trial_completed(): Current trail completed in 7.18s
-2025-11-29 18:02:14,133 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 18:02:14,525 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(462, 339)
-2025-11-29 18:02:14,530 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:15,165 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:02:15,165 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:15,165 [INFO] controller.on_trial_completed(): Current trail completed in 1.03s
-2025-11-29 18:02:15,170 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 18:02:15,466 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(457, 366)
-2025-11-29 18:02:15,471 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:16,034 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:02:16,035 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:16,035 [INFO] controller.on_trial_completed(): Current trail completed in 0.86s
-2025-11-29 18:02:16,045 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 18:02:16,312 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(444, 418)
-2025-11-29 18:02:16,318 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:17,061 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 18:02:17,061 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:17,062 [INFO] controller.on_trial_completed(): Current trail completed in 1.02s
-2025-11-29 18:02:17,069 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 18:02:17,337 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(429, 393)
-2025-11-29 18:02:17,343 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:17,953 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:02:17,954 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:17,955 [INFO] controller.on_trial_completed(): Current trail completed in 0.88s
-2025-11-29 18:02:17,960 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 18:02:20,991 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 18:02:22,160 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:02:22,160 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:24,563 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 18:02:24,563 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:24,564 [INFO] controller.on_trial_completed(): Current trail completed in 3.57s
-2025-11-29 18:02:24,568 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 18:02:25,305 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:02:25,305 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:25,979 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 18:02:25,979 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:25,980 [INFO] controller.on_trial_completed(): Current trail completed in 1.41s
-2025-11-29 18:02:25,983 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 18:02:26,663 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:02:26,664 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:27,502 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 18:02:27,502 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:27,502 [INFO] controller.on_trial_completed(): Current trail completed in 1.52s
-2025-11-29 18:02:27,507 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 18:02:28,297 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:02:28,298 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:29,256 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 18:02:29,257 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:29,257 [INFO] controller.on_trial_completed(): Current trail completed in 1.75s
-2025-11-29 18:02:29,261 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
-2025-11-29 18:02:30,035 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:02:30,036 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:02:30,702 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 18:02:30,703 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:02:30,703 [INFO] controller.on_trial_completed(): Current trail completed in 1.44s
-2025-11-29 18:02:30,704 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 18:04:30,506 [INFO] controller.start_study(): Study started.
-2025-11-29 18:04:31,119 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 18:04:33,994 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(500, 310)
-2025-11-29 18:04:34,007 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:04:34,960 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:04:34,962 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:04:34,963 [INFO] controller.on_trial_completed(): Current trail completed in 3.84s
-2025-11-29 18:04:34,970 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 18:04:35,380 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(444, 309)
-2025-11-29 18:04:35,386 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:04:35,942 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 18:04:35,942 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:04:35,943 [INFO] controller.on_trial_completed(): Current trail completed in 0.97s
-2025-11-29 18:04:35,950 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 18:04:36,249 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(405, 367)
-2025-11-29 18:04:36,255 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:04:37,037 [DEBUG] menu_select.on_menu_item_selected(): item idx 1 is selected
-2025-11-29 18:04:37,037 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:04:37,038 [INFO] controller.on_trial_completed(): Current trail completed in 1.09s
-2025-11-29 18:04:37,046 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 18:04:37,329 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(430, 348)
-2025-11-29 18:04:37,334 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:04:37,952 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:04:37,953 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:04:37,953 [INFO] controller.on_trial_completed(): Current trail completed in 0.91s
-2025-11-29 18:04:37,958 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 18:04:38,432 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(463, 343)
-2025-11-29 18:04:38,437 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:04:39,295 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:04:39,296 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:04:39,296 [INFO] controller.on_trial_completed(): Current trail completed in 1.34s
-2025-11-29 18:04:39,300 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 18:05:23,090 [INFO] controller.start_study(): Study started.
-2025-11-29 18:05:23,559 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 18:05:32,254 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(516, 335)
-2025-11-29 18:05:32,268 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:32,832 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:05:32,833 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:32,834 [INFO] controller.on_trial_completed(): Current trail completed in 9.27s
-2025-11-29 18:05:32,843 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 18:05:33,213 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(378, 269)
-2025-11-29 18:05:33,219 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:34,197 [DEBUG] menu_select.on_menu_item_selected(): item idx 5 is selected
-2025-11-29 18:05:34,198 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:34,198 [INFO] controller.on_trial_completed(): Current trail completed in 1.35s
-2025-11-29 18:05:34,206 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 18:05:34,572 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(385, 243)
-2025-11-29 18:05:34,576 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:35,270 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:05:35,270 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:35,271 [INFO] controller.on_trial_completed(): Current trail completed in 1.06s
-2025-11-29 18:05:35,280 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 18:05:35,584 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(420, 258)
-2025-11-29 18:05:35,589 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:36,844 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 18:05:36,844 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:36,845 [INFO] controller.on_trial_completed(): Current trail completed in 1.56s
-2025-11-29 18:05:36,851 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 18:05:37,429 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(549, 295)
-2025-11-29 18:05:37,435 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:38,285 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:05:38,285 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:38,286 [INFO] controller.on_trial_completed(): Current trail completed in 1.43s
-2025-11-29 18:05:38,289 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 18:05:39,112 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 18:05:40,002 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:05:40,002 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:40,613 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 18:05:40,613 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:40,613 [INFO] controller.on_trial_completed(): Current trail completed in 1.50s
-2025-11-29 18:05:40,617 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 18:05:41,316 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:05:41,316 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:41,703 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 18:05:41,703 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:41,703 [INFO] controller.on_trial_completed(): Current trail completed in 1.09s
-2025-11-29 18:05:41,707 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 18:05:42,378 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:05:42,378 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:05:42,874 [DEBUG] dragdrop.on_drop(): Dropped in area: B
-2025-11-29 18:05:42,875 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:05:42,875 [INFO] controller.on_trial_completed(): Current trail completed in 1.17s
-2025-11-29 18:05:42,878 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 18:06:27,337 [INFO] controller.start_study(): Study started.
-2025-11-29 18:06:28,211 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
-2025-11-29 18:06:31,978 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(472, 353)
-2025-11-29 18:06:31,993 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:32,562 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:06:32,564 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:32,565 [INFO] controller.on_trial_completed(): Current trail completed in 4.35s
-2025-11-29 18:06:32,571 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
-2025-11-29 18:06:32,839 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(509, 379)
-2025-11-29 18:06:32,844 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:33,651 [DEBUG] menu_select.on_menu_item_selected(): item idx 3 is selected
-2025-11-29 18:06:33,651 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:33,651 [INFO] controller.on_trial_completed(): Current trail completed in 1.08s
-2025-11-29 18:06:33,659 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
-2025-11-29 18:06:33,966 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(500, 338)
-2025-11-29 18:06:33,972 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:34,730 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:06:34,730 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:34,731 [INFO] controller.on_trial_completed(): Current trail completed in 1.07s
-2025-11-29 18:06:34,740 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
-2025-11-29 18:06:35,037 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(515, 341)
-2025-11-29 18:06:35,039 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:36,006 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
-2025-11-29 18:06:36,007 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:36,007 [INFO] controller.on_trial_completed(): Current trail completed in 1.27s
-2025-11-29 18:06:36,015 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
-2025-11-29 18:06:36,259 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(518, 366)
-2025-11-29 18:06:36,264 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:37,206 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
-2025-11-29 18:06:37,206 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:37,207 [INFO] controller.on_trial_completed(): Current trail completed in 1.19s
-2025-11-29 18:06:37,209 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
-2025-11-29 18:06:40,234 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
-2025-11-29 18:06:41,279 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:06:41,279 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:41,619 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 18:06:41,619 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:41,619 [INFO] controller.on_trial_completed(): Current trail completed in 1.39s
-2025-11-29 18:06:41,622 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
-2025-11-29 18:06:42,328 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:06:42,329 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:42,578 [DEBUG] dragdrop.on_drop(): Dropped in area: None
-2025-11-29 18:06:42,578 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:42,578 [INFO] controller.on_trial_completed(): Current trail completed in 0.96s
-2025-11-29 18:06:42,581 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
-2025-11-29 18:06:43,310 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:06:43,310 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:43,535 [DEBUG] dragdrop.on_drop(): Dropped in area: None
-2025-11-29 18:06:43,536 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:43,536 [INFO] controller.on_trial_completed(): Current trail completed in 0.95s
-2025-11-29 18:06:43,539 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
-2025-11-29 18:06:44,354 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:06:44,354 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:44,833 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 18:06:44,833 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:44,833 [INFO] controller.on_trial_completed(): Current trail completed in 1.29s
-2025-11-29 18:06:44,837 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
-2025-11-29 18:06:45,561 [DEBUG] dragdrop.on_drag(): Drag started
-2025-11-29 18:06:45,562 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
-2025-11-29 18:06:45,890 [DEBUG] dragdrop.on_drop(): Dropped in area: A
-2025-11-29 18:06:45,890 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
-2025-11-29 18:06:45,891 [INFO] controller.on_trial_completed(): Current trail completed in 1.05s
-2025-11-29 18:06:45,892 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-11-29 23:21:59,273 [ERROR] app.main(): Failed to read task configs for pid 0: 
+2025-11-29 23:23:29,961 [INFO] app.main(): Loaded task configs [(<TrueTaskType.MenuSelect: 'Menu Selection'>, 5, [{'target_index': 0}, {'target_index': 3}, {'target_index': 2}, {'target_index': 5}, {'target_index': 0}]), (<TrueTaskType.DragDrop: 'Drag and Drop'>, 5, [{'target_area': 'C'}, {'target_area': 'B'}, {'target_area': 'B'}, {'target_area': 'B'}, {'target_area': 'A'}]), (<TrueTaskType.KeyboardInput: 'Keyboard Input'>, 5, [{'target_word': 'NETWORK'}, {'target_word': 'COMPUTER'}, {'target_word': 'KEYBOARD'}, {'target_word': 'LANGUAGE'}, {'target_word': 'MONITOR'}])]
+2025-11-29 23:23:31,994 [INFO] controller.start_study(): Study started.
+2025-11-29 23:23:33,521 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
+2025-11-29 23:23:34,103 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(630, 426)
+2025-11-29 23:23:34,110 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:34,935 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
+2025-11-29 23:23:34,943 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:34,943 [DEBUG] menu_select.on_menu_item_selected(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 0, 'selected_index': 0, 'error_distance': 992.6701365509089, 'target_distance': 111.68258592994702, 'moving_distance': 0}
+2025-11-29 23:23:34,943 [INFO] controller.on_trial_completed(): Current trail completed in 1.42s
+2025-11-29 23:23:34,954 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
+2025-11-29 23:23:35,304 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(344, 256)
+2025-11-29 23:23:35,310 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:36,061 [DEBUG] menu_select.on_menu_item_selected(): item idx 3 is selected
+2025-11-29 23:23:36,068 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:36,068 [DEBUG] menu_select.on_menu_item_selected(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 3, 'selected_index': 3, 'error_distance': 788.5949530652603, 'target_distance': 232.13142829009604, 'moving_distance': 0}
+2025-11-29 23:23:36,069 [INFO] controller.on_trial_completed(): Current trail completed in 1.11s
+2025-11-29 23:23:36,077 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
+2025-11-29 23:23:36,384 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(547, 213)
+2025-11-29 23:23:36,388 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:37,058 [DEBUG] menu_select.on_menu_item_selected(): item idx 2 is selected
+2025-11-29 23:23:37,066 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:37,066 [DEBUG] menu_select.on_menu_item_selected(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 2, 'selected_index': 2, 'error_distance': 868.1474529133861, 'target_distance': 182.62803727796015, 'moving_distance': 0}
+2025-11-29 23:23:37,066 [INFO] controller.on_trial_completed(): Current trail completed in 0.99s
+2025-11-29 23:23:37,076 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
+2025-11-29 23:23:37,432 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(964, 208)
+2025-11-29 23:23:37,435 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:38,453 [DEBUG] menu_select.on_menu_item_selected(): item idx 5 is selected
+2025-11-29 23:23:38,459 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:38,459 [DEBUG] menu_select.on_menu_item_selected(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 5, 'selected_index': 5, 'error_distance': 1309.5686312675637, 'target_distance': 339.31254029286924, 'moving_distance': 0}
+2025-11-29 23:23:38,459 [INFO] controller.on_trial_completed(): Current trail completed in 1.38s
+2025-11-29 23:23:38,470 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
+2025-11-29 23:23:38,769 [DEBUG] menu_select.show_context_menu(): show context menu at PySide6.QtCore.QPoint(842, 231)
+2025-11-29 23:23:38,773 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:39,735 [DEBUG] menu_select.on_menu_item_selected(): item idx 0 is selected
+2025-11-29 23:23:39,740 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:39,741 [DEBUG] menu_select.on_menu_item_selected(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 0, 'selected_index': 0, 'error_distance': 1079.8615652017622, 'target_distance': 111.68258592994702, 'moving_distance': 0}
+2025-11-29 23:23:39,741 [INFO] controller.on_trial_completed(): Current trail completed in 1.27s
+2025-11-29 23:23:39,743 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-11-29 23:23:42,527 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
+2025-11-29 23:23:44,243 [DEBUG] dragdrop.on_drag(): Drag started
+2025-11-29 23:23:44,244 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:44,825 [DEBUG] dragdrop.on_drop(): Dropped in area: C
+2025-11-29 23:23:44,825 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:44,825 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'C', 'dropped_area': 'C', 'error_distance': 955.0706780128893, 'target_distance': 959.4086720475274, 'drag_distance': 5.0, 'moving_distance': 0}
+2025-11-29 23:23:44,825 [INFO] controller.on_trial_completed(): Current trail completed in 2.30s
+2025-11-29 23:23:44,830 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
+2025-11-29 23:23:45,594 [DEBUG] dragdrop.on_drag(): Drag started
+2025-11-29 23:23:45,594 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:46,065 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-11-29 23:23:46,066 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:46,066 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 1158.738106735081, 'target_distance': 1158.738106735081, 'drag_distance': 0.0, 'moving_distance': 0}
+2025-11-29 23:23:46,066 [INFO] controller.on_trial_completed(): Current trail completed in 1.24s
+2025-11-29 23:23:46,073 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
+2025-11-29 23:23:46,771 [DEBUG] dragdrop.on_drag(): Drag started
+2025-11-29 23:23:46,771 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:47,288 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-11-29 23:23:47,288 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:47,288 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 1197.130736385964, 'target_distance': 1203.9950166009824, 'drag_distance': 7.0710678118654755, 'moving_distance': 0}
+2025-11-29 23:23:47,289 [INFO] controller.on_trial_completed(): Current trail completed in 1.22s
+2025-11-29 23:23:47,296 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
+2025-11-29 23:23:47,859 [DEBUG] dragdrop.on_drag(): Drag started
+2025-11-29 23:23:47,859 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:48,307 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-11-29 23:23:48,307 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:48,307 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 1187.1074087882696, 'target_distance': 1188.1031100035048, 'drag_distance': 1.0, 'moving_distance': 0}
+2025-11-29 23:23:48,308 [INFO] controller.on_trial_completed(): Current trail completed in 1.01s
+2025-11-29 23:23:48,314 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
+2025-11-29 23:23:48,908 [DEBUG] dragdrop.on_drag(): Drag started
+2025-11-29 23:23:48,909 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:23:49,245 [DEBUG] dragdrop.on_drop(): Dropped in area: A
+2025-11-29 23:23:49,245 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:23:49,245 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'A', 'dropped_area': 'A', 'error_distance': 883.323270382933, 'target_distance': 891.0965155357752, 'drag_distance': 8.06225774829855, 'moving_distance': 0}
+2025-11-29 23:23:49,246 [INFO] controller.on_trial_completed(): Current trail completed in 0.93s
+2025-11-29 23:23:49,247 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-11-29 23:23:51,246 [INFO] controller.start_next_trial(): Start trial 1 of task KeyboardInput
+2025-11-29 23:23:53,671 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:24:00,368 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:24:00,369 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'NETWORK', 'entered_word': 'NETWORK', 'num_key_clicks': 10, 'num_backspaces': 1, 'moving_distance': 0}
+2025-11-29 23:24:00,369 [INFO] controller.on_trial_completed(): Current trail completed in 9.12s
+2025-11-29 23:24:00,387 [INFO] controller.start_next_trial(): Start trial 2 of task KeyboardInput
+2025-11-29 23:24:02,041 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:24:07,185 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:24:07,186 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'COMPUTER', 'entered_word': 'COMPUTER', 'num_key_clicks': 9, 'num_backspaces': 0, 'moving_distance': 0}
+2025-11-29 23:24:07,186 [INFO] controller.on_trial_completed(): Current trail completed in 6.80s
+2025-11-29 23:24:07,208 [INFO] controller.start_next_trial(): Start trial 3 of task KeyboardInput
+2025-11-29 23:24:08,970 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:24:14,326 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:24:14,326 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'KEYBOARD', 'entered_word': 'KEYBOARD', 'num_key_clicks': 9, 'num_backspaces': 0, 'moving_distance': 0}
+2025-11-29 23:24:14,327 [INFO] controller.on_trial_completed(): Current trail completed in 7.12s
+2025-11-29 23:24:14,349 [INFO] controller.start_next_trial(): Start trial 4 of task KeyboardInput
+2025-11-29 23:24:16,240 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:24:21,416 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:24:21,416 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'LANGUAGE', 'entered_word': 'LANGUAGE', 'num_key_clicks': 9, 'num_backspaces': 0, 'moving_distance': 0}
+2025-11-29 23:24:21,417 [INFO] controller.on_trial_completed(): Current trail completed in 7.07s
+2025-11-29 23:24:21,434 [INFO] controller.start_next_trial(): Start trial 5 of task KeyboardInput
+2025-11-29 23:24:22,485 [DEBUG] mouse_listener.start_record_distance(): Started recording mouse movement distance.
+2025-11-29 23:24:26,641 [DEBUG] mouse_listener.stop_record_distance(): Stopped recording mouse movement distance. Total distance: 0
+2025-11-29 23:24:26,642 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'MONITOR', 'entered_word': 'MONITOR', 'num_key_clicks': 8, 'num_backspaces': 0, 'moving_distance': 0}
+2025-11-29 23:24:26,642 [INFO] controller.on_trial_completed(): Current trail completed in 5.21s
+2025-11-29 23:24:26,644 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-11-29 23:24:26,644 [INFO] controller.start_next_task(): All tasks completed.

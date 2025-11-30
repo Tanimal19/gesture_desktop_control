@@ -43,13 +43,14 @@ class EvaluationRecorder:
                 "task_type",
                 "trial_index",
                 "complete_time",
-                "correctness",
+                "is_correct",
             ]
-            task_headers = [
-                ttype.name + "-" + item
-                for ttype in TrueTaskType
-                for item in TASK_WIDGET_MAP[ttype].payload_header
-            ]
+            task_headers = []
+            for ttype in TrueTaskType:
+                for item in TASK_WIDGET_MAP[ttype].payload_header:
+                    if item not in global_header:
+                        task_headers.append(f"{ttype.name}-{item}")
+
             header = global_header + task_headers
             writer.writerow(header)
             self.header_index = {name: i for i, name in enumerate(header)}
@@ -59,7 +60,7 @@ class EvaluationRecorder:
         task_type: TrueTaskType,
         trail_index: int,
         complete_time: float,
-        correctness: bool,
+        is_correct: bool,
         payload: dict,
     ):
         with open(self.task_result_csv, "a", newline="") as f:
@@ -69,7 +70,7 @@ class EvaluationRecorder:
                 task_type.name,
                 trail_index,
                 complete_time,
-                correctness,
+                is_correct,
             ]
             row += [""] * (len(self.header_index) - len(row))
 
