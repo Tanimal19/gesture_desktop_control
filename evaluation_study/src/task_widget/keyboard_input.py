@@ -86,7 +86,7 @@ class KeyboardInputTaskWidget(AbstractTaskWidget):
         layout.addWidget(instruction_label)
 
         # text display
-        self.text_display = QLabel('""')
+        self.text_display = QLabel()
         self.text_display.setFixedHeight(60)
         self.text_display.setStyleSheet(
             f"""
@@ -142,9 +142,11 @@ class KeyboardInputTaskWidget(AbstractTaskWidget):
         right_layout.addWidget(submit_btn, alignment=Qt.AlignmentFlag.AlignRight)
 
         keyboard_layout = QHBoxLayout()
+        keyboard_layout.addStretch()
         keyboard_layout.setSpacing(20)
         keyboard_layout.addLayout(left_layout)
         keyboard_layout.addLayout(right_layout)
+        keyboard_layout.addStretch()
 
         keyboard_widget = QWidget()
         keyboard_widget.setLayout(keyboard_layout)

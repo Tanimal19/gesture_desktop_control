@@ -1,3 +1,5 @@
+# TODO: return none if clicked outside the menu
+
 import random
 from evaluation_study.src.task_widget.abstract_task_widget import AbstractTaskWidget
 from evaluation_study.src.styles import MyColor, get_instruction_style
