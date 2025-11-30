@@ -1,5 +1,11 @@
 import random
 from evaluation_study.src.task_widget.abstract_task_widget import AbstractTaskWidget
+from evaluation_study.src.styles import (
+    CENTRAL_WIDGET_STYLE,
+    MyColor,
+    INSTRUCTION_FONT_SIZE,
+    LABEL_FONT_SIZE,
+)
 from evaluation_study.src.utils import calculate_distance
 from PySide6.QtCore import Qt, Signal, QPoint
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
@@ -19,6 +25,11 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         "moving_distance",  # pixels of pointer moving between menu open and item click
     ]
     on_completed = Signal(object)
+    description = """
+        In this task, you will right-click within a designated area to open a context menu.\n
+        Your goal is to select a specific menu item as quickly and accurately as possible.\n
+        Focus on both speed and precision when selecting the target item.
+    """
 
     @staticmethod
     def generate_configs(count: int) -> str:
@@ -52,21 +63,31 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         return payload["selected_index"] == payload["target_index"]
 
     def get_instructions(self) -> str:
-        return (
-            "Right-click in the designated area to open a context menu\n"
-            f"Then left-lick on option: <{self.target_item_name}>\n"
-        )
+        return f"Select [{self.target_item_name}]\n"
 
     def custom_init(self, config: dict):
-        self.setFixedSize(MenuSelectTaskWidget.WIDTH, MenuSelectTaskWidget.HEIGHT)
+        self.setFixedSize(CENTRAL_WIDGET_STYLE.width, CENTRAL_WIDGET_STYLE.height)
 
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(40, 40, 40, 40)
 
         # menu trigger area
         self.trigger_area = QLabel("Right-click here to open menu")
-        self.trigger_area.setFixedHeight(400)
+        self.trigger_area.setFixedHeight(500)
         self.trigger_area.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        # TODO: style the trigger area
+        self.trigger_area.setStyleSheet(
+            f"""
+            QLabel {{
+                border: 2px dashed {MyColor.black.to_css()};
+                border-radius: 12px;
+                font-size: {INSTRUCTION_FONT_SIZE}px;
+                color: {MyColor.black.to_css()};
+            }}
+            QLabel:hover {{
+                border-color: {MyColor.blue.to_css()};
+            }}
+        """
+        )
         layout.addWidget(self.trigger_area)
 
         # setup context menu
@@ -124,22 +145,45 @@ class MenuWidget(QWidget):
         self.target_idx = target_idx
 
         self.setWindowFlags(Qt.WindowType.Popup)
-        # TODO: style the menu
+        self.setStyleSheet(
+            f"""
+            QWidget {{
+                background-color: {MyColor.gray.to_css()};
+                border: 1px solid {MyColor.gray_dark.to_css()};
+                border-radius: 8px;
+            }}
+        """
+        )
 
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
+        layout.setContentsMargins(6, 6, 6, 6)
+        layout.setSpacing(6)
 
         for i, item in enumerate(self.items):
             btn = QPushButton(item)
             btn.clicked.connect(lambda checked, i=i: self.item_clicked.emit(i))
 
-            if i == self.target_idx:
-                # TODO: highlight target item
+            btn.setFixedSize(180, 30)
+            btn.setStyleSheet(
+                f"""
+                QPushButton {{
+                    background-color: {MyColor.gray.to_css()};
+                    color: {MyColor.black.to_css()};
+                    border: none;
+                    border-radius: 4px;
+                    padding: 6px 12px;
+                    font-size: {LABEL_FONT_SIZE}px;
+                    font-weight: {'bold' if i == self.target_idx else 'normal'};
+                    text-align: left;
+                }}
+                QPushButton:hover {{
+                    background-color: {MyColor.blue.to_css()};
+                    color: {MyColor.white.to_css()};
+                }}
+            """
+            )
 
             layout.addWidget(btn)
-
-        self.setFixedSize(200, len(self.items) * 50)
 
     def get_target_item_position(self) -> tuple[int, int]:
         for btn in self.findChildren(QPushButton):

@@ -1,14 +1,14 @@
 import random
 from evaluation_study.src.task_widget.abstract_task_widget import AbstractTaskWidget
 from evaluation_study.src.utils import calculate_distance
+from evaluation_study.src.styles import CENTRAL_WIDGET_STYLE, MyColor
 from PySide6.QtCore import Qt, Signal, QPoint
 from PySide6.QtWidgets import (
-    QWidget,
     QVBoxLayout,
     QLabel,
     QApplication,
 )
-from PySide6.QtGui import QFont, QMouseEvent
+from PySide6.QtGui import QMouseEvent
 from share.singleton.mouse_listener import get_mouse_listener
 import logging
 
@@ -25,6 +25,10 @@ class DragDropTaskWidget(AbstractTaskWidget):
         "moving_distance",  # pixels of pointer moving bewteen drag start and drop
     ]
     on_completed = Signal(object)
+    description = """
+        Drag the dark square to the highlighted target area.
+        Release the mouse button when over the target area.
+    """
     AREAS = ["A", "B", "C"]
 
     @staticmethod
@@ -60,18 +64,16 @@ class DragDropTaskWidget(AbstractTaskWidget):
         return payload["dropped_area"] == payload["target_area"]
 
     def get_instructions(self) -> str:
-        return (
-            f"Drag the dark square to the highlighted target area: <{self.target_area}>\n"
-            "Release the mouse button when over the target area\n"
-        )
+        return f"Drag the black square to area [{self.target_area}]\n"
 
     def custom_init(self, config: dict):
-        self.setFixedSize(DragDropTaskWidget.WIDTH, DragDropTaskWidget.HEIGHT)
+        self.setFixedSize(CENTRAL_WIDGET_STYLE.width, CENTRAL_WIDGET_STYLE.height)
 
         self.target_area = config["target_area"]
-        self.target_area_pos = (0, 0)
 
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(40)
 
         # Create three drop areas
         self.drop_areas: list[DropArea] = []
@@ -79,23 +81,15 @@ class DragDropTaskWidget(AbstractTaskWidget):
             is_target = label == self.target_area
             area = DropArea(label, is_target, self)
             self.drop_areas.append(area)
-
-            # right aligned, spaced vertically
-            x = DragDropTaskWidget.WIDTH - DropArea.SIZE - 50
-            y = DragDropTaskWidget.HEIGHT // 4 * (i + 1) - DropArea.SIZE // 2
-            area.move(x, y)
+            layout.addWidget(area, alignment=Qt.AlignmentFlag.AlignRight)
 
             if is_target:
-                self.target_area_pos = (
-                    x + DropArea.SIZE // 2,
-                    y + DropArea.SIZE // 2,
-                )
-            layout.addWidget(area)
+                self.target_area_widget = area
 
         # Create draggable square
         self.draggable_square = DraggableSquare(self)
         self.draggable_square.move(
-            50, DragDropTaskWidget.HEIGHT // 2 - DraggableSquare.SIZE // 2
+            50, CENTRAL_WIDGET_STYLE.height // 2 - DraggableSquare.SIZE // 2
         )
         self.draggable_square.dragged.connect(self.on_drag)
         self.draggable_square.dropped.connect(self.on_drop)
@@ -112,11 +106,13 @@ class DragDropTaskWidget(AbstractTaskWidget):
 
         listener = get_mouse_listener()
 
+        target_area_pos = self.target_area_widget.geometry().center()
+
         error_distance = calculate_distance(
-            self.draggable_square.drag_end_pos, self.target_area_pos
+            self.draggable_square.drag_end_pos, target_area_pos
         )
         target_distance = calculate_distance(
-            self.draggable_square.drag_start_pos, self.target_area_pos
+            self.draggable_square.drag_start_pos, target_area_pos
         )
         drag_distance = calculate_distance(
             self.draggable_square.drag_start_pos, self.draggable_square.drag_end_pos
@@ -136,7 +132,7 @@ class DragDropTaskWidget(AbstractTaskWidget):
 
 
 class DropArea(QLabel):
-    SIZE = 200
+    SIZE = 160
 
     def __init__(self, label: str, is_target: bool, parent=None):
         super().__init__(label, parent)
@@ -144,7 +140,33 @@ class DropArea(QLabel):
 
         self.setFixedSize(DropArea.SIZE, DropArea.SIZE)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        # TODO: style the drop area
+
+        if is_target:
+            # Highlight target drop area
+            self.setStyleSheet(
+                f"""
+                QLabel {{
+                    background-color: {MyColor.green.to_css(0.3)};
+                    border: 2px solid {MyColor.black.to_css()};
+                    border-radius: 12px;
+                    font-size: 24px;
+                    font-weight: bold;
+                    color: {MyColor.black.to_css()};
+                }}
+            """
+            )
+        else:
+            self.setStyleSheet(
+                f"""
+                QLabel {{
+                    background-color: {MyColor.gray.to_css()};
+                    border: 2px solid {MyColor.black.to_css()};
+                    border-radius: 12px;
+                    font-size: 24px;
+                    color:  {MyColor.black.to_css()};
+                }}
+            """
+            )
 
 
 class DraggableSquare(QLabel):
@@ -162,7 +184,17 @@ class DraggableSquare(QLabel):
 
         self.setFixedSize(DraggableSquare.SIZE, DraggableSquare.SIZE)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        # TODO: style the draggable square
+        self.setStyleSheet(
+            f"""
+            QLabel {{
+                background-color: {MyColor.black.to_css()};
+                border-radius: 6px;
+            }}
+            QLabel:hover {{
+                background-color: {MyColor.black.to_css(0.8)};
+            }}
+        """
+        )
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton and self.can_drag:

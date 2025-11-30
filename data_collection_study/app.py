@@ -1,9 +1,9 @@
 import sys
-from data_collection.src.controller import DataCollectionController
-from data_collection.src.view import DataCollectionView
-from data_collection.src.recorder import DataCollectionRecorder
+from data_collection_study.src.controller import DataCollectionController
+from data_collection_study.src.view import DataCollectionView
+from data_collection_study.src.recorder import DataCollectionRecorder
 from PySide6.QtWidgets import QApplication
-from data_collection.task_generator import NUM_PARTICIPANT
+from data_collection_study.task_generator import NUM_PARTICIPANT
 
 
 pid = int(input(f"Enter the participant ID (0 for testing, 1-{NUM_PARTICIPANT-1}): "))

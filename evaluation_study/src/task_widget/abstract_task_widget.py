@@ -1,17 +1,13 @@
 from abc import abstractmethod
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import Signal
-from evaluation_study.src.styles import (
-    CENTRAL_WIDGET_HEIGHT,
-    MAIN_WINDOW_WIDTH,
-)
+from evaluation_study.src.styles import CENTRAL_WIDGET_STYLE
 
 
 class AbstractTaskWidget(QWidget):
     payload_header: list[str]
     on_completed: Signal
-    HEIGHT = CENTRAL_WIDGET_HEIGHT
-    WIDTH = MAIN_WINDOW_WIDTH
+    description: str
 
     @staticmethod
     @abstractmethod
