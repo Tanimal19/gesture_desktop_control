@@ -28,14 +28,14 @@ def setup_logging(filepath):
 
 
 class EvaluationRecorder:
-    def __init__(self, pid):
+    def __init__(self, pid, condition):
         self.pid = pid
         output_dir = EVA_PARTICIPANT_FOLDER_TEMPLATE.format(pid=pid)
         os.makedirs(output_dir, exist_ok=True)
 
         setup_logging(output_dir + "run.log")
 
-        self.task_result_csv = os.path.join(output_dir, "task_result.csv")
+        self.task_result_csv = os.path.join(output_dir, f"task_result_{condition}.csv")
         with open(self.task_result_csv, "w") as f:
             writer = csv.writer(f)
             global_header = [
@@ -68,7 +68,7 @@ class EvaluationRecorder:
             row = [
                 self.pid,
                 task_type.name,
-                trail_index,
+                trail_index + 1,
                 complete_time,
                 is_correct,
             ]

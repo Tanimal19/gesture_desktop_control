@@ -99,7 +99,6 @@ class GTCNModel(AbstractGestureModel):
     """
 
     WINDOW_LENGTH = 10
-    DEFAULT_PATH = GTCN_BASE_FOLDER + "models/" + "best_model_win10-noweight.pth"
 
     GCN_HIDDEN_DIM = 16  # GCN hidden dimension
     TCN_HIDDEN_DIM = 64  # TCN hidden dimension

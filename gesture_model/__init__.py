@@ -15,7 +15,6 @@ class GestureLabel(Enum):
 
 class AbstractGestureModel(ABC, nn.Module):
     WINDOW_LENGTH: int
-    DEFAULT_PATH: str
 
     @staticmethod
     @abstractmethod

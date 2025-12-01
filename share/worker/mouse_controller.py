@@ -9,32 +9,26 @@ class MouseController:
 
     def move(self, x, y):
         if self._left_pressed:
-            # dragging
-            btn = Quartz.kCGMouseButtonLeft
             ev_type = Quartz.kCGEventLeftMouseDragged
-            event = Quartz.CGEventCreateMouseEvent(None, ev_type, (x, y), btn)
-            Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
-            logger.debug(f"Dragged mouse to ({x}, {y})")
-
         else:
-            self._left_pressed = False
-            Quartz.CGWarpMouseCursorPosition((x, y))
-            Quartz.CGAssociateMouseAndMouseCursorPosition(True)
-            logger.debug(f"Moved mouse to ({x}, {y})")
+            ev_type = Quartz.kCGEventMouseMoved
+
+        btn = Quartz.kCGMouseButtonLeft
+        event = Quartz.CGEventCreateMouseEvent(None, ev_type, (x, y), btn)
+        Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
+        logger.debug(f"Moved mouse to ({x}, {y})")
 
     def button_event(self, x, y, down=True, button="left"):
         if button == "left":
             btn = Quartz.kCGMouseButtonLeft
-            if down:
-                ev_type = Quartz.kCGEventLeftMouseDown
-            else:
-                ev_type = Quartz.kCGEventLeftMouseUp
+            ev_type = (
+                Quartz.kCGEventLeftMouseDown if down else Quartz.kCGEventLeftMouseUp
+            )
         elif button == "right":
             btn = Quartz.kCGMouseButtonRight
-            if down:
-                ev_type = Quartz.kCGEventRightMouseDown
-            else:
-                ev_type = Quartz.kCGEventRightMouseUp
+            ev_type = (
+                Quartz.kCGEventRightMouseDown if down else Quartz.kCGEventRightMouseUp
+            )
         else:
             raise ValueError(f"Unsupported button: {button}")
 

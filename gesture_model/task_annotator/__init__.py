@@ -7,7 +7,6 @@ from gesture_model import GestureLabel, AbstractGestureModel
 
 class TaskAnnotator(AbstractGestureModel):
     WINDOW_LENGTH = 5
-    DEFAULT_PATH = ""  # no default model path
 
     LANDMARKS = [
         HandLandmark.THUMB_TIP,

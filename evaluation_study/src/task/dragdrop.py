@@ -174,7 +174,7 @@ class DragDropTaskWidget(AbstractTaskWidget):
 
 
 class DropArea(QLabel):
-    _size = 300
+    _size = 250
 
     def __init__(self, label: str, parent=None):
         super().__init__(label, parent)

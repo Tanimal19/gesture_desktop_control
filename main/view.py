@@ -1,10 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 import logging
-from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QApplication
+from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QApplication
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QResizeEvent
-from share.ui.camera_preview import CameraPreview
 
 if TYPE_CHECKING:
     from main.controller import MainAppController
@@ -20,7 +19,7 @@ class MainAppView(QWidget):
         self.setWindowFlags(
             Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint
         )
-        self.setStyleSheet("background-color: rgba(0, 0, 0, 200);")
+        self.setStyleSheet("background-color: rgba(0, 0, 0, 150);")
 
         # info label
         label_style = (
@@ -28,43 +27,35 @@ class MainAppView(QWidget):
         )
         self.gesture_label = QLabel("Gesture:")
         self.gesture_label.setStyleSheet(label_style)
+        self.gesture_label.setFixedSize(180, 20)
         self.pointer_label = QLabel("Pointer:")
         self.pointer_label.setStyleSheet(label_style)
+        self.pointer_label.setFixedSize(180, 20)
         self.event_label = QLabel("")
         self.event_label.setStyleSheet(label_style)
-        self.event_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-        label_layout = QHBoxLayout()
-        label_layout.addWidget(self.gesture_label)
-        label_layout.addWidget(self.pointer_label)
-        label_layout.addWidget(self.event_label)
-        label_layout.setStretch(0, 2)
-        label_layout.setStretch(1, 2)
-        label_layout.setStretch(2, 1)
-        label_layout.setContentsMargins(10, 10, 10, 10)
+        self.event_label.setFixedSize(120, 20)
+        self.event_label.setAlignment(
+            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        )
 
-        self.camera_preview = CameraPreview(600)
-        self.camera_preview.setStyleSheet("background-color: rgba(0, 0, 0, 0);")
-
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-        layout.addLayout(label_layout)
-        layout.addWidget(self.camera_preview)
+        layout = QHBoxLayout(self)
+        layout.addWidget(self.gesture_label)
+        layout.addWidget(self.pointer_label)
+        layout.addWidget(self.event_label)
+        layout.setContentsMargins(10, 10, 10, 10)
+        self.setLayout(layout)
 
         self.controller = None
         screen_geometry = QApplication.primaryScreen().geometry()
         self.screen_width = screen_geometry.width()
         self.screen_height = screen_geometry.height()
-        self.raise_()
 
         self.is_visible = True
 
     def resizeEvent(self, event: QResizeEvent) -> None:
-        margin = 20
-        screen_geometry = QApplication.primaryScreen().geometry()
         self.move(
-            margin,
-            screen_geometry.height() - self.height() - margin,
+            20,
+            60,
         )
         super().resizeEvent(event)
 
@@ -94,8 +85,13 @@ class MainAppView(QWidget):
 
         if key == Qt.Key.Key_Escape:  # exit app
             self.close()
+
         elif key == Qt.Key.Key_Space:  # toggle camera preview
             self.toggle_visible()
+
+        elif key == Qt.Key.Key_E:
+            if self.controller:
+                self.controller.toggle_mouse_control()
 
     def closeEvent(self, event):
         if self.controller:

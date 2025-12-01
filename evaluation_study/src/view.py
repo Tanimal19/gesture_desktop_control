@@ -1,3 +1,6 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -7,6 +10,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QProgressBar,
     QStackedWidget,
+    QApplication,
 )
 from PySide6.QtCore import Qt, Signal, SignalInstance
 from evaluation_study.src.task import (
@@ -16,17 +20,24 @@ from evaluation_study.src.task import (
 )
 from evaluation_study.src.styles import MyColor
 
+if TYPE_CHECKING:
+    from evaluation_study.src.controller import EvaluationController
+
 
 class EvaluationView(QMainWindow):
     on_study_start = Signal()
     on_task_start = Signal()
     on_trail_completed = Signal()
 
-    def __init__(self, tasks: list[tuple]):
+    def __init__(self, tasks: list[tuple], pid: int, condition: str):
         super().__init__()
         self.setWindowTitle("Evaluation Study")
-        self.setGeometry(100, 100, 1200, 700)
-        # self.showFullScreen()
+        screen_geometry = QApplication.primaryScreen().geometry()
+        screen_width = screen_geometry.width()
+        screen_height = screen_geometry.height()
+        self.setGeometry(100, 60, screen_width - 200, screen_height - 200)
+
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         main_widget = QWidget()
         main_widget.setStyleSheet(
@@ -67,7 +78,7 @@ class EvaluationView(QMainWindow):
 
         self.welcome_view = CentralWidgetView(
             "Welcome to the Evaluation Study",
-            "participant: 0, condition: A",
+            f"participant: {pid}, condition: {condition}",
             "Start Study",
             self.on_study_start,
         )
@@ -91,6 +102,8 @@ class EvaluationView(QMainWindow):
 
         self.central_stack.setCurrentWidget(self.welcome_view)
 
+        self.controller = None
+
     def show_task_view(self, ttype: TrueTaskType):
         tclass = TASK_WIDGET_MAP[ttype]
         self.task_view.title.setText(f"Task: {ttype.value}")
@@ -109,6 +122,14 @@ class EvaluationView(QMainWindow):
 
     def update_progress(self, ttype: TrueTaskType, trials_completed: int):
         self.progress_bar.update_progress(ttype, trials_completed)
+
+    def set_controller(self, controller: EvaluationController):
+        self.controller = controller
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.controller:
+            self.controller.close()
+        event.accept()
 
 
 class CentralWidgetView(QWidget):

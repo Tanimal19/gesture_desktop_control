@@ -16,10 +16,10 @@ class MouseEvent(Enum):
 class GestureMapper:
     GESTURE_CONFIRMATION_THRESHOLD = (
         {  # Number of consecutive frames to confirm a gesture
-            GestureLabel.LEFT_PRESS: 5,
-            GestureLabel.LEFT_RELEASE: 5,
-            GestureLabel.RIGHT_PRESS: 5,
-            GestureLabel.RIGHT_RELEASE: 5,
+            GestureLabel.LEFT_PRESS: 3,
+            GestureLabel.LEFT_RELEASE: 3,
+            GestureLabel.RIGHT_PRESS: 3,
+            GestureLabel.RIGHT_RELEASE: 3,
         }
     )
     SCROLL_RESET_THRESHOLD = 5  # Number of non-scroll frames to reset scroll direction

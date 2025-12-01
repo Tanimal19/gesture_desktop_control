@@ -39,6 +39,8 @@ class MainAppController:
         self.landmarks_queue = []
         self.max_queue_length = self.model.WINDOW_LENGTH + 5  # some buffer
 
+        self.mouse_control_enabled = True
+
     def _on_frame_ready(self, payload):
         timestamp, frame = payload
         self.landmarker.detect_async(frame, timestamp)
@@ -94,12 +96,21 @@ class MainAppController:
         else:
             self.undetected_count += 1
 
-        frame = cv2.flip(frame, 1)
-        self.view.camera_preview.update_camera_preview(frame)
+        # frame = cv2.flip(frame, 1)
+        # self.view.camera_preview.update_camera_preview(frame)
+
+    def toggle_mouse_control(self):
+        self.mouse_control_enabled = not self.mouse_control_enabled
+        logger.info(
+            f"Mouse control {'enabled' if self.mouse_control_enabled else 'disabled'}"
+        )
 
     def perform_mouse_event(
         self, mouse_event: MouseEvent, pointer_pos: tuple[int, int]
     ):
+        if not self.mouse_control_enabled:
+            return
+
         self.mouse_controller.move(*pointer_pos)
 
         if mouse_event == MouseEvent.LEFT_PRESS:
