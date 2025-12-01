@@ -5,49 +5,45 @@ logger = logging.getLogger(__name__)
 
 
 class MouseController:
-    @staticmethod
-    def mouse_move(x, y):
-        # macOS coordinate: origin bottom-left; need convert
-        # Get screen height to flip coordinate
-        screen = Quartz.CGDisplayBounds(Quartz.CGMainDisplayID())
+    _left_pressed = False
 
-        Quartz.CGWarpMouseCursorPosition((x, y))
-        Quartz.CGAssociateMouseAndMouseCursorPosition(True)
+    def move(self, x, y):
+        if self._left_pressed:
+            # dragging
+            btn = Quartz.kCGMouseButtonLeft
+            ev_type = Quartz.kCGEventLeftMouseDragged
+            event = Quartz.CGEventCreateMouseEvent(None, ev_type, (x, y), btn)
+            Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
+            logger.debug(f"Dragged mouse to ({x}, {y})")
 
-        logger.debug(f"Moving mouse to ({x}, {y})")
+        else:
+            self._left_pressed = False
+            Quartz.CGWarpMouseCursorPosition((x, y))
+            Quartz.CGAssociateMouseAndMouseCursorPosition(True)
+            logger.debug(f"Moved mouse to ({x}, {y})")
 
-    @staticmethod
-    def mouse_button_event(x, y, down, button="left"):
-        screen = Quartz.CGDisplayBounds(Quartz.CGMainDisplayID())
-        screen_height = screen.size.height
-        pos = (x, screen_height - y)
-
+    def button_event(self, x, y, down=True, button="left"):
         if button == "left":
             btn = Quartz.kCGMouseButtonLeft
-            ev_type_down = Quartz.kCGEventLeftMouseDown
-            ev_type_up = Quartz.kCGEventLeftMouseUp
-        else:
+            if down:
+                ev_type = Quartz.kCGEventLeftMouseDown
+            else:
+                ev_type = Quartz.kCGEventLeftMouseUp
+        elif button == "right":
             btn = Quartz.kCGMouseButtonRight
-            ev_type_down = Quartz.kCGEventRightMouseDown
-            ev_type_up = Quartz.kCGEventRightMouseUp
+            if down:
+                ev_type = Quartz.kCGEventRightMouseDown
+            else:
+                ev_type = Quartz.kCGEventRightMouseUp
+        else:
+            raise ValueError(f"Unsupported button: {button}")
 
-        event_type = ev_type_down if down else ev_type_up
-        event = Quartz.CGEventCreateMouseEvent(None, event_type, pos, btn)
+        if button == "left" and down:
+            self._left_pressed = True
+        else:
+            self._left_pressed = False
+
+        event = Quartz.CGEventCreateMouseEvent(None, ev_type, (x, y), btn)
         Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
 
-        logger.debug(
-            f"{'Pressed' if down else 'Released'} {button} mouse button at ({x}, {y})"
-        )
-
-    # @staticmethod
-    # def mouse_scroll(amount):
-    #     # Positive = up, negative = down
-    #     event = Quartz.CGEventCreateScrollWheelEvent(
-    #         None,
-    #         Quartz.kCGScrollEventUnitLine,
-    #         1,  # number of wheels (vertical only)
-    #         amount,  # positive = up
-    #     )
-    #     Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
-
-    #     logger.debug(f"Scrolled mouse by amount: {amount}")
+        logger.debug(f"{"Press" if down else "Release"} {button} button at {(x, y)}")

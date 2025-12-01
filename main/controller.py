@@ -1,7 +1,6 @@
 import cv2
 import logging
 import numpy as np
-from PySide6.QtCore import Qt
 from share.utils import merge_landmarks
 from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
 from share.singleton.camera import get_camera_singleton, close_camera_singleton
@@ -31,11 +30,12 @@ class MainAppController:
         self.undetected_count = 0
 
         self.landmark_mapper = LandmarkMapper(
-            self.view.pointer_overlay.width(), self.view.pointer_overlay.height()
+            self.view.screen_width, self.view.screen_height
         )
         self.model = model
         self.gesture_model = GestureModelRunner(self.model, model_path, "cpu")
         self.gesture_mapper = GestureMapper()
+        self.mouse_controller = MouseController()
         self.landmarks_queue = []
         self.max_queue_length = self.model.WINDOW_LENGTH + 5  # some buffer
 
@@ -85,35 +85,31 @@ class MainAppController:
 
             mouse_event = self.gesture_mapper.update(gesture_label)
             self.perform_mouse_event(mouse_event, screen_pos)
-            self.view.set_overlay_text(
-                f"Pointer: {screen_pos}\t\tGesture: {gesture_label.name}\t\tMouse Event: {mouse_event.name}"
+            self.view.update_overlay_info(
+                gesture=gesture_label.name,
+                pointer_pos=screen_pos,
+                mouse_event=mouse_event.name,
             )
 
         else:
             self.undetected_count += 1
 
         frame = cv2.flip(frame, 1)
-        self.view.cam_preview.update_camera_preview(frame)
+        self.view.camera_preview.update_camera_preview(frame)
 
     def perform_mouse_event(
         self, mouse_event: MouseEvent, pointer_pos: tuple[int, int]
     ):
-        if mouse_event == MouseEvent.MOVE:
-            MouseController.mouse_move(*pointer_pos)
-            self.view.pointer_overlay.update_pointer_position(pointer_pos)
-        elif mouse_event == MouseEvent.LEFT_PRESS:
-            MouseController.mouse_button_event(*pointer_pos, down=True, button="left")
-        elif mouse_event == MouseEvent.LEFT_RELEASE:
-            MouseController.mouse_button_event(*pointer_pos, down=False, button="left")
-        elif mouse_event == MouseEvent.RIGHT_PRESS:
-            MouseController.mouse_button_event(*pointer_pos, down=True, button="right")
-        elif mouse_event == MouseEvent.RIGHT_RELEASE:
-            MouseController.mouse_button_event(*pointer_pos, down=False, button="right")
+        self.mouse_controller.move(*pointer_pos)
 
-    def keyPressEvent(self, key):
-        if key == Qt.Key.Key_Escape:  # exit app
-            logger.debug("Escape key pressed. Exiting application.")
-            self.view.close()
+        if mouse_event == MouseEvent.LEFT_PRESS:
+            self.mouse_controller.button_event(*pointer_pos, down=True, button="left")
+        elif mouse_event == MouseEvent.LEFT_RELEASE:
+            self.mouse_controller.button_event(*pointer_pos, down=False, button="left")
+        elif mouse_event == MouseEvent.RIGHT_PRESS:
+            self.mouse_controller.button_event(*pointer_pos, down=True, button="right")
+        elif mouse_event == MouseEvent.RIGHT_RELEASE:
+            self.mouse_controller.button_event(*pointer_pos, down=False, button="right")
 
     def close(self):
         close_camera_singleton()

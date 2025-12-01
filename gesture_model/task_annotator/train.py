@@ -44,7 +44,7 @@ def read_y_mapping():
     return y_mapping
 
 
-if __name__ == "__main__":
+def main():
     logger = setup_logging(ANNOTATOR_BASE_FOLDER + "train.log")
     logger.info(f"Start training script: {time.asctime()}")
 
@@ -101,7 +101,7 @@ if __name__ == "__main__":
             name="default",
             weight=None,
             learning_rate=1e-3,
-            max_epochs=150,
+            max_epochs=200,
             early_stopping_patience=10,
         )
 
@@ -117,3 +117,15 @@ if __name__ == "__main__":
 
     # save y mappings
     save_y_mapping(y_mappings)
+
+
+def cleanup():
+    if os.path.exists(mapping_csv):
+        os.remove(mapping_csv)
+    if os.path.exists(ANNOTATOR_BASE_FOLDER + "train.log"):
+        os.remove(ANNOTATOR_BASE_FOLDER + "train.log")
+
+
+if __name__ == "__main__":
+    cleanup()
+    main()

@@ -30,7 +30,7 @@ def setup_logging(filepath):
 
 
 def main(model: type[AbstractGestureModel], model_path: str | None = None):
-    setup_logging("app.log")
+    setup_logging("main/app.log")
 
     app = QApplication(sys.argv)
     view = MainAppView()

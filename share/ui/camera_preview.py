@@ -5,9 +5,10 @@ import cv2
 
 
 class CameraPreview(QLabel):
-    def __init__(self, width=300, ratio=1.5):
+    def __init__(self, width=300, ratio=2):
         super().__init__()
         self.setFixedSize(width, int(width // ratio))
+        self.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter)
 
     def update_camera_preview(self, frame):
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)

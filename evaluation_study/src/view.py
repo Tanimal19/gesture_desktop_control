@@ -25,7 +25,8 @@ class EvaluationView(QMainWindow):
     def __init__(self, tasks: list[tuple]):
         super().__init__()
         self.setWindowTitle("Evaluation Study")
-        self.showFullScreen()
+        self.setGeometry(100, 100, 1200, 700)
+        # self.showFullScreen()
 
         main_widget = QWidget()
         main_widget.setStyleSheet(

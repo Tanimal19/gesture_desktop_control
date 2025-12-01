@@ -1,4 +1,0 @@
-2025-11-30 12:19:47,611 [DEBUG] camera.__init__(): camera fps: 15.0
-2025-11-30 12:19:47,611 [DEBUG] camera.get_camera_singleton(): CameraSingleton started.
-2025-11-30 12:19:47,699 [DEBUG] camera.run(): Captured frame at timestamp: 87
-2025-11-30 12:19:47,713 [DEBUG] camera.run(): Captured frame at timestamp: 102

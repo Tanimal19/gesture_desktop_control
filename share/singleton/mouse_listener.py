@@ -70,5 +70,6 @@ def close_mouse_listener():
     global _mouse_listener_singleton
     if _mouse_listener_singleton is not None:
         _mouse_listener_singleton.stop()
+        _mouse_listener_singleton.wait()
         _mouse_listener_singleton = None
         logger.debug("Stopped MouseListenerSingleton thread.")

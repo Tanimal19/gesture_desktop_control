@@ -11,9 +11,9 @@ dot_radius = 50
 class TrueTaskType(Enum):
     LEFT_CLICK = 0
     RIGHT_CLICK = 1
-    MENU_NAVIGATION = 3
-    DRAGGING = 4
-    POINT_N_CLICK = 5
+    MENU_NAVIGATION = 2
+    DRAGGING = 3
+    POINT_N_CLICK = 4
 
 
 class AbstractTaskBuilder(ABC):

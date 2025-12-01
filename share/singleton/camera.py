@@ -14,7 +14,7 @@ class CameraSingleton(QThread):
     def __init__(self):
         super().__init__()
         self.cap = cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FPS, 30)
+        self.cap.set(cv2.CAP_PROP_FPS, 60.0)
         if not self.cap.isOpened():
             logger.error("Cannot open camera")
             return
@@ -87,5 +87,6 @@ def close_camera_singleton():
     global _camera_singleton
     if _camera_singleton is not None:
         _camera_singleton.stop()
+        _camera_singleton.wait()
         _camera_singleton = None
         logger.debug("CameraSingleton stopped.")

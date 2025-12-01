@@ -1553,3 +1553,4 @@
 2025-11-30 11:42:39,126 [DEBUG] mouse_listener.on_move(): Mouse moved to (13.98046875, 52.0)
 2025-11-30 11:42:39,201 [DEBUG] mouse_listener.on_click(): left_press at (13, 52)
 2025-11-30 11:42:39,367 [DEBUG] mouse_listener.on_click(): left_release at (13, 52)
+2025-11-30 22:49:32,013 [INFO] app.main(): Loaded task configs [(<TrueTaskType.MenuSelect: 'Menu Selection'>, 5, [{'target_index': 4}, {'target_index': 5}, {'target_index': 4}, {'target_index': 5}, {'target_index': 3}]), (<TrueTaskType.DragDrop: 'Drag and Drop'>, 5, [{'target_area': 'B'}, {'target_area': 'D'}, {'target_area': 'A'}, {'target_area': 'B'}, {'target_area': 'D'}]), (<TrueTaskType.KeyboardInput: 'Keyboard Input'>, 5, [{'target_word': 'TYPING'}, {'target_word': 'MONITOR'}, {'target_word': 'NETWORK'}, {'target_word': 'PRACTICE'}, {'target_word': 'LANGUAGE'}])]
