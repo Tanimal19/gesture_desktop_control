@@ -12,7 +12,7 @@ from data_collection_study.src.task import (
 from data_collection_study.task_generator import read_configs
 from data_collection_study.src.view import DataCollectionView
 from data_collection_study.src.recorder import DataCollectionRecorder
-from share.singleton.camera import get_camera_singleton, close_camera_singleton
+from share.worker.camera import get_camera_singleton, close_camera_singleton
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.landmark_mapper import LandmarkMapper

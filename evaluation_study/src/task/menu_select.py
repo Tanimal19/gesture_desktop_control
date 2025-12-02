@@ -4,7 +4,7 @@ from evaluation_study.src.styles import MyColor, get_instruction_style
 from evaluation_study.src.utils import calculate_distance
 from PySide6.QtCore import Qt, Signal, QPoint
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
-from share.singleton.mouse_listener import get_mouse_listener
+from share.worker.mouse_listener import get_mouse_listener
 import logging
 
 logger = logging.getLogger(__name__)

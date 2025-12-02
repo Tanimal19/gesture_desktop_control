@@ -4,7 +4,7 @@ from PySide6.QtCore import QObject
 from evaluation_study.src.recorder import EvaluationRecorder
 from evaluation_study.src.view import EvaluationView
 from evaluation_study.src.task import TASK_WIDGET_MAP
-from share.singleton.mouse_listener import close_mouse_listener
+from share.worker.mouse_listener import close_mouse_listener
 
 logger = logging.getLogger(__name__)
 

@@ -12,7 +12,7 @@ from evaluation_study.src.styles import (
     MyColor,
     get_instruction_style,
 )
-from share.singleton.mouse_listener import get_mouse_listener
+from share.worker.mouse_listener import get_mouse_listener
 import logging
 
 logger = logging.getLogger(__name__)

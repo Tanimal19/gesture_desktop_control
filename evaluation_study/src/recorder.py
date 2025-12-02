@@ -2,38 +2,13 @@ import os
 import csv
 from datapath import EVA_PARTICIPANT_FOLDER_TEMPLATE
 from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
-import logging
 
 
-def setup_logging(filepath):
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
-
-    if logger.handlers:
-        logger.handlers.clear()
-
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
-    console_fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-    console_handler.setFormatter(console_fmt)
-    logger.addHandler(console_handler)
-
-    file_handler = logging.FileHandler(filepath, encoding="utf-8")
-    file_handler.setLevel(logging.DEBUG)
-    file_fmt = logging.Formatter(
-        "%(asctime)s [%(levelname)s] %(module)s.%(funcName)s(): %(message)s"
-    )
-    file_handler.setFormatter(file_fmt)
-    logger.addHandler(file_handler)
-
-
-class EvaluationRecorder:
+class EvaluationResultRecorder:
     def __init__(self, pid, condition):
         self.pid = pid
         output_dir = EVA_PARTICIPANT_FOLDER_TEMPLATE.format(pid=pid)
         os.makedirs(output_dir, exist_ok=True)
-
-        setup_logging(output_dir + "run.log")
 
         self.task_result_csv = os.path.join(output_dir, f"task_result_{condition}.csv")
         with open(self.task_result_csv, "w") as f:

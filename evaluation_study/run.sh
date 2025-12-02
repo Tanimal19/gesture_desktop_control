@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 <participant_id> <condition: hand|mouse>"
+    echo "Usage: $0 <participant_id> <condition: touchpad|gesture>"
     exit 1
 fi
 
@@ -10,7 +10,7 @@ cond=$2
 
 python -m evaluation_study.app --pid "$pid" --condition "$cond" &
 
-if [ "$cond" = "hand" ]; then
+if [ "$cond" = "gesture" ]; then
     python -m main.app --silent &
 fi
 

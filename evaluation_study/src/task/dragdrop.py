@@ -9,10 +9,9 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QLabel,
     QApplication,
-    QLayout,
 )
 from PySide6.QtGui import QMouseEvent, QResizeEvent
-from share.singleton.mouse_listener import get_mouse_listener
+from share.worker.mouse_listener import get_mouse_listener
 import logging
 
 logger = logging.getLogger(__name__)

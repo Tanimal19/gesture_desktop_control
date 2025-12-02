@@ -1,6 +1,0 @@
-pid,task_type,trial_index,complete_time,is_correct,MenuSelect-menu_length,MenuSelect-target_index,MenuSelect-selected_index,MenuSelect-error_distance,MenuSelect-target_distance,MenuSelect-moving_distance,DragDrop-target_area,DragDrop-dropped_area,DragDrop-error_distance,DragDrop-target_distance,DragDrop-drag_distance,DragDrop-moving_distance,KeyboardInput-target_word,KeyboardInput-entered_word,KeyboardInput-num_key_clicks,KeyboardInput-num_backspaces,KeyboardInput-moving_distance
-0,MenuSelect,1,5.197213888168335,1,6,4,4,26.92582403567252,284.8596145472362,1348.9796611316965,,,,,,,,,,,
-0,MenuSelect,2,3.2621161937713623,0,6,5,4,49.64876634922564,339.31254029286924,584.0095934576754,,,,,,,,,,,
-0,MenuSelect,3,4.6636598110198975,1,6,4,4,33.1058907144937,284.8596145472362,555.8419716009209,,,,,,,,,,,
-0,MenuSelect,4,6.098907947540283,1,6,5,5,5.656854249492381,339.31254029286924,927.6414968844755,,,,,,,,,,,
-0,MenuSelect,5,4.359550952911377,1,6,3,3,4.0,232.13142829009604,431.8811566393885,,,,,,,,,,,

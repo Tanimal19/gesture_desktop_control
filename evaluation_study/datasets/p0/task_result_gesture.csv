@@ -1,0 +1,10 @@
+pid,task_type,trial_index,complete_time,is_correct,MenuSelect-menu_length,MenuSelect-target_index,MenuSelect-selected_index,MenuSelect-error_distance,MenuSelect-target_distance,MenuSelect-moving_distance,DragDrop-target_area,DragDrop-dropped_area,DragDrop-error_distance,DragDrop-target_distance,DragDrop-drag_distance,DragDrop-moving_distance,KeyboardInput-target_word,KeyboardInput-entered_word,KeyboardInput-num_key_clicks,KeyboardInput-num_backspaces,KeyboardInput-moving_distance
+0,MenuSelect,1,15.179908037185669,0,6,4,,337.7469466923424,284.8596145472362,2900.962999889645,,,,,,,,,,,
+0,MenuSelect,2,67.55175304412842,0,6,5,,206.0218435020908,339.31254029286924,2770.1849007685837,,,,,,,,,,,
+0,MenuSelect,3,71.64334893226624,0,6,4,,195.0,284.8596145472362,10155.128424447314,,,,,,,,,,,
+0,MenuSelect,4,3.1893229484558105,0,6,5,,385.48800240733823,339.31254029286924,117.0403426936245,,,,,,,,,,,
+0,MenuSelect,5,24.234771966934204,0,6,3,4,51.54609587543949,232.13142829009604,3156.974475161932,,,,,,,,,,,
+0,DragDrop,1,12.667680025100708,0,,,,,,,B,A,980.4351074905468,987.3282129059212,7.0710678118654755,791.5898225269493,,,,,
+0,DragDrop,2,62.33626079559326,0,,,,,,,D,None,1167.8433114078275,1167.8433114078275,0.0,1409.6013765615514,,,,,
+0,DragDrop,3,5.161631107330322,0,,,,,,,A,C,743.5939752311069,740.7685198494871,3.1622776601683795,1094.7681617602923,,,,,
+0,DragDrop,4,5.634257078170776,0,,,,,,,B,A,1051.41856555798,1051.41856555798,0.0,1703.6954659477415,,,,,

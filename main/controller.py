@@ -1,9 +1,8 @@
-import cv2
 import logging
 import numpy as np
 from share.utils import merge_landmarks
 from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
-from share.singleton.camera import get_camera_singleton, close_camera_singleton
+from share.worker.camera import get_camera_singleton, close_camera_singleton
 from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.landmark_mapper import LandmarkMapper

@@ -3,32 +3,21 @@ import argparse
 from PySide6.QtWidgets import QApplication
 from evaluation_study.src.controller import EvaluationController
 from evaluation_study.src.view import EvaluationView
-from evaluation_study.src.recorder import EvaluationRecorder
+from evaluation_study.src.recorder import EvaluationResultRecorder
 from evaluation_study.task_generator import read_configs, NUM_PARTICIPANT
+from share.utils import setup_logging
 import logging
 
-logger = logging.getLogger(__name__)
 
+def main(log_path, pid, condition):
+    setup_logging(log_path)
+    logger = logging.getLogger(__name__)
 
-def main():
-    parser = argparse.ArgumentParser(description="Run evaluation study")
-    parser.add_argument(
-        "--pid", type=int, default=0, help="Participant ID (default: 0)"
-    )
-    parser.add_argument(
-        "--condition",
-        type=str,
-        default="mouse",
-        help="Condition type: mouse or hand (default: mouse)",
-    )
-    args = parser.parse_args()
-
-    pid = args.pid
     if pid not in range(NUM_PARTICIPANT):
         logger.error(f"Invalid participant ID: {pid}")
         return
     condition = args.condition.lower()
-    if condition not in ["mouse", "hand"]:
+    if condition not in ["touchpad", "gesture"]:
         logger.error(f"Invalid condition type: {condition}")
         return
 
@@ -56,4 +45,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run evaluation study")
+    parser.add_argument(
+        "--pid", type=int, default=0, help="Participant ID (default: 0)"
+    )
+    parser.add_argument(
+        "--condition",
+        type=str,
+        default="touchpad",
+        help="Condition: 'touchpad' or 'gesture' (default: touchpad)",
+    )
+    args = parser.parse_args()
