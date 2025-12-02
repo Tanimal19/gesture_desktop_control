@@ -3,8 +3,8 @@ import os
 from datapath import (
     DC_PARTICIPANT_FOLDER_TEMPLATE,
     DC_RESULT_CSV,
-    DC_FULL_LABEL_CSV,
-    DC_P0_LABEL_CSV,
+    DC_AUTO_LABEL_CSV,
+    DC_MANUAL_LABEL_CSV,
 )
 
 
@@ -59,10 +59,8 @@ def create_task_result_csv():
 def init_labeled_csv():
     df = pd.read_csv(DC_RESULT_CSV)
     df["label"] = -1  # initialize all labels to -1 (unlabeled)
-    df.to_csv(DC_FULL_LABEL_CSV, index=False)
-
-    df = df[df["participant_id"] == 0]
-    df.to_csv(DC_P0_LABEL_CSV, index=False)
+    df.to_csv(DC_AUTO_LABEL_CSV, index=False)
+    df.to_csv(DC_MANUAL_LABEL_CSV, index=False)
 
 
 def update_labeled_csv(csv_path, new_df):

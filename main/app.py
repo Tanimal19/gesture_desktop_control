@@ -45,7 +45,7 @@ def main():
 
     model_name = args.model
     if not model_name:
-        model_name = "best_model_win10-noweight.pth"
+        model_name = "best_model_win10-weight01.pth"
     model_path = GTCN_BASE_FOLDER + "models/" + model_name
 
     app = QApplication(sys.argv)

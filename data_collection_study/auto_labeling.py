@@ -1,5 +1,5 @@
 import pandas as pd
-from datapath import ANNOTATOR_BASE_FOLDER, DC_FULL_LABEL_CSV
+from datapath import ANNOTATOR_BASE_FOLDER, DC_AUTO_LABEL_CSV
 from data_collection_study.src.task import TrueTaskType
 from data_collection_study.post_process import update_labeled_csv
 from share.utils import extend_landmark_columns
@@ -8,7 +8,7 @@ from gesture_model.task_annotator.train import read_y_mapping
 from gesture_model.model_runner import GestureModelRunner
 
 
-df = pd.read_csv(DC_FULL_LABEL_CSV)
+df = pd.read_csv(DC_AUTO_LABEL_CSV)
 df["label"] = "NONE"
 df["row_id"] = range(len(df))
 
@@ -42,4 +42,4 @@ for t in TrueTaskType:
             df.at[row_id, "label"] = predict_label.name
 
 
-update_labeled_csv(DC_FULL_LABEL_CSV, df)
+update_labeled_csv(DC_AUTO_LABEL_CSV, df)

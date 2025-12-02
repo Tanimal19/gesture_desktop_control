@@ -36,7 +36,6 @@ class MouseListenerSingleton(QThread):
         return self.total_distance
 
     def on_move(self, x, y):
-        logger.debug(f"Mouse moved to ({x}, {y})")
         if self.recording_distance:
             dx = x - self.last_pos[0]
             dy = y - self.last_pos[1]

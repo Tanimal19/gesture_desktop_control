@@ -6,7 +6,7 @@ import csv
 from datapath import (
     ANNOTATOR_BASE_FOLDER,
     ANNOTATOR_MODEL_FOLDER_TEMPLATE,
-    DC_P0_LABEL_CSV,
+    DC_MANUAL_LABEL_CSV,
 )
 from data_collection_study.src.task import TrueTaskType
 from share.utils import extend_landmark_columns
@@ -48,7 +48,7 @@ def main():
     logger = setup_logging(ANNOTATOR_BASE_FOLDER + "train.log")
     logger.info(f"Start training script: {time.asctime()}")
 
-    df = pd.read_csv(DC_P0_LABEL_CSV)
+    df = pd.read_csv(DC_MANUAL_LABEL_CSV)
     df = df[df["label"] != "-1"]  # keep only labeled frames
 
     avaliable_tasks = list(df["task"].unique())
@@ -76,7 +76,8 @@ def main():
         # generate dataset
         X: list[torch.Tensor] = []
         y: list[int] = []
-        for _, trail in task_group.groupby("trail"):
+        for (pid, trailid), trail in task_group.groupby(["participant_id", "trail"]):
+            logger.info(f"+ Processing participant {pid}, trail {trailid}")
             for start_idx in range(0, len(trail) - TaskAnnotator.WINDOW_LENGTH + 1):
                 # each window
                 end_idx = start_idx + TaskAnnotator.WINDOW_LENGTH
@@ -100,7 +101,7 @@ def main():
         config = TrainingConfig(
             name="default",
             weight=None,
-            learning_rate=1e-3,
+            learning_rate=5e-3,
             max_epochs=200,
             early_stopping_patience=10,
         )

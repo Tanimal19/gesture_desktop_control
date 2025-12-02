@@ -1,10 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from gesture_model import GestureLabel
-from datapath import DC_P0_LABEL_CSV
 from data_collection_study.src.recorder import DataCollectionRecorder
 from data_collection_study.post_process import update_labeled_csv
 from share.utils import HandLandmark
+from datapath import DC_DATASET_FOLDER, DC_MANUAL_LABEL_CSV
 
 
 CONNECTIONS = [
@@ -22,8 +22,8 @@ CONNECTIONS = [
     (HandLandmark.MIDDLE_FINGER_DIP, HandLandmark.MIDDLE_FINGER_TIP),
 ]
 
-
-df = pd.read_csv(DC_P0_LABEL_CSV)
+csv_file = input("Enter original CSV path: ")
+df = pd.read_csv(DC_DATASET_FOLDER + csv_file)
 
 # split landmark columns into x, y, z
 landmarks_name = [lm.name for lm in DataCollectionRecorder.RECORDED_LANDMARKS]
@@ -41,6 +41,10 @@ fig, ax = plt.subplots(figsize=(7, 7))
 drawn_points = []
 drawn_lines = []
 drawn_texts = []
+
+# frame jumping state
+space_pressed = False
+frame_number_buffer = ""
 
 
 def draw_frame(frame_idx):
@@ -111,7 +115,49 @@ def draw_frame(frame_idx):
 
 
 def on_key(event):
-    global current_frame
+    global current_frame, space_pressed, frame_number_buffer
+
+    if event.key == " ":  # space key pressed
+        space_pressed = True
+        frame_number_buffer = ""
+        print("Frame jump mode: Enter frame number...")
+        return
+
+    # if space was pressed and we get a number
+    if space_pressed and event.key.isdigit():
+        frame_number_buffer += event.key
+        print(f"Frame number: {frame_number_buffer}")
+        return
+
+    # if space was pressed and we get enter/return, jump to frame
+    if space_pressed and event.key == "enter":
+        if frame_number_buffer:
+            try:
+                target_frame = int(frame_number_buffer)
+                if 0 <= target_frame < len(df):
+                    current_frame = target_frame
+                    print(f"Jumped to frame {current_frame}")
+                    draw_frame(current_frame)
+                else:
+                    print(f"Frame {target_frame} out of range (0-{len(df)-1})")
+            except ValueError:
+                print("Invalid frame number")
+        space_pressed = False
+        frame_number_buffer = ""
+        return
+
+    # if space was pressed and we get escape, cancel jump mode
+    if space_pressed and event.key == "escape":
+        space_pressed = False
+        frame_number_buffer = ""
+        print("Frame jump cancelled")
+        return
+
+    # reset space mode if any other key is pressed
+    if space_pressed:
+        space_pressed = False
+        frame_number_buffer = ""
+
     if event.key == "right":
         if current_frame < len(df) - 1:
             current_frame += 1
@@ -142,4 +188,4 @@ draw_frame(current_frame)
 plt.show()
 
 df = df[df["label"] != "-1"]  # keep only labeled frames
-update_labeled_csv(DC_P0_LABEL_CSV, df)
+update_labeled_csv(DC_MANUAL_LABEL_CSV, df)
