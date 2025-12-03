@@ -1,6 +1,6 @@
 import numpy as np
 import logging
-from share.utils import HandLandmark
+from main.utils import HandLandmark
 
 logger = logging.getLogger(__name__)
 

@@ -4,9 +4,9 @@ import json
 import logging
 from typing import Optional
 from enum import Enum
-from share.mouse_server.pointer_distance_recorder import PointerDistanceRecorder
-from share.mouse_server.mouse_controller import MouseController
-from share.utils import setup_logging
+from mouse_server.pointer_distance_recorder import PointerDistanceRecorder
+from mouse_server.mouse_controller import MouseController
+from log_util import setup_logging
 
 logger = logging.getLogger(__name__)
 

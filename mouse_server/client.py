@@ -1,7 +1,7 @@
 import socket
 import json
 import logging
-from share.mouse_server.server import ActionType
+from mouse_server.server import ActionType
 
 logger = logging.getLogger(__name__)
 

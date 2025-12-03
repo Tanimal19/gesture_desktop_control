@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from PySide6.QtWidgets import QWidget, QSizePolicy
 from PySide6.QtCore import Signal
-from share.mouse_server.client import MouseServerClient
+from mouse_server.client import MouseServerClient
 
 
 class AbstractTaskWidget(QWidget):

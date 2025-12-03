@@ -2,7 +2,7 @@ import sys
 import argparse
 from PySide6.QtWidgets import QApplication
 from main.controller import MainAppController
-from share.utils import setup_logging
+from log_util import setup_logging
 
 
 def main(log_path=None, camera_preview_disable=False):

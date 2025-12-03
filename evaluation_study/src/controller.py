@@ -3,7 +3,7 @@ import logging
 from PySide6.QtCore import QObject
 from evaluation_study.src.recorder import EvaluationResultRecorder
 from evaluation_study.src.view import EvaluationView
-from share.mouse_server.client import MouseServerClient
+from mouse_server.client import MouseServerClient
 from evaluation_study.src.task import TASK_WIDGET_MAP
 from evaluation_study.task_generator import read_configs
 

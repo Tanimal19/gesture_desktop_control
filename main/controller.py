@@ -1,15 +1,15 @@
 import cv2
 import logging
-from share.utils import (
+from main.utils import (
     merge_landmarks,
     np_to_normalized_landmark,
     draw_landmarks_on_frame,
 )
-from share.worker.camera import get_camera_singleton, close_camera_singleton
-from share.worker.landmarker import Landmarker, LandmarkSmoother
-from share.worker.pointer_mapper import PointerLandmarkMapper
-from share.worker.mouse_event_mapper import MouseEventMapper, MouseEvent
-from share.mouse_server.client import MouseServerClient
+from main.worker.camera import get_camera_singleton, close_camera_singleton
+from main.worker.landmarker import Landmarker, LandmarkSmoother
+from main.worker.pointer_mapper import PointerLandmarkMapper
+from main.worker.mouse_event_mapper import MouseEventMapper, MouseEvent
+from mouse_server.client import MouseServerClient
 from main.view import MainAppView
 
 

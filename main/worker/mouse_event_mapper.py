@@ -1,6 +1,6 @@
 import numpy as np
 from enum import Enum
-from share.utils import HandLandmark
+from main.utils import HandLandmark
 import logging
 
 logger = logging.getLogger(__name__)

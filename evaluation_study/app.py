@@ -2,7 +2,7 @@ import sys
 import argparse
 from PySide6.QtWidgets import QApplication
 from evaluation_study.src.controller import EvaluationController
-from share.utils import setup_logging
+from log_util import setup_logging
 import logging
 
 
