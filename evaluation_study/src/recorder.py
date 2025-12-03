@@ -1,7 +1,10 @@
 import os
 import csv
-from share.datapath import EVA_PARTICIPANT_FOLDER_TEMPLATE
 from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
+
+
+EVA_DATASET_FOLDER = "./evaluation_study/datasets/"
+EVA_PARTICIPANT_FOLDER_TEMPLATE = EVA_DATASET_FOLDER + "p{pid}/"
 
 
 class EvaluationResultRecorder:

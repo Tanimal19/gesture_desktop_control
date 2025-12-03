@@ -1,6 +1,5 @@
 import numpy as np
 from enum import Enum
-from share.gesture_model import GestureLabel
 from share.utils import HandLandmark
 import logging
 
@@ -17,63 +16,7 @@ class MouseEvent(Enum):
     RIGHT_CLICK = 7
 
 
-class MouseEventGestureMapper:
-    """Map recognized gestures to mouse events"""
-
-    GESTURE_CONFIRMATION_THRESHOLD = (
-        {  # Number of consecutive frames to confirm a gesture
-            GestureLabel.LEFT_PRESS: 5,
-            GestureLabel.LEFT_RELEASE: 5,
-            GestureLabel.RIGHT_PRESS: 5,
-            GestureLabel.RIGHT_RELEASE: 5,
-        }
-    )
-    SCROLL_RESET_THRESHOLD = 5  # Number of non-scroll frames to reset scroll direction
-
-    def __init__(self):
-        self.current_gesture = GestureLabel.NONE
-        self.current_consecutive_count = 0
-
-        self.scroll_direction = None
-        self.non_scroll_count = 0
-
-    def update(self, new_label: GestureLabel) -> MouseEvent:
-        event = MouseEvent.MOVE
-        if new_label != self.current_gesture:
-            prev_gesture = self.current_gesture
-            prev_count = self.current_consecutive_count
-
-            self.current_gesture = new_label
-            self.current_consecutive_count = 1
-
-            if self._is_valid_gesture(prev_gesture, prev_count):
-                if prev_gesture == GestureLabel.LEFT_PRESS:
-                    event = MouseEvent.LEFT_PRESS
-
-                elif prev_gesture == GestureLabel.LEFT_RELEASE:
-                    event = MouseEvent.LEFT_RELEASE
-
-                elif prev_gesture == GestureLabel.RIGHT_PRESS:
-                    event = MouseEvent.RIGHT_PRESS
-
-                elif prev_gesture == GestureLabel.RIGHT_RELEASE:
-                    event = MouseEvent.RIGHT_RELEASE
-        else:
-            self.current_consecutive_count += 1
-
-        return event
-
-    def _is_valid_gesture(self, gesture: GestureLabel, consecutive_frame: int) -> bool:
-        if gesture == GestureLabel.NONE:
-            return False
-
-        if consecutive_frame >= self.GESTURE_CONFIRMATION_THRESHOLD[gesture]:
-            return True
-        else:
-            return False
-
-
-class MouseEventRuleBaseMapper:
+class MouseEventMapper:
     """Directly map landmark windows to mouse events based on rules"""
 
     WINDOW_SIZE = 3  # number of frames to get average distance
@@ -103,22 +46,22 @@ class MouseEventRuleBaseMapper:
     @staticmethod
     def is_press(current_distance, past_distance, btn):
         return (
-            current_distance < MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn]
-            and MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn] < past_distance
+            current_distance < MouseEventMapper.PRESS_DISTANCE_THRESHOLD[btn]
+            and MouseEventMapper.PRESS_DISTANCE_THRESHOLD[btn] < past_distance
         )
 
     @staticmethod
     def is_release(current_distance, past_distance, btn):
         return (
-            current_distance > MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn]
-            and MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn] > past_distance
+            current_distance > MouseEventMapper.PRESS_DISTANCE_THRESHOLD[btn]
+            and MouseEventMapper.PRESS_DISTANCE_THRESHOLD[btn] > past_distance
         )
 
     def detect(self, landmarks_window: np.ndarray) -> MouseEvent:
-        ti_distances = MouseEventRuleBaseMapper.compute_distance(
+        ti_distances = MouseEventMapper.compute_distance(
             landmarks_window, HandLandmark.THUMB_TIP, HandLandmark.INDEX_FINGER_TIP
         )
-        tm_distances = MouseEventRuleBaseMapper.compute_distance(
+        tm_distances = MouseEventMapper.compute_distance(
             landmarks_window, HandLandmark.THUMB_TIP, HandLandmark.MIDDLE_FINGER_TIP
         )
 
@@ -131,22 +74,14 @@ class MouseEventRuleBaseMapper:
         logger.debug(f"thumb-middle distances: {current_tm_distance}")
 
         # detect press and release, right button events have higher priority, since we found that when middle finger approaches thumb, both index and middle distance decrease, but when index finger approaches thumb, only index distance decreases.
-        if MouseEventRuleBaseMapper.is_press(
-            current_tm_distance, past_tm_distance, "right"
-        ):
+        if MouseEventMapper.is_press(current_tm_distance, past_tm_distance, "right"):
             return MouseEvent.RIGHT_PRESS
-        if MouseEventRuleBaseMapper.is_release(
-            current_tm_distance, past_tm_distance, "right"
-        ):
+        if MouseEventMapper.is_release(current_tm_distance, past_tm_distance, "right"):
             return MouseEvent.RIGHT_RELEASE
 
-        if MouseEventRuleBaseMapper.is_press(
-            current_ti_distance, past_ti_distance, "left"
-        ):
+        if MouseEventMapper.is_press(current_ti_distance, past_ti_distance, "left"):
             return MouseEvent.LEFT_PRESS
-        if MouseEventRuleBaseMapper.is_release(
-            current_ti_distance, past_ti_distance, "left"
-        ):
+        if MouseEventMapper.is_release(current_ti_distance, past_ti_distance, "left"):
             return MouseEvent.LEFT_RELEASE
 
         return MouseEvent.MOVE
@@ -168,7 +103,7 @@ class MouseEventRuleBaseMapper:
             performed_event = MouseEvent.MOVE
 
         # if release comes in few frames after press, merge to click
-        if self.onhold_frames <= MouseEventRuleBaseMapper.CLICK_MERGE_THRESHOLD:
+        if self.onhold_frames <= MouseEventMapper.CLICK_MERGE_THRESHOLD:
             if detected_event in [MouseEvent.LEFT_RELEASE, MouseEvent.RIGHT_RELEASE]:
                 # merge press and release to click
                 if self.onhold_event == MouseEvent.LEFT_PRESS:
@@ -191,15 +126,13 @@ class MouseEventRuleBaseMapper:
 
         # update
         self.landmarks_queue.append(landmarks)
-        if len(self.landmarks_queue) > MouseEventRuleBaseMapper.WINDOW_LENGTH:
+        if len(self.landmarks_queue) > MouseEventMapper.WINDOW_LENGTH:
             self.landmarks_queue.pop(0)
 
         # build landmarks window
-        if len(self.landmarks_queue) < MouseEventRuleBaseMapper.WINDOW_LENGTH:
+        if len(self.landmarks_queue) < MouseEventMapper.WINDOW_LENGTH:
             return MouseEvent.MOVE
-        landmarks_window = self.landmarks_queue[
-            -MouseEventRuleBaseMapper.WINDOW_LENGTH :
-        ]
+        landmarks_window = self.landmarks_queue[-MouseEventMapper.WINDOW_LENGTH :]
         landmarks_window = np.stack(landmarks_window, axis=0)
 
         detected_event = self.detect(landmarks_window)

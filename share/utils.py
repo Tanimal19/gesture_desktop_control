@@ -1,9 +1,8 @@
-# utils that do not depend on mediapipe
-
 import numpy as np
-import pandas as pd
+from numpy.typing import NDArray as Mat
 from enum import Enum
 import logging
+from mediapipe.python.solutions import drawing_utils, hands, drawing_styles
 
 
 def setup_logging(filepath=None):
@@ -29,8 +28,11 @@ def setup_logging(filepath=None):
         logger.addHandler(file_handler)
 
 
+def np_to_normalized_landmark(arr):
+    return [landmark_pb2.NormalizedLandmark(x=x, y=y, z=z) for x, y, z in arr]  # type: ignore
+
+
 # simulate mediapipe.tasks.python.vision.hand_landmarker.HandLandmark
-# becuase it can't be imported in some environments
 class HandLandmark(Enum):
     WRIST = 0
     THUMB_CMC = 1
@@ -67,22 +69,31 @@ def merge_landmarks(hand_landmarks, world_landmarks):
     )
 
 
-def extend_landmark_columns(window: pd.DataFrame, window_length: int) -> np.ndarray:
-    """
-    Extend the landmark columns in the given window to a 3D numpy array of shape.\n
-    Pad with zeros for missing landmarks.
-    """
+def draw_landmarks_on_frame(frame: Mat, landmarks) -> np.ndarray:
 
-    landmark_window = []
-    for lm in HandLandmark:
-        if lm.name in window.columns:
-            x, y, z = window[lm.name].str.split("_", expand=True).astype(float).values.T
-        else:
-            x = y = z = np.zeros((window_length,))
+    if (
+        type(landmarks) is not list[landmark_pb2.NormalizedLandmark]  # type: ignore
+        and len(landmarks) != 21
+    ):
+        return frame
 
-        landmark_feautures = np.stack([x, y, z], axis=1)  # shape: (frame_window, 3)
-        landmark_window.append(landmark_feautures)
-    landmark_window = np.stack(landmark_window, axis=1).astype(
-        "float32"
-    )  # shape: (frame_window, landmarks, 3)
-    return landmark_window
+    annotated_frame = np.copy(frame)
+
+    hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()  # type: ignore
+    hand_landmarks_proto.landmark.extend(
+        [
+            landmark_pb2.NormalizedLandmark(  # type: ignore
+                x=landmark.x, y=landmark.y, z=0
+            )
+            for landmark in landmarks
+        ]
+    )
+    drawing_utils.draw_landmarks(
+        annotated_frame,
+        hand_landmarks_proto,
+        list(hands.HAND_CONNECTIONS),
+        drawing_styles.get_default_hand_landmarks_style(),
+        drawing_styles.get_default_hand_connections_style(),
+    )
+
+    return annotated_frame

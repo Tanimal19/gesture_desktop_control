@@ -3,6 +3,3 @@ mediapipe
 numpy
 pyside6
 pandas
-pynput
-torch
-scikit-learn

@@ -1,17 +1,14 @@
 import cv2
 import logging
-from share.utils import merge_landmarks
-from share.mediapipe_utils import np_to_normalized_landmark, draw_landmarks_on_frame
+from share.utils import (
+    merge_landmarks,
+    np_to_normalized_landmark,
+    draw_landmarks_on_frame,
+)
 from share.worker.camera import get_camera_singleton, close_camera_singleton
 from share.worker.landmarker import Landmarker, LandmarkSmoother
 from share.worker.pointer_mapper import PointerLandmarkMapper
-from share.worker.mouse_event_mapper import (
-    MouseEventGestureMapper,
-    MouseEventRuleBaseMapper,
-    MouseEvent,
-)
-from share.gesture_model.model_runner import GestureModelRunner
-from share.gesture_model import AbstractGestureModel
+from share.worker.mouse_event_mapper import MouseEventMapper, MouseEvent
 from share.mouse_server.client import MouseServerClient
 from main.view import MainAppView
 
@@ -22,9 +19,6 @@ logger = logging.getLogger(__name__)
 class MainAppController:
     def __init__(
         self,
-        model_class: type[AbstractGestureModel],
-        model_path: str,
-        rule_base_enable: bool,
         camera_preview_disable: bool,
     ):
         self.view = MainAppView(camera_preview_disable)
@@ -44,15 +38,7 @@ class MainAppController:
             self.view.screen_width, self.view.screen_height
         )
 
-        self.rule_base_enable = rule_base_enable
-        if not rule_base_enable:
-            # gesture model
-            self.model_class = model_class
-            self.gesture_model = GestureModelRunner(self.model_class, model_path, "cpu")
-            self.mouse_mapper_gesture = MouseEventGestureMapper()
-        else:
-            self.mouse_mapper_rulebase = MouseEventRuleBaseMapper()
-            logger.info("Using rule-based mapper")
+        self.mouse_mapper_rulebase = MouseEventMapper()
 
         # mouse server client
         self.mouse_cilent = MouseServerClient()
@@ -101,24 +87,11 @@ class MainAppController:
             logger.debug(f"Pointer mapped to screen position: {screen_pos}")
 
             # mouse event mapping
-            if not self.rule_base_enable:
-                # gesture recognition
-                gesture_label = self.gesture_model.update_and_inference(
-                    smoothed_landmarks
-                )
-                logger.debug(f"Gesture detected: {gesture_label.name}")
-                mouse_event = self.mouse_mapper_gesture.update(gesture_label)
-                self.view.update_overlay_info(
-                    gesture=gesture_label,
-                    pointer_pos=screen_pos,
-                    mouse_event=mouse_event.name,
-                )
-            else:
-                mouse_event = self.mouse_mapper_rulebase.update(smoothed_landmarks)
-                self.view.update_overlay_info(
-                    pointer_pos=screen_pos,
-                    mouse_event=mouse_event.name,
-                )
+            mouse_event = self.mouse_mapper_rulebase.update(smoothed_landmarks)
+            self.view.update_overlay_info(
+                pointer_pos=screen_pos,
+                mouse_event=mouse_event.name,
+            )
             logger.debug(f"Mouse event performed: {mouse_event.name}")
             self.perform_mouse_event(mouse_event, screen_pos)
 

@@ -3,8 +3,8 @@
 import csv
 import os
 
-from share.datapath import EVA_DATASET_FOLDER
 from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
+from evaluation_study.src.recorder import EVA_DATASET_FOLDER
 
 NUM_PARTICIPANT = 5
 config_path = EVA_DATASET_FOLDER + "/task_configs.csv"
