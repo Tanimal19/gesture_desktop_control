@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from share.utils import HandLandmark
-from gesture_model import GestureLabel, AbstractGestureModel
-from datapath import GTCN_BASE_FOLDER
+from share.gesture_model import GestureLabel, AbstractGestureModel
 
 
 class GCNLayer(nn.Module):

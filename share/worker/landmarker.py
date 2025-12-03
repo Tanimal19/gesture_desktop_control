@@ -18,6 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 class Landmarker(QObject):
+    """
+    Detect hand landmarks from video frames asynchronously using MediaPipe HandLandmarker.\n
+    Usage:\n
+        landmarker = Landmarker()
+        landmarker.landmark_update.connect(your_callback_function)
+        landmarker.detect_async(frame, timestamp)
+    """
+
     landmark_update = Signal(object)
 
     def __init__(self, output_csv=None):

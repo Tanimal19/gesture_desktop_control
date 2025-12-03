@@ -2,16 +2,14 @@ import random
 from evaluation_study.src.task.abstract_task_widget import AbstractTaskWidget
 from evaluation_study.src.utils import calculate_distance
 from evaluation_study.src.styles import MyColor, get_instruction_style
-from PySide6.QtCore import Qt, Signal, QPoint
+from PySide6.QtCore import Qt, Signal, QPoint, QTimer
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QGridLayout,
     QLabel,
-    QApplication,
 )
 from PySide6.QtGui import QMouseEvent, QResizeEvent
-from share.worker.mouse_listener import get_mouse_listener
 import logging
 
 logger = logging.getLogger(__name__)
@@ -105,8 +103,7 @@ class DragDropTaskWidget(AbstractTaskWidget):
 
     def on_drag(self):
         logger.debug("Drag started")
-        listener = get_mouse_listener()
-        listener.start_record_distance()
+        self.mouse_client.start_distance_recording()
 
     def on_drop(self, dropped_area):
         logger.debug(
@@ -126,8 +123,8 @@ class DragDropTaskWidget(AbstractTaskWidget):
             self.draggable_square.drag_start_pos, self.draggable_square.drag_end_pos
         )
 
-        listener = get_mouse_listener()
-        moving_distance = listener.stop_record_distance()
+        res = self.mouse_client.stop_distance_recording()
+        moving_distance = res.get("distance", -1) if res else -1
 
         payload = {
             "is_correct": int(
@@ -242,26 +239,20 @@ class DraggableSquare(QLabel):
 
         if event.button() == Qt.MouseButton.LeftButton:
             self.drag_start_pos = event.position().toPoint()
+            self.is_dragging = True
+            self.on_drag.emit()
 
     def mouseMoveEvent(self, event: QMouseEvent):
         if not (event.buttons() & Qt.MouseButton.LeftButton) or self.has_dragged:
             return
 
-        if (
-            event.position().toPoint() - self.drag_start_pos
-        ).manhattanLength() < QApplication.startDragDistance():
-            return
+        if self.is_dragging:
+            # Move the widget
+            new_pos = self.mapToParent(event.position().toPoint() - self.drag_start_pos)
+            self.move(new_pos)
 
-        if not self.is_dragging:
-            self.is_dragging = True
-            self.on_drag.emit()
-
-        # Move the widget
-        new_pos = self.mapToParent(event.position().toPoint() - self.drag_start_pos)
-        self.move(new_pos)
-
-        # Emit position change for hover detection
-        self.position_changed.emit(self.geometry().center())
+            # Emit position change for hover detection
+            self.position_changed.emit(self.geometry().center())
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         if not self.is_dragging or self.has_dragged:

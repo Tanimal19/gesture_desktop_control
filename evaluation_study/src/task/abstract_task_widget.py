@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from PySide6.QtWidgets import QWidget, QSizePolicy
 from PySide6.QtCore import Signal
+from share.mouse_server.client import MouseServerClient
 
 
 class AbstractTaskWidget(QWidget):
@@ -20,10 +21,11 @@ class AbstractTaskWidget(QWidget):
         """Parse the configuration string into a list of configuration dictionaries."""
         pass
 
-    def __init__(self, config: dict, parent=None):
+    def __init__(self, config: dict, mouse_client: MouseServerClient, parent=None):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setup(config)
+        self.mouse_client = mouse_client
 
     @abstractmethod
     def setup(self, config: dict):

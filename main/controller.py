@@ -7,9 +7,9 @@ from share.worker.landmarker import Landmarker
 from share.worker.smoother import EMASmoother
 from share.worker.landmark_mapper import LandmarkMapper
 from share.worker.gesture_mapper import GestureMapper, MouseEvent
-from share.worker.mouse_controller import MouseController
-from gesture_model.model_runner import GestureModelRunner
-from gesture_model import AbstractGestureModel
+from share.mouse_server.client import MouseServerClient
+from share.gesture_model.model_runner import GestureModelRunner
+from share.gesture_model import AbstractGestureModel
 from main.view import MainAppView
 
 
@@ -17,9 +17,11 @@ logger = logging.getLogger(__name__)
 
 
 class MainAppController:
-    def __init__(self, view: MainAppView, model: AbstractGestureModel, model_path: str):
-        self.view = view
+    def __init__(self, model: AbstractGestureModel, model_path: str):
+        self.view = MainAppView()
+        self.view.set_controller(self)
 
+        # camera and hand landmarker
         self.camera = get_camera_singleton()
         self.camera.frame_ready.connect(self._on_frame_ready)
         self.landmarker = Landmarker()
@@ -28,17 +30,31 @@ class MainAppController:
         self.reset_after_undetect = 10
         self.undetected_count = 0
 
+        # landmark mapper to screen position
         self.landmark_mapper = LandmarkMapper(
             self.view.screen_width, self.view.screen_height
         )
+
+        # gesture model
         self.model = model
         self.gesture_model = GestureModelRunner(self.model, model_path, "cpu")
         self.gesture_mapper = GestureMapper()
-        self.mouse_controller = MouseController()
         self.landmarks_queue = []
         self.max_queue_length = self.model.WINDOW_LENGTH + 5  # some buffer
 
-        self.mouse_control_enabled = True
+        # mouse server client
+        self.mouse_cilent = MouseServerClient()
+        if not self.mouse_cilent.connect():
+            logger.error("Failed to connect to mouse server client")
+            self.close()
+            raise ConnectionError("Cannot connect to mouse server")
+
+        self.mouse_control_enabled = False
+
+        # show view
+        self.view.show()
+        self.view.setFocus()
+        self.view.raise_()
 
     def _on_frame_ready(self, payload):
         timestamp, frame = payload
@@ -110,17 +126,18 @@ class MainAppController:
         if not self.mouse_control_enabled:
             return
 
-        self.mouse_controller.move(*pointer_pos)
+        self.mouse_cilent.move_mouse(*pointer_pos)
 
         if mouse_event == MouseEvent.LEFT_PRESS:
-            self.mouse_controller.button_event(*pointer_pos, down=True, button="left")
+            self.mouse_cilent.button_event(*pointer_pos, down=True, button="left")
         elif mouse_event == MouseEvent.LEFT_RELEASE:
-            self.mouse_controller.button_event(*pointer_pos, down=False, button="left")
+            self.mouse_cilent.button_event(*pointer_pos, down=False, button="left")
         elif mouse_event == MouseEvent.RIGHT_PRESS:
-            self.mouse_controller.button_event(*pointer_pos, down=True, button="right")
+            self.mouse_cilent.button_event(*pointer_pos, down=True, button="right")
         elif mouse_event == MouseEvent.RIGHT_RELEASE:
-            self.mouse_controller.button_event(*pointer_pos, down=False, button="right")
+            self.mouse_cilent.button_event(*pointer_pos, down=False, button="right")
 
     def close(self):
         close_camera_singleton()
         self.landmarker.close()
+        self.mouse_cilent.disconnect()

@@ -1,10 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from gesture_model import GestureLabel
 from data_collection_study.src.recorder import DataCollectionRecorder
 from data_collection_study.post_process import update_labeled_csv
 from share.utils import HandLandmark
-from datapath import DC_DATASET_FOLDER, DC_MANUAL_LABEL_CSV
+from share.gesture_model import GestureLabel
+from share.datapath import DC_DATASET_FOLDER, DC_MANUAL_LABEL_CSV
 
 
 CONNECTIONS = [

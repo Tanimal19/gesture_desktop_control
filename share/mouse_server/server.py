@@ -4,8 +4,9 @@ import json
 import logging
 from typing import Optional
 from enum import Enum
-from mouse_server.pointer_distance_recorder import PointerDistanceRecorder
-from mouse_server.mouse_controller import MouseController
+from share.mouse_server.pointer_distance_recorder import PointerDistanceRecorder
+from share.mouse_server.mouse_controller import MouseController
+from share.utils import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -31,14 +32,20 @@ class MouseServer:
     def start_server(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.server_socket.settimeout(1.0)
 
         try:
             self.server_socket.bind((self.host, self.port))
             self.server_socket.listen(5)
             self.running = True
             logger.info(f"Mouse server started on {self.host}:{self.port}")
+            logger.info("Press Ctrl+C to stop the server")
+        except Exception as e:
+            logger.error(f"Failed to start server: {e}")
+            self.stop_server()
 
-            # Main loop to accept clients
+        # Main loop to accept clients
+        try:
             while self.running:
                 try:
                     client_socket, client_address = self.server_socket.accept()
@@ -51,12 +58,13 @@ class MouseServer:
                     client_thread.daemon = True
                     client_thread.start()
 
+                except socket.timeout:
+                    continue
                 except socket.error as e:
-                    if self.running:
-                        logger.error(f"Socket error: {e}")
+                    logger.error(f"Socket error: {e}")
 
-        except Exception as e:
-            logger.error(f"Failed to start server: {e}")
+        except KeyboardInterrupt:
+            logger.info("Shutting down server due to keyboard interrupt")
         finally:
             self.stop_server()
 
@@ -93,10 +101,10 @@ class MouseServer:
                         break
 
                     command = json.loads(data.decode("utf-8"))
-                    logger.debug(f"Processed command from {client_address}: {command}")
+                    logger.info(f"Processed command from {client_address}: {command}")
 
                     response = self.process_command(command)
-                    logger.debug(f"Response to {client_address}: {response}")
+                    logger.info(f"Response to {client_address}: {response}")
 
                     client_socket.send(json.dumps(response).encode("utf-8"))
 
@@ -152,8 +160,12 @@ class MouseServer:
         }
 
         action = command.get("action")
-        if action in ACTION_MAP.values():
-            return ACTION_MAP[action](command)
+        action_enum = (
+            ActionType(action) if action in ActionType._value2member_map_ else None
+        )
+
+        if action_enum:
+            return ACTION_MAP[action_enum](command)
         else:
             return self.generate_response(False)
 
@@ -163,3 +175,11 @@ class MouseServer:
         if data:
             response.update(data)
         return response
+
+
+if __name__ == "__main__":
+    # run the mouse server
+    setup_logging("mouse_server.log")
+
+    server = MouseServer()
+    server.start_server()

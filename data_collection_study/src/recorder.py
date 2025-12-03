@@ -1,7 +1,7 @@
 import os
 import csv
 from share.utils import HandLandmark
-from datapath import DC_PARTICIPANT_FOLDER_TEMPLATE
+from share.datapath import DC_PARTICIPANT_FOLDER_TEMPLATE
 import logging
 
 

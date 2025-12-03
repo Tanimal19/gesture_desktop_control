@@ -6,6 +6,10 @@ logger = logging.getLogger(__name__)
 
 
 class EMASmoother:
+    """
+    Smooth landmarks using Exponential Moving Average (EMA) filter.
+    """
+
     def __init__(self, alpha=0.2, jump_thresh=1.5):
         self.alpha = alpha
         self.jump_thresh = jump_thresh

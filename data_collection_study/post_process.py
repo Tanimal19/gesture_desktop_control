@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from datapath import (
+from share.datapath import (
     DC_PARTICIPANT_FOLDER_TEMPLATE,
     DC_RESULT_CSV,
     DC_AUTO_LABEL_CSV,

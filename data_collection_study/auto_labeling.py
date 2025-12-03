@@ -1,11 +1,11 @@
 import pandas as pd
-from datapath import ANNOTATOR_BASE_FOLDER, DC_AUTO_LABEL_CSV
+from share.datapath import ANNOTATOR_BASE_FOLDER, DC_AUTO_LABEL_CSV
 from data_collection_study.src.task import TrueTaskType
 from data_collection_study.post_process import update_labeled_csv
 from share.utils import extend_landmark_columns
-from gesture_model.task_annotator import TaskAnnotator
-from gesture_model.task_annotator.train import read_y_mapping
-from gesture_model.model_runner import GestureModelRunner
+from share.gesture_model.task_annotator import TaskAnnotator
+from share.gesture_model.task_annotator.train import read_y_mapping
+from share.gesture_model.model_runner import GestureModelRunner
 
 
 df = pd.read_csv(DC_AUTO_LABEL_CSV)

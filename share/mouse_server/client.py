@@ -1,13 +1,12 @@
 import socket
 import json
-import time
 import logging
-from mouse_server.server import ActionType
+from share.mouse_server.server import ActionType
 
 logger = logging.getLogger(__name__)
 
 
-class MouseClient:
+class MouseServerClient:
     def __init__(self, host="localhost", port=8888):
         self.host = host
         self.port = port
@@ -21,6 +20,9 @@ class MouseClient:
             return True
         except Exception as e:
             logger.error(f"Failed to connect to server: {e}")
+            logger.info(
+                "Please make sure the mouse server is running: python -m share.mouse_server.server"
+            )
             return False
 
     def disconnect(self):
@@ -35,9 +37,11 @@ class MouseClient:
         try:
             command_json = json.dumps(command)
             self.socket.send(command_json.encode("utf-8"))
+            logger.debug(f"Sent command: {command_json}")
 
             response = self.socket.recv(1024)
             return json.loads(response.decode("utf-8"))
+
         except Exception as e:
             logger.error(f"Error sending command: {e}")
             return None
@@ -60,6 +64,6 @@ class MouseClient:
         command = {"action": ActionType.START_RECORDING.value}
         return self.send_command(command)
 
-    def stop_command(self):
+    def stop_distance_recording(self):
         command = {"action": ActionType.STOP_RECORDING.value}
         return self.send_command(command)

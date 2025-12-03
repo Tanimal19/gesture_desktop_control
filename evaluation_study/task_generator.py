@@ -3,7 +3,7 @@
 import csv
 import os
 
-from datapath import EVA_DATASET_FOLDER
+from share.datapath import EVA_DATASET_FOLDER
 from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
 
 NUM_PARTICIPANT = 9

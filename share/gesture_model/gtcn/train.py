@@ -2,16 +2,16 @@ import time
 import pandas as pd
 import torch
 import numpy as np
-from datapath import GTCN_BASE_FOLDER, DC_FINAL_LABEL_CSV, DC_MANUAL_LABEL_CSV
+from share.datapath import GTCN_BASE_FOLDER, DC_FINAL_LABEL_CSV, DC_MANUAL_LABEL_CSV
 from share.utils import extend_landmark_columns
-from gesture_model.model_trainer import (
+from share.gesture_model import GestureLabel
+from share.gesture_model.gtcn import GTCNModel
+from share.gesture_model.model_trainer import (
     TensorDataset,
     TrainingConfig,
     GestureModelTrainer,
     setup_logging,
 )
-from gesture_model import GestureLabel
-from gesture_model.gtcn import GTCNModel
 
 
 if __name__ == "__main__":

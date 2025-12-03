@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from share.utils import HandLandmark
-from gesture_model import GestureLabel, AbstractGestureModel
+from share.gesture_model import GestureLabel, AbstractGestureModel
 
 
 class TaskAnnotator(AbstractGestureModel):

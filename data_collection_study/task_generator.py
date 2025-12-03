@@ -1,6 +1,6 @@
 # generating and reading task configuration file
 
-from datapath import DC_DATASET_FOLDER
+from share.datapath import DC_DATASET_FOLDER
 from data_collection_study.src.task import TrueTaskType, TASK_BUILDER_MAP
 import pandas as pd
 import csv

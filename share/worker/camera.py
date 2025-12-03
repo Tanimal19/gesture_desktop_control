@@ -9,12 +9,16 @@ logger = logging.getLogger(__name__)
 
 
 class CameraSingleton(QThread):
+    """
+    A singleton thread to capture camera frames and emit them via signal.
+    """
+
     frame_ready = Signal(object)
 
     def __init__(self):
         super().__init__()
         self.cap = cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FPS, 60.0)
+        self.cap.set(cv2.CAP_PROP_FPS, 30)
         if not self.cap.isOpened():
             logger.error("Cannot open camera")
             return

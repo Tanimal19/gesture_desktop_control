@@ -1,6 +1,6 @@
 import logging
 from enum import Enum
-from gesture_model import GestureLabel
+from share.gesture_model import GestureLabel
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +14,9 @@ class MouseEvent(Enum):
 
 
 class GestureMapper:
+    """
+    Map recognized gestures to mouse events with confirmation mechanism."""
+
     GESTURE_CONFIRMATION_THRESHOLD = (
         {  # Number of consecutive frames to confirm a gesture
             GestureLabel.LEFT_PRESS: 3,
@@ -32,7 +35,6 @@ class GestureMapper:
         self.non_scroll_count = 0
 
     def update(self, new_label: GestureLabel) -> MouseEvent:
-        # ------ gesture transition ------
         event = MouseEvent.MOVE
         if new_label != self.current_gesture:
             prev_gesture = self.current_gesture

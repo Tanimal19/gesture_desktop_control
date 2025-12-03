@@ -6,6 +6,13 @@ logger = logging.getLogger(__name__)
 
 
 class LandmarkMapper:
+    """
+    Map hand landmarks to screen coordinates.\n
+
+    `mapping_use_palm()`: use palm plane intersection for mapping.\n
+    `mapping_use_index()`: use index finger direction for mapping.\n
+    """
+
     def __init__(self, screen_width, screen_height):
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -122,6 +129,10 @@ class LandmarkMapper:
 
 
 class StationaryDetector:
+    """
+    Detect if the landmarks are stationary based on standard deviation and velocity.
+    """
+
     def __init__(self, window_size=5, std_thresh=1e-3, vel_thresh=1e-3):
         self.window_size = window_size
         self.window = []
@@ -148,6 +159,10 @@ class StationaryDetector:
 
 
 class SigmoidScaler:
+    """
+    Scale slow movements using a sigmoid function to reduce jitter.
+    """
+
     def __init__(self, vel_thresh=5e-3, k=100, gain_min=0):
         self.prev = None
         self.vel_thresh = vel_thresh

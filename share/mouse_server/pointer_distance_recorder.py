@@ -33,12 +33,18 @@ class PointerDistanceRecorder:
     def start(self):
         if self.running:
             return
+
         self.running = True
         self.total_distance = 0.0
         self.last_pos = None
 
         def run():
-            mask = Quartz.CGEventMaskBit(Quartz.kCGEventMouseMoved)
+            mask = (
+                Quartz.CGEventMaskBit(Quartz.kCGEventMouseMoved)
+                | Quartz.CGEventMaskBit(Quartz.kCGEventLeftMouseDragged)
+                | Quartz.CGEventMaskBit(Quartz.kCGEventRightMouseDragged)
+                | Quartz.CGEventMaskBit(Quartz.kCGEventOtherMouseDragged)
+            )
             self._tap = Quartz.CGEventTapCreate(
                 Quartz.kCGHIDEventTap,
                 Quartz.kCGHeadInsertEventTap,

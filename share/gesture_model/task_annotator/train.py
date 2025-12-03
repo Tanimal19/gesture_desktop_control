@@ -3,20 +3,20 @@ import pandas as pd
 import torch
 import os
 import csv
-from datapath import (
+from share.datapath import (
     ANNOTATOR_BASE_FOLDER,
     ANNOTATOR_MODEL_FOLDER_TEMPLATE,
     DC_MANUAL_LABEL_CSV,
 )
 from data_collection_study.src.task import TrueTaskType
 from share.utils import extend_landmark_columns
-from gesture_model.model_trainer import (
+from share.gesture_model.task_annotator import TaskAnnotator
+from share.gesture_model.model_trainer import (
     TensorDataset,
     TrainingConfig,
     GestureModelTrainer,
     setup_logging,
 )
-from gesture_model.task_annotator import TaskAnnotator
 
 
 mapping_csv = ANNOTATOR_BASE_FOLDER + "task_label_mappings.csv"

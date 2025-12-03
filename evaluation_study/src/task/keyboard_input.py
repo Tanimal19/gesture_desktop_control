@@ -12,7 +12,6 @@ from evaluation_study.src.styles import (
     MyColor,
     get_instruction_style,
 )
-from share.worker.mouse_listener import get_mouse_listener
 import logging
 
 logger = logging.getLogger(__name__)
@@ -186,9 +185,8 @@ class KeyboardInputTaskWidget(AbstractTaskWidget):
     def on_key_click(self, value: str):
         # Track first click for mouse movement recording
         if self.first_click:
-            listener = get_mouse_listener()
-            listener.start_record_distance()
             self.first_click = False
+            self.mouse_client.start_distance_recording()
 
         self.num_key_clicks += 1
 
@@ -205,8 +203,8 @@ class KeyboardInputTaskWidget(AbstractTaskWidget):
         self.text_display.setText(f"{self.current_word}")
 
     def on_submit(self):
-        listener = get_mouse_listener()
-        moving_distance = listener.stop_record_distance() if not self.first_click else 0
+        res = self.mouse_client.stop_distance_recording()
+        moving_distance = res.get("distance", -1) if res else -1
 
         payload = {
             "is_correct": int(self.current_word == self.target_word),

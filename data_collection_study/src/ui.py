@@ -1,7 +1,16 @@
-from PySide6.QtWidgets import QWidget, QSizePolicy
-from PySide6.QtGui import QPainter, QPen, QFont, QPolygonF, QBrush, QColor
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QApplication, QSizePolicy
+from PySide6.QtGui import (
+    QPainter,
+    QPen,
+    QFont,
+    QPolygonF,
+    QBrush,
+    QColor,
+    QImage,
+    QPixmap,
+)
 from PySide6.QtCore import Qt, QPointF, QRect
-from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+import cv2
 import math
 import logging
 
@@ -94,6 +103,60 @@ class HintOverlay(QWidget):
     def set_hint(self, text):
         self.label.setText(text)
         self.show()
+
+
+class PointerOverlay(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint
+        )
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
+        screen_geometry = QApplication.primaryScreen().geometry()
+        self.setGeometry(screen_geometry)
+
+        self.dot_radius = 10
+        self.dot_pos = None
+
+    def update_pointer_position(self, pos):
+        self.dot_pos = pos
+        self.update()
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+
+        if self.dot_pos is not None:
+            painter.setBrush(QColor(255, 0, 0))
+            p = self.mapFromGlobal(QPointF(self.dot_pos[0], self.dot_pos[1]))
+            x, y = p.x(), p.y()
+
+            painter.drawEllipse(
+                int(x - self.dot_radius),
+                int(y - self.dot_radius),
+                self.dot_radius * 2,
+                self.dot_radius * 2,
+            )
+
+        painter.end()
+
+
+class CameraPreview(QLabel):
+    def __init__(self, width=300, ratio=2):
+        super().__init__()
+        self.setFixedSize(width, int(width // ratio))
+        self.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter)
+
+    def update_camera_preview(self, frame):
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb.shape
+        qimg = QImage(rgb.data, w, h, ch * w, QImage.Format.Format_RGB888)
+        pixmap = QPixmap.fromImage(qimg).scaled(
+            self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio
+        )
+        self.setPixmap(pixmap)
 
 
 class ArrowElement:

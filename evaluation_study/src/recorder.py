@@ -1,16 +1,20 @@
 import os
 import csv
-from datapath import EVA_PARTICIPANT_FOLDER_TEMPLATE
+from share.datapath import EVA_PARTICIPANT_FOLDER_TEMPLATE
 from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
 
 
 class EvaluationResultRecorder:
     def __init__(self, pid, condition):
         self.pid = pid
+        self.condition = condition
+
         output_dir = EVA_PARTICIPANT_FOLDER_TEMPLATE.format(pid=pid)
         os.makedirs(output_dir, exist_ok=True)
 
-        self.task_result_csv = os.path.join(output_dir, f"task_result_{condition}.csv")
+        self.task_result_csv = os.path.join(
+            output_dir, f"task_result_{self.condition}.csv"
+        )
         with open(self.task_result_csv, "w") as f:
             writer = csv.writer(f)
             global_header = [

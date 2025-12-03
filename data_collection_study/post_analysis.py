@@ -1,4 +1,4 @@
-from datapath import DC_FINAL_LABEL_CSV, DC_DATASET_FOLDER
+from share.datapath import DC_FINAL_LABEL_CSV, DC_DATASET_FOLDER
 import pandas as pd
 
 

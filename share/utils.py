@@ -6,7 +6,7 @@ from enum import Enum
 import logging
 
 
-def setup_logging(filepath):
+def setup_logging(filepath=None):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
@@ -19,13 +19,14 @@ def setup_logging(filepath):
     console_handler.setFormatter(console_fmt)
     logger.addHandler(console_handler)
 
-    file_handler = logging.FileHandler(filepath, encoding="utf-8")
-    file_handler.setLevel(logging.DEBUG)
-    file_fmt = logging.Formatter(
-        "%(asctime)s [%(levelname)s] %(module)s.%(funcName)s(): %(message)s"
-    )
-    file_handler.setFormatter(file_fmt)
-    logger.addHandler(file_handler)
+    if filepath:
+        file_handler = logging.FileHandler(filepath, encoding="utf-8")
+        file_handler.setLevel(logging.DEBUG)
+        file_fmt = logging.Formatter(
+            "%(asctime)s [%(levelname)s] %(module)s.%(funcName)s(): %(message)s"
+        )
+        file_handler.setFormatter(file_fmt)
+        logger.addHandler(file_handler)
 
 
 # simulate mediapipe.tasks.python.vision.hand_landmarker.HandLandmark

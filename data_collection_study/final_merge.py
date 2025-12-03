@@ -1,4 +1,4 @@
-from datapath import DC_FINAL_LABEL_CSV, DC_AUTO_LABEL_CSV, DC_MANUAL_LABEL_CSV
+from share.datapath import DC_FINAL_LABEL_CSV, DC_AUTO_LABEL_CSV, DC_MANUAL_LABEL_CSV
 import pandas as pd
 
 

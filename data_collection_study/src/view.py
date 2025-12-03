@@ -4,14 +4,18 @@ import logging
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QVBoxLayout, QHBoxLayout
-from data_collection_study.src.ui import Canva, SideBar, HintOverlay
+from data_collection_study.src.ui import (
+    Canva,
+    SideBar,
+    HintOverlay,
+    CameraPreview,
+    PointerOverlay,
+)
 from data_collection_study.src.ui import (
     color_background,
     color_primary,
     color_foreground_light,
 )
-from share.ui.camera_preview import CameraPreview
-from share.ui.pointer_overlay import PointerOverlay
 
 if TYPE_CHECKING:
     from data_collection_study.src.controller import DataCollectionController

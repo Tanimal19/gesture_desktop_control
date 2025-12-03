@@ -1,10 +1,11 @@
 import random
+
+from PySide6.QtGui import QMouseEvent
 from evaluation_study.src.task.abstract_task_widget import AbstractTaskWidget
 from evaluation_study.src.styles import MyColor, get_instruction_style
 from evaluation_study.src.utils import calculate_distance
 from PySide6.QtCore import Qt, Signal, QPoint
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
-from share.worker.mouse_listener import get_mouse_listener
 import logging
 
 logger = logging.getLogger(__name__)
@@ -74,32 +75,42 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         instruction_label.setStyleSheet(get_instruction_style())
         layout.addWidget(instruction_label)
 
+        self.click_pos = (-1, -1)
+        self.start_pos = (-1, -1)
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.click_pos = (
+                int(event.globalPosition().x()),
+                int(event.globalPosition().y()),
+            )
+            logger.debug(f"Left click at {self.click_pos}")
+
     def show_context_menu(self, position: QPoint):
-        logger.debug(f"show context menu at {position}")
+        logger.debug(f"Show context menu at {position}")
 
         global_pos = self.mapToGlobal(position)
         self.menu_widget.move(global_pos)
         self.menu_widget.show()
 
         self.start_pos = (global_pos.x(), global_pos.y())
-        listener = get_mouse_listener()
-        listener.start_record_distance()
+
+        self.mouse_client.start_distance_recording()
 
     def on_menu_clicked(self, selected_index: int | None):
         if self.menu_clicked:  # only allow one emit
             return
         self.menu_clicked = True
 
-        logger.debug(f"item idx {selected_index} is selected")
+        logger.debug(f"Item idx {selected_index} is selected")
         self.menu_widget.close()
 
-        listener = get_mouse_listener()
-        click_pos = listener.last_pos
         target_pos = self.menu_widget.get_item_position(self.target_index)
 
-        error_distance = calculate_distance(click_pos, target_pos)
+        error_distance = calculate_distance(self.click_pos, target_pos)
         target_distance = calculate_distance(self.start_pos, target_pos)
-        moving_distance = listener.stop_record_distance()
+        res = self.mouse_client.stop_distance_recording()
+        moving_distance = res.get("distance", -1) if res else -1
 
         payload = {
             "is_correct": int(selected_index == self.target_index),
