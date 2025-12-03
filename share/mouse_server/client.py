@@ -50,13 +50,13 @@ class MouseServerClient:
         command = {"action": ActionType.MOVE.value, "x": x, "y": y}
         return self.send_command(command)
 
-    def button_event(self, x, y, down, button):
+    def button_event(self, x, y, button, event_type):
         command = {
             "action": ActionType.BUTTON.value,
             "x": x,
             "y": y,
-            "down": down,
             "button": button,
+            "event_type": event_type,
         }
         return self.send_command(command)
 

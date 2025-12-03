@@ -5,24 +5,38 @@ from share.utils import HandLandmark
 
 
 class GestureModelRunner:
-    def __init__(self, model: AbstractGestureModel, model_path: str, device: str):
+    def __init__(
+        self, model_class: type[AbstractGestureModel], model_path: str, device: str
+    ):
         self.device = device
-        self.model = model
+        self.model = model_class()
         self.model.to(self.device)
         self.model.load_state_dict(torch.load(model_path, map_location=self.device))
         self.model.eval()
 
-    def inference(self, landmark_window: np.ndarray) -> GestureLabel:
-        """
-        landmarks_window: np.array of shape (WINDOW_LENGTH, len(HandLandmark), 3)\n
-        """
-        assert (
-            landmark_window.shape[1] == len(HandLandmark)
-            and landmark_window.shape[2] == 3
-        )
+        self.landmarks_queue = []
+        self.window_length = model_class.WINDOW_LENGTH
 
+    def update_and_inference(self, landmarks: np.ndarray) -> GestureLabel:
+        """
+        Update the landmarks window and perform inference on the current window
+        """
+        assert landmarks.shape[0] == len(HandLandmark) and landmarks.shape[1] == 3
+
+        # update
+        self.landmarks_queue.append(landmarks)
+        if len(self.landmarks_queue) > self.window_length:
+            self.landmarks_queue.pop(0)
+
+        # build landmarks window
+        if len(self.landmarks_queue) < self.window_length:
+            return GestureLabel.NONE
+        landmarks_window = self.landmarks_queue[-self.window_length :]
+        landmarks_window = np.stack(landmarks_window, axis=0)
+
+        # inference
         with torch.no_grad():
-            x_tensor = self.model.landmarks_window_to_X(landmark_window)
+            x_tensor = self.model.landmarks_window_to_X(landmarks_window)
             x_tensor = x_tensor.unsqueeze(0)  # add batch dimension
             x_tensor = x_tensor.to(next(self.model.parameters()).device)
             out = self.model.forward(x_tensor)

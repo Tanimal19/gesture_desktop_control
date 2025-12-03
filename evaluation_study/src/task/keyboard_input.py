@@ -42,6 +42,7 @@ class KeyboardInputTaskWidget(AbstractTaskWidget):
         "typing",
         "monitor",
         "network",
+        "software",
     ]
 
     @staticmethod

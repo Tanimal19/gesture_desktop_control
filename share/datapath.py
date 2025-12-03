@@ -7,9 +7,9 @@ DC_MANUAL_LABEL_CSV = DC_DATASET_FOLDER + "labeled_manual.csv"  # for manual lab
 DC_AUTO_LABEL_CSV = DC_DATASET_FOLDER + "labeled_auto.csv"  # for auto labeling
 DC_FINAL_LABEL_CSV = DC_DATASET_FOLDER + "labeled_final.csv"
 
-ANNOTATOR_BASE_FOLDER = "./gesture_model/task_annotator/"
+ANNOTATOR_BASE_FOLDER = "./share/gesture_model/task_annotator/"
 ANNOTATOR_MODEL_FOLDER_TEMPLATE = ANNOTATOR_BASE_FOLDER + "models/{task}/"
-GTCN_BASE_FOLDER = "./gesture_model/gtcn/"
+GTCN_BASE_FOLDER = "./share/gesture_model/gtcn/"
 
 
 EVA_DATASET_FOLDER = "./evaluation_study/datasets/"

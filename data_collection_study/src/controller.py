@@ -13,9 +13,8 @@ from data_collection_study.task_generator import read_configs
 from data_collection_study.src.view import DataCollectionView
 from data_collection_study.src.recorder import DataCollectionRecorder
 from share.worker.camera import get_camera_singleton, close_camera_singleton
-from share.worker.landmarker import Landmarker
-from share.worker.smoother import EMASmoother
-from share.worker.landmark_mapper import LandmarkMapper
+from share.worker.landmarker import Landmarker, LandmarkSmoother
+from share.worker.pointer_mapper import PointerLandmarkMapper
 
 
 logger = logging.getLogger(__name__)
@@ -54,13 +53,13 @@ class DataCollectionController:
         self.camera.frame_ready.connect(self._on_frame_ready)
         self.landmarker = Landmarker(self.recorder.raw_landmarks_csv)
         self.landmarker.landmark_update.connect(self._on_landmark_update)
-        self.smoother = EMASmoother()
+        self.smoother = LandmarkSmoother()
         self.reset_after_undetect = 10
         self.undetected_count = 0
 
         self.pointer_enabled = pointer_enabled
         if self.pointer_enabled:
-            self.mapper = LandmarkMapper(
+            self.mapper = PointerLandmarkMapper(
                 self.view.pointer_overlay.width(), self.view.pointer_overlay.height()
             )
 

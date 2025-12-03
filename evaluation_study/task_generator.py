@@ -6,15 +6,15 @@ import os
 from share.datapath import EVA_DATASET_FOLDER
 from evaluation_study.src.task import TrueTaskType, TASK_WIDGET_MAP
 
-NUM_PARTICIPANT = 9
+NUM_PARTICIPANT = 5
 config_path = EVA_DATASET_FOLDER + "/task_configs.csv"
 
 
 def generate_configs():
     tasks = [
-        (TrueTaskType.MenuSelect, 5),
-        (TrueTaskType.DragDrop, 5),
-        (TrueTaskType.KeyboardInput, 5),
+        (TrueTaskType.MenuSelect, 10),
+        (TrueTaskType.DragDrop, 10),
+        (TrueTaskType.KeyboardInput, 10),
     ]
 
     with open(config_path, mode="w", newline="") as file:

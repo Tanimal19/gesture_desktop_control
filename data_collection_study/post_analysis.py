@@ -1,13 +1,13 @@
-from share.datapath import DC_FINAL_LABEL_CSV, DC_DATASET_FOLDER
+from share.datapath import DC_FINAL_LABEL_CSV, DC_MANUAL_LABEL_CSV, DC_DATASET_FOLDER
 import pandas as pd
 
 
-def analyze_consecutive_frames():
+def analyze_consecutive_frames(filepath):
     """
     Analyze the average consecutive frames of each gesture label.
     """
     # Load the data
-    df = pd.read_csv(DC_FINAL_LABEL_CSV)
+    df = pd.read_csv(filepath)
 
     # Sort by participant, task, trail, and timestamp to ensure proper ordering
     df = df.sort_values(["participant_id", "task", "trail", "timestamp"])
@@ -129,7 +129,7 @@ def print_detailed_analysis(stats, sequences_df, summary_file):
 
 if __name__ == "__main__":
     # Run the analysis
-    stats, sequences_df = analyze_consecutive_frames()
+    stats, sequences_df = analyze_consecutive_frames(DC_MANUAL_LABEL_CSV)
 
     # Print detailed results
     summary_file = DC_DATASET_FOLDER + "gesture_statistics_summary.txt"

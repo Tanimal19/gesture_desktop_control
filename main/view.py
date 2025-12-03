@@ -1,9 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import time
+import cv2
+from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QApplication
+from PySide6.QtCore import Qt, QCoreApplication
+from PySide6.QtGui import QResizeEvent, QImage, QPixmap
 import logging
-from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QApplication
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QResizeEvent
 
 if TYPE_CHECKING:
     from main.controller import MainAppController
@@ -37,13 +39,20 @@ class MainAppView(QWidget):
         self.event_label.setAlignment(
             Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         )
+        self.consectuive_move_count = 0
 
-        layout = QHBoxLayout(self)
-        layout.addWidget(self.gesture_label)
-        layout.addWidget(self.pointer_label)
-        layout.addWidget(self.event_label)
-        layout.setContentsMargins(10, 10, 10, 10)
-        self.setLayout(layout)
+        label_layout = QHBoxLayout()
+        label_layout.addWidget(self.gesture_label)
+        label_layout.addWidget(self.pointer_label)
+        label_layout.addWidget(self.event_label)
+        label_layout.setContentsMargins(10, 10, 10, 10)
+
+        self.camera_preview = CameraPreview(500, 300)
+
+        main_layout = QVBoxLayout(self)
+        main_layout.addLayout(label_layout)
+        main_layout.addWidget(self.camera_preview)
+        self.setLayout(main_layout)
 
         self.controller = None
         screen_geometry = QApplication.primaryScreen().geometry()
@@ -77,8 +86,15 @@ class MainAppView(QWidget):
             self.gesture_label.setText(f"Gesture: {gesture}")
         if pointer_pos is not None:
             self.pointer_label.setText(f"Pointer: {pointer_pos}")
-        if mouse_event is not None and mouse_event != "MOVE":
-            self.event_label.setText(f"{mouse_event}")
+        if mouse_event is not None:
+            # reset label if move event sustained, (otherwise it clutters the UI)
+            if mouse_event == "MOVE":
+                self.consectuive_move_count += 1
+                if self.consectuive_move_count >= 10:
+                    self.event_label.setText("")
+            else:
+                self.consectuive_move_count = 0
+                self.event_label.setText(f"{mouse_event}")
 
     def keyPressEvent(self, event):
         key = event.key()
@@ -96,4 +112,23 @@ class MainAppView(QWidget):
     def closeEvent(self, event):
         if self.controller:
             self.controller.close()
-        event.accept()
+            QCoreApplication.processEvents()  # drain queued callbacks
+            time.sleep(0.05)
+
+        super().closeEvent(event)
+
+
+class CameraPreview(QLabel):
+    def __init__(self, width, height):
+        super().__init__()
+        self.setFixedSize(width, height)
+        self.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter)
+
+    def update_camera_preview(self, frame):
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb.shape
+        qimg = QImage(rgb.data, w, h, ch * w, QImage.Format.Format_RGB888)
+        pixmap = QPixmap.fromImage(qimg).scaled(
+            self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio
+        )
+        self.setPixmap(pixmap)

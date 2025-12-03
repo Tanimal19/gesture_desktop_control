@@ -135,11 +135,11 @@ class MouseServer:
         def button_command(command):
             x = command.get("x")
             y = command.get("y")
-            down = command.get("down", True)
             button = command.get("button", "left")
+            event_type = command.get("event_type", "click")
 
             if x is not None and y is not None:
-                self.mouse_controller.button_event(int(x), int(y), down, button)
+                self.mouse_controller.button_event(int(x), int(y), button, event_type)
                 return self.generate_response(True)
             else:
                 return self.generate_response(False)

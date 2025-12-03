@@ -1,6 +1,7 @@
 import csv
 from PySide6.QtCore import QObject, Signal
 import mediapipe as mp
+import numpy as np
 from mediapipe.tasks.python.vision.hand_landmarker import (
     HandLandmarker,
     HandLandmarkerOptions,
@@ -30,6 +31,7 @@ class Landmarker(QObject):
 
     def __init__(self, output_csv=None):
         super().__init__()
+        self._active = False
 
         try:
             options = HandLandmarkerOptions(
@@ -44,6 +46,10 @@ class Landmarker(QObject):
                 result_callback=self.process_result,
             )
             self.landmarker = HandLandmarker.create_from_options(options)
+            self._warm_up()
+            self._active = True
+            logger.info("HandLandmarker started successfully")
+
         except Exception as e:
             logger.error(f"Failed to create HandLandmarker: {e}")
             return
@@ -58,9 +64,23 @@ class Landmarker(QObject):
                     + [("WORLD_" + lm.name) for lm in HandLandmark]
                 )
 
+    def _warm_up(self):
+        import numpy as np
+
+        dummy = np.zeros((10, 10, 3), dtype=np.uint8)
+        img = mp.Image(image_format=mp.ImageFormat.SRGB, data=dummy)
+
+        try:
+            self.landmarker.detect(img)
+        except Exception as e:
+            logger.error("Warm-up failed:", e)
+
     def process_result(
         self, result: HandLandmarkerResult, frame: mp.Image, timestamp: int
     ):
+        if not self._active:
+            return
+
         self.landmark_update.emit((timestamp, frame.numpy_view(), result))
 
         if self.output_csv:
@@ -75,6 +95,9 @@ class Landmarker(QObject):
                     writer.writerow(row)
 
     def detect_async(self, frame: Mat, timestamp: int):
+        if not self._active:
+            return
+
         frame = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
         try:
             self.landmarker.detect_async(frame, timestamp)
@@ -82,4 +105,37 @@ class Landmarker(QObject):
             logger.error(f"Failed to detect landmarks: {e}")
 
     def close(self):
+        self._active = False
         self.landmarker.close()
+
+
+class LandmarkSmoother:
+    """
+    Smooth landmarks using Exponential Moving Average (EMA) filter.
+    """
+
+    def __init__(self, alpha=0.5, jump_thresh=1.5):
+        self.alpha = alpha
+        self.jump_thresh = jump_thresh
+        self.prev = None
+
+    def update(self, landmarks: np.ndarray) -> np.ndarray:
+        assert landmarks.shape == (len(HandLandmark), 3)
+
+        if self.prev is None:
+            self.prev = landmarks
+            return landmarks
+
+        vel = np.linalg.norm(landmarks - self.prev)
+        logger.debug(f"velocity={vel}")
+        if vel > self.jump_thresh:
+            logger.debug("jump detected")
+            return self.prev
+
+        smoothed = self.alpha * landmarks + (1 - self.alpha) * self.prev
+        self.prev = smoothed.copy()
+
+        return smoothed
+
+    def reset(self):
+        self.prev = None
