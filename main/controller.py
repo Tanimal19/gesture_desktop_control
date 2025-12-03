@@ -25,8 +25,9 @@ class MainAppController:
         model_class: type[AbstractGestureModel],
         model_path: str,
         rule_base_enable: bool,
+        camera_preview_disable: bool,
     ):
-        self.view = MainAppView()
+        self.view = MainAppView(camera_preview_disable)
         self.view.set_controller(self)
 
         # camera and hand landmarker
@@ -61,6 +62,7 @@ class MainAppController:
             raise ConnectionError("Cannot connect to mouse server")
 
         self.mouse_control_enabled = False
+        self.camera_preview_disable = camera_preview_disable
 
         # show view
         self.view.show()
@@ -117,14 +119,15 @@ class MainAppController:
                     pointer_pos=screen_pos,
                     mouse_event=mouse_event.name,
                 )
-            logger.debug(f"Mouse event deteced: {mouse_event.name}")
+            logger.debug(f"Mouse event performed: {mouse_event.name}")
             self.perform_mouse_event(mouse_event, screen_pos)
 
         else:
             self.undetected_count += 1
 
-        frame = cv2.flip(frame, 1)
-        self.view.camera_preview.update_camera_preview(frame)
+        if not self.camera_preview_disable:
+            frame = cv2.flip(frame, 1)
+            self.view.camera_preview.update_camera_preview(frame)
 
     def toggle_mouse_control(self):
         self.mouse_control_enabled = not self.mouse_control_enabled

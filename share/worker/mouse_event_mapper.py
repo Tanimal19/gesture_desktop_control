@@ -76,9 +76,11 @@ class MouseEventGestureMapper:
 class MouseEventRuleBaseMapper:
     """Directly map landmark windows to mouse events based on rules"""
 
-    WINDOW_LENGTH = 6
-    TOUCH_DISTANCE_THRESHOLD = 0.15  # distance threshold to consider fingers "touching"
-    OPEN_DISTANCE_THRESHOLD = 0.2  # distance threshold to consider fingers "open"
+    WINDOW_SIZE = 3  # number of frames to get average distance
+    WINDOW_OVERLAP_SIZE = 0  # number of frames between current and past window
+    WINDOW_LENGTH = WINDOW_SIZE + WINDOW_SIZE - WINDOW_OVERLAP_SIZE
+
+    PRESS_DISTANCE_THRESHOLD = {"left": 0.10, "right": 0.16}
     CLICK_MERGE_THRESHOLD = (
         6  # number of frames to merge sequential press/release events
     )
@@ -90,46 +92,34 @@ class MouseEventRuleBaseMapper:
         self.onhold_event = None
 
     @staticmethod
-    def compute_thumb_index_distance(landmarks_window: np.ndarray) -> np.ndarray:
-        thumb_tip = landmarks_window[:, HandLandmark.THUMB_TIP.value, :]
-        index_finger_tip = landmarks_window[:, HandLandmark.INDEX_FINGER_TIP.value, :]
-        distances = np.linalg.norm(thumb_tip - index_finger_tip, axis=1)
+    def compute_distance(
+        landmarks_window: np.ndarray, l1: HandLandmark, l2: HandLandmark
+    ) -> np.ndarray:
+        l1pos = landmarks_window[:, l1.value, :]
+        l2pos = landmarks_window[:, l2.value, :]
+        distances = np.linalg.norm(l1pos - l2pos, axis=1)
         return distances
 
     @staticmethod
-    def compute_thumb_middle_distance(landmarks_window: np.ndarray) -> np.ndarray:
-        thumb_tip = landmarks_window[:, HandLandmark.THUMB_TIP.value, :]
-        middle_finger_tip = landmarks_window[:, HandLandmark.MIDDLE_FINGER_TIP.value, :]
-        distances = np.linalg.norm(thumb_tip - middle_finger_tip, axis=1)
-        return distances
-
-    @staticmethod
-    def is_press(current_distance, past_distance):
+    def is_press(current_distance, past_distance, btn):
         return (
-            current_distance < MouseEventRuleBaseMapper.TOUCH_DISTANCE_THRESHOLD
-            and MouseEventRuleBaseMapper.TOUCH_DISTANCE_THRESHOLD < past_distance
+            current_distance < MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn]
+            and MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn] < past_distance
         )
 
     @staticmethod
-    def is_release(current_distance, past_distance):
+    def is_release(current_distance, past_distance, btn):
         return (
-            current_distance > MouseEventRuleBaseMapper.TOUCH_DISTANCE_THRESHOLD
-            and MouseEventRuleBaseMapper.TOUCH_DISTANCE_THRESHOLD > past_distance
-        )
-
-    @staticmethod
-    def is_open(current_distance, past_distance):
-        return (
-            current_distance > MouseEventRuleBaseMapper.OPEN_DISTANCE_THRESHOLD
-            and past_distance > MouseEventRuleBaseMapper.OPEN_DISTANCE_THRESHOLD
+            current_distance > MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn]
+            and MouseEventRuleBaseMapper.PRESS_DISTANCE_THRESHOLD[btn] > past_distance
         )
 
     def detect(self, landmarks_window: np.ndarray) -> MouseEvent:
-        ti_distances = MouseEventRuleBaseMapper.compute_thumb_index_distance(
-            landmarks_window
+        ti_distances = MouseEventRuleBaseMapper.compute_distance(
+            landmarks_window, HandLandmark.THUMB_TIP, HandLandmark.INDEX_FINGER_TIP
         )
-        tm_distances = MouseEventRuleBaseMapper.compute_thumb_middle_distance(
-            landmarks_window
+        tm_distances = MouseEventRuleBaseMapper.compute_distance(
+            landmarks_window, HandLandmark.THUMB_TIP, HandLandmark.MIDDLE_FINGER_TIP
         )
 
         current_ti_distance = np.mean(ti_distances[-3:])
@@ -137,22 +127,26 @@ class MouseEventRuleBaseMapper:
         current_tm_distance = np.mean(tm_distances[-3:])
         past_tm_distance = np.mean(tm_distances[0:3])
 
-        logger.debug(
-            f"thumb-index distances: current={current_ti_distance}, past={past_ti_distance}"
-        )
-        logger.debug(
-            f"thumb-middle distances: current={current_tm_distance}, past={past_tm_distance}"
-        )
+        logger.debug(f"thumb-index distances: {current_ti_distance}")
+        logger.debug(f"thumb-middle distances: {current_tm_distance}")
 
         # detect press and release, right button events have higher priority, since we found that when middle finger approaches thumb, both index and middle distance decrease, but when index finger approaches thumb, only index distance decreases.
-        if MouseEventRuleBaseMapper.is_press(current_tm_distance, past_tm_distance):
+        if MouseEventRuleBaseMapper.is_press(
+            current_tm_distance, past_tm_distance, "right"
+        ):
             return MouseEvent.RIGHT_PRESS
-        if MouseEventRuleBaseMapper.is_release(current_tm_distance, past_tm_distance):
+        if MouseEventRuleBaseMapper.is_release(
+            current_tm_distance, past_tm_distance, "right"
+        ):
             return MouseEvent.RIGHT_RELEASE
 
-        if MouseEventRuleBaseMapper.is_press(current_ti_distance, past_ti_distance):
+        if MouseEventRuleBaseMapper.is_press(
+            current_ti_distance, past_ti_distance, "left"
+        ):
             return MouseEvent.LEFT_PRESS
-        if MouseEventRuleBaseMapper.is_release(current_ti_distance, past_ti_distance):
+        if MouseEventRuleBaseMapper.is_release(
+            current_ti_distance, past_ti_distance, "left"
+        ):
             return MouseEvent.LEFT_RELEASE
 
         return MouseEvent.MOVE

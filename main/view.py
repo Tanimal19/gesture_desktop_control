@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 class MainAppView(QWidget):
 
-    def __init__(self):
+    def __init__(self, camera_preview_disable):
         super().__init__()
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setWindowFlags(
@@ -47,11 +47,14 @@ class MainAppView(QWidget):
         label_layout.addWidget(self.event_label)
         label_layout.setContentsMargins(10, 10, 10, 10)
 
-        self.camera_preview = CameraPreview(500, 300)
-
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.addLayout(label_layout)
-        main_layout.addWidget(self.camera_preview)
+
+        if not camera_preview_disable:
+            self.camera_preview = CameraPreview(500, 300)
+            main_layout.addWidget(self.camera_preview)
+
         self.setLayout(main_layout)
 
         self.controller = None
