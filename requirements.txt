@@ -4,3 +4,4 @@ numpy
 pyside6
 pandas
 pyobjc-framework-Quartz
+gspread
