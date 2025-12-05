@@ -23,7 +23,7 @@ class MouseEventMapper:
     WINDOW_OVERLAP_SIZE = 0  # number of frames between current and past window
     WINDOW_LENGTH = WINDOW_SIZE + WINDOW_SIZE - WINDOW_OVERLAP_SIZE
 
-    PRESS_DISTANCE_THRESHOLD = {"left": 0.10, "right": 0.16}
+    PRESS_DISTANCE_THRESHOLD = {"left": 0.11, "right": 0.16}
     CLICK_MERGE_THRESHOLD = (
         6  # number of frames to merge sequential press/release events
     )
@@ -33,6 +33,7 @@ class MouseEventMapper:
         self.prev_detected_mouse_event = MouseEvent.MOVE
         self.onhold_frames = 0
         self.onhold_event = None
+        self.current_button_context = None  # "left" or "right"
 
     @staticmethod
     def compute_distance(
@@ -76,12 +77,18 @@ class MouseEventMapper:
         # detect press and release, right button events have higher priority, since we found that when middle finger approaches thumb, both index and middle distance decrease, but when index finger approaches thumb, only index distance decreases.
         if MouseEventMapper.is_press(current_tm_distance, past_tm_distance, "right"):
             return MouseEvent.RIGHT_PRESS
-        if MouseEventMapper.is_release(current_tm_distance, past_tm_distance, "right"):
+        if (
+            MouseEventMapper.is_release(current_tm_distance, past_tm_distance, "right")
+            and self.current_button_context != "left"
+        ):
             return MouseEvent.RIGHT_RELEASE
 
         if MouseEventMapper.is_press(current_ti_distance, past_ti_distance, "left"):
             return MouseEvent.LEFT_PRESS
-        if MouseEventMapper.is_release(current_ti_distance, past_ti_distance, "left"):
+        if (
+            MouseEventMapper.is_release(current_ti_distance, past_ti_distance, "left")
+            and self.current_button_context != "right"
+        ):
             return MouseEvent.LEFT_RELEASE
 
         return MouseEvent.MOVE
@@ -139,4 +146,23 @@ class MouseEventMapper:
         logger.debug(f"detected mouse event: {detected_event}")
         performed_event = self.perform(detected_event)
         logger.debug(f"performed mouse event: {performed_event}")
+
+        if performed_event in [
+            MouseEvent.LEFT_PRESS,
+            MouseEvent.LEFT_CLICK,
+        ]:
+            self.current_button_context = "left"
+            logger.debug(f"Current button context set to LEFT")
+        elif performed_event in [
+            MouseEvent.RIGHT_PRESS,
+            MouseEvent.RIGHT_CLICK,
+        ]:
+            self.current_button_context = "right"
+            logger.debug(f"Current button context set to RIGHT")
+        elif performed_event in [
+            MouseEvent.LEFT_RELEASE,
+            MouseEvent.RIGHT_RELEASE,
+        ]:
+            self.current_button_context = None
+
         return performed_event
