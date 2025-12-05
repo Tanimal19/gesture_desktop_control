@@ -1,0 +1,213 @@
+2025-12-05 15:21:04,044 [INFO] controller.__init__(): Loaded task configs [(<TrueTaskType.DragDrop: 'Drag and Drop'>, 5, [{'target_area': 'B'}, {'target_area': 'A'}, {'target_area': 'B'}, {'target_area': 'C'}, {'target_area': 'B'}]), (<TrueTaskType.KeyboardInput: 'Keyboard Input'>, 5, [{'target_word': 'PRACTICE'}, {'target_word': 'ALGORITHM'}, {'target_word': 'NETWORK'}, {'target_word': 'EDUCATION'}, {'target_word': 'LANGUAGE'}]), (<TrueTaskType.MenuSelect: 'Menu Selection'>, 5, [{'target_index': 0}, {'target_index': 5}, {'target_index': 1}, {'target_index': 5}, {'target_index': 0}])]
+2025-12-05 15:21:04,111 [INFO] client.connect(): Connected to mouse server at localhost:8888
+2025-12-05 15:21:12,568 [INFO] controller.start_study(): Study started.
+2025-12-05 15:21:15,643 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
+2025-12-05 15:21:25,004 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:21:25,004 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:21:26,805 [DEBUG] dragdrop.on_drop(): Dropped in area: None
+2025-12-05 15:21:26,805 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:21:26,805 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 0, 'target_area': 'B', 'dropped_area': 'None', 'error_distance': 1087.5890768116421, 'target_distance': 1087.5890768116421, 'drag_distance': 0.0, 'moving_distance': 998.4731779230056}
+2025-12-05 15:21:26,805 [INFO] controller.on_trial_completed(): Current trail completed in 11.16s
+2025-12-05 15:21:26,809 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
+2025-12-05 15:21:32,168 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:21:32,168 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:21:33,836 [DEBUG] dragdrop.on_drop(): Dropped in area: A
+2025-12-05 15:21:33,836 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:21:33,838 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'A', 'dropped_area': 'A', 'error_distance': 771.9183894687313, 'target_distance': 771.9183894687313, 'drag_distance': 0.0, 'moving_distance': 768.3763703956272}
+2025-12-05 15:21:33,839 [INFO] controller.on_trial_completed(): Current trail completed in 7.03s
+2025-12-05 15:21:33,842 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
+2025-12-05 15:21:36,969 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:21:36,969 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:21:37,140 [DEBUG] dragdrop.on_drop(): Dropped in area: None
+2025-12-05 15:21:37,140 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:21:37,142 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 0, 'target_area': 'B', 'dropped_area': 'None', 'error_distance': 1088.242620007138, 'target_distance': 1088.242620007138, 'drag_distance': 0.0, 'moving_distance': 44.24992615489562}
+2025-12-05 15:21:37,143 [INFO] controller.on_trial_completed(): Current trail completed in 3.30s
+2025-12-05 15:21:37,144 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
+2025-12-05 15:21:37,636 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:21:37,636 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:21:40,610 [DEBUG] dragdrop.on_drop(): Dropped in area: C
+2025-12-05 15:21:40,610 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:21:40,610 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'C', 'dropped_area': 'C', 'error_distance': 853.6509825449743, 'target_distance': 853.6509825449743, 'drag_distance': 0.0, 'moving_distance': 928.2999580490282}
+2025-12-05 15:21:40,611 [INFO] controller.on_trial_completed(): Current trail completed in 3.47s
+2025-12-05 15:21:40,614 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
+2025-12-05 15:21:46,603 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:21:46,603 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:21:49,270 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-12-05 15:21:49,270 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:21:49,270 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 1077.6497575743244, 'target_distance': 1077.6497575743244, 'drag_distance': 0.0, 'moving_distance': 1160.3494257612983}
+2025-12-05 15:21:49,271 [INFO] controller.on_trial_completed(): Current trail completed in 8.66s
+2025-12-05 15:21:49,273 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-12-05 15:21:58,180 [INFO] controller.start_next_trial(): Start trial 1 of task KeyboardInput
+2025-12-05 15:22:08,156 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:23:14,552 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:23:14,553 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'PRACTICE', 'entered_word': 'PRACTICE', 'num_key_clicks': 19, 'num_backspaces': 5, 'moving_distance': 10353.673917816257}
+2025-12-05 15:23:14,553 [INFO] controller.on_trial_completed(): Current trail completed in 76.37s
+2025-12-05 15:23:14,559 [INFO] controller.start_next_trial(): Start trial 2 of task KeyboardInput
+2025-12-05 15:23:30,418 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:25:08,147 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:25:08,148 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'ALGORITHM', 'entered_word': 'ALGORITHM', 'num_key_clicks': 22, 'num_backspaces': 6, 'moving_distance': 13976.148454170776}
+2025-12-05 15:25:08,149 [INFO] controller.on_trial_completed(): Current trail completed in 113.59s
+2025-12-05 15:25:08,155 [INFO] controller.start_next_trial(): Start trial 3 of task KeyboardInput
+2025-12-05 15:25:10,983 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:26:21,588 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:26:21,589 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'NETWORK', 'entered_word': 'NETWORK', 'num_key_clicks': 22, 'num_backspaces': 7, 'moving_distance': 13488.19046735743}
+2025-12-05 15:26:21,589 [INFO] controller.on_trial_completed(): Current trail completed in 73.43s
+2025-12-05 15:26:21,597 [INFO] controller.start_next_trial(): Start trial 4 of task KeyboardInput
+2025-12-05 15:26:27,622 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:27:37,461 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:27:37,462 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'EDUCATION', 'entered_word': 'EDUCATION', 'num_key_clicks': 16, 'num_backspaces': 3, 'moving_distance': 11745.653818598299}
+2025-12-05 15:27:37,463 [INFO] controller.on_trial_completed(): Current trail completed in 75.87s
+2025-12-05 15:27:37,469 [INFO] controller.start_next_trial(): Start trial 5 of task KeyboardInput
+2025-12-05 15:27:37,598 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:27:37,703 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:27:37,703 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 0, 'target_word': 'LANGUAGE', 'entered_word': '', 'num_key_clicks': 1, 'num_backspaces': 0, 'moving_distance': 5.5373191879907555}
+2025-12-05 15:27:37,704 [INFO] controller.on_trial_completed(): Current trail completed in 0.23s
+2025-12-05 15:27:37,704 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-12-05 15:27:46,165 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
+2025-12-05 15:27:46,730 [DEBUG] menu_select.mousePressEvent(): Left click at (780, 630)
+2025-12-05 15:27:47,065 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(637, 458)
+2025-12-05 15:27:47,069 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:27:47,428 [DEBUG] menu_select.closeEvent(): MenuWidget closed without selection, emitting None for item_clicked
+2025-12-05 15:27:47,429 [DEBUG] menu_select.on_menu_clicked(): Item idx None is selected
+2025-12-05 15:27:47,429 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:27:47,429 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 0, 'menu_length': 6, 'target_index': 0, 'selected_index': None, 'error_distance': 117.881296226331, 'target_distance': 111.68258592994702, 'moving_distance': 19.275399939955413}
+2025-12-05 15:27:47,429 [INFO] controller.on_trial_completed(): Current trail completed in 1.26s
+2025-12-05 15:27:47,432 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
+2025-12-05 15:27:52,198 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(739, 443)
+2025-12-05 15:27:52,200 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:27:52,630 [DEBUG] menu_select.closeEvent(): MenuWidget closed without selection, emitting None for item_clicked
+2025-12-05 15:27:52,631 [DEBUG] menu_select.on_menu_clicked(): Item idx None is selected
+2025-12-05 15:27:52,631 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:27:52,631 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 0, 'menu_length': 6, 'target_index': 5, 'selected_index': None, 'error_distance': 1367.5178243810938, 'target_distance': 339.31254029286924, 'moving_distance': 104.31776767330224}
+2025-12-05 15:27:52,631 [INFO] controller.on_trial_completed(): Current trail completed in 5.20s
+2025-12-05 15:27:52,635 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
+2025-12-05 15:27:53,029 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(858, 392)
+2025-12-05 15:27:53,031 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:27:53,763 [DEBUG] menu_select.closeEvent(): MenuWidget closed without selection, emitting None for item_clicked
+2025-12-05 15:27:53,763 [DEBUG] menu_select.on_menu_clicked(): Item idx None is selected
+2025-12-05 15:27:53,763 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:27:53,763 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 0, 'menu_length': 6, 'target_index': 1, 'selected_index': None, 'error_distance': 1293.0061871468365, 'target_distance': 139.8177385026664, 'moving_distance': 400.72493248801015}
+2025-12-05 15:27:53,763 [INFO] controller.on_trial_completed(): Current trail completed in 1.13s
+2025-12-05 15:27:53,766 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
+2025-12-05 15:27:57,464 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(582, 230)
+2025-12-05 15:27:57,467 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:28:02,764 [DEBUG] menu_select.on_menu_clicked(): Item idx 1 is selected
+2025-12-05 15:28:02,770 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:28:02,770 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 0, 'menu_length': 6, 'target_index': 5, 'selected_index': 1, 'error_distance': 1108.3000496255515, 'target_distance': 339.31254029286924, 'moving_distance': 801.8856625442332}
+2025-12-05 15:28:02,770 [INFO] controller.on_trial_completed(): Current trail completed in 9.00s
+2025-12-05 15:28:02,774 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
+2025-12-05 15:28:03,330 [DEBUG] menu_select.mousePressEvent(): Left click at (871, 505)
+2025-12-05 15:28:04,030 [DEBUG] menu_select.mousePressEvent(): Left click at (834, 417)
+2025-12-05 15:28:04,601 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(566, 177)
+2025-12-05 15:28:04,603 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:28:05,765 [DEBUG] menu_select.closeEvent(): MenuWidget closed without selection, emitting None for item_clicked
+2025-12-05 15:28:05,765 [DEBUG] menu_select.on_menu_clicked(): Item idx None is selected
+2025-12-05 15:28:05,765 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:28:05,765 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 0, 'menu_length': 6, 'target_index': 0, 'selected_index': None, 'error_distance': 39.56008088970496, 'target_distance': 111.68258592994702, 'moving_distance': 196.52923206500003}
+2025-12-05 15:28:05,765 [INFO] controller.on_trial_completed(): Current trail completed in 2.99s
+2025-12-05 15:28:05,767 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-12-05 15:28:05,767 [INFO] controller.start_next_task(): All tasks completed.
+2025-12-05 15:29:44,867 [INFO] controller.__init__(): Loaded task configs [(<TrueTaskType.DragDrop: 'Drag and Drop'>, 5, [{'target_area': 'B'}, {'target_area': 'A'}, {'target_area': 'B'}, {'target_area': 'C'}, {'target_area': 'B'}]), (<TrueTaskType.KeyboardInput: 'Keyboard Input'>, 5, [{'target_word': 'PRACTICE'}, {'target_word': 'ALGORITHM'}, {'target_word': 'NETWORK'}, {'target_word': 'EDUCATION'}, {'target_word': 'LANGUAGE'}]), (<TrueTaskType.MenuSelect: 'Menu Selection'>, 5, [{'target_index': 0}, {'target_index': 5}, {'target_index': 1}, {'target_index': 5}, {'target_index': 0}])]
+2025-12-05 15:29:44,931 [INFO] client.connect(): Connected to mouse server at localhost:8888
+2025-12-05 15:29:48,310 [INFO] controller.start_study(): Study started.
+2025-12-05 15:29:51,768 [INFO] controller.start_next_trial(): Start trial 1 of task DragDrop
+2025-12-05 15:30:04,636 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:30:04,637 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:05,742 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-12-05 15:30:05,742 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:05,742 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 977.0834150675162, 'target_distance': 977.0834150675162, 'drag_distance': 0.0, 'moving_distance': 997.6833511465422}
+2025-12-05 15:30:05,742 [INFO] controller.on_trial_completed(): Current trail completed in 13.97s
+2025-12-05 15:30:05,744 [INFO] controller.start_next_trial(): Start trial 2 of task DragDrop
+2025-12-05 15:30:07,391 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:30:07,391 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:08,465 [DEBUG] dragdrop.on_drop(): Dropped in area: A
+2025-12-05 15:30:08,465 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:08,466 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'A', 'dropped_area': 'A', 'error_distance': 694.9510774148063, 'target_distance': 694.9510774148063, 'drag_distance': 0.0, 'moving_distance': 711.4806389440688}
+2025-12-05 15:30:08,467 [INFO] controller.on_trial_completed(): Current trail completed in 2.72s
+2025-12-05 15:30:08,473 [INFO] controller.start_next_trial(): Start trial 3 of task DragDrop
+2025-12-05 15:30:09,353 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:30:09,353 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:10,460 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-12-05 15:30:10,460 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:10,461 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 985.1725737148797, 'target_distance': 985.1725737148797, 'drag_distance': 0.0, 'moving_distance': 1400.3913832517958}
+2025-12-05 15:30:10,461 [INFO] controller.on_trial_completed(): Current trail completed in 1.99s
+2025-12-05 15:30:10,466 [INFO] controller.start_next_trial(): Start trial 4 of task DragDrop
+2025-12-05 15:30:11,509 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:30:11,509 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:12,308 [DEBUG] dragdrop.on_drop(): Dropped in area: C
+2025-12-05 15:30:12,308 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:12,309 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'C', 'dropped_area': 'C', 'error_distance': 775.7654284640429, 'target_distance': 775.7654284640429, 'drag_distance': 0.0, 'moving_distance': 721.3280864589275}
+2025-12-05 15:30:12,310 [INFO] controller.on_trial_completed(): Current trail completed in 1.84s
+2025-12-05 15:30:12,314 [INFO] controller.start_next_trial(): Start trial 5 of task DragDrop
+2025-12-05 15:30:13,341 [DEBUG] dragdrop.on_drag(): Drag started
+2025-12-05 15:30:13,341 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:14,495 [DEBUG] dragdrop.on_drop(): Dropped in area: B
+2025-12-05 15:30:14,495 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:14,496 [DEBUG] dragdrop.on_drop(): DragDrop completed: {'is_correct': 1, 'target_area': 'B', 'dropped_area': 'B', 'error_distance': 1050.8610754995163, 'target_distance': 1050.8610754995163, 'drag_distance': 0.0, 'moving_distance': 926.7798906645743}
+2025-12-05 15:30:14,496 [INFO] controller.on_trial_completed(): Current trail completed in 2.18s
+2025-12-05 15:30:14,497 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-12-05 15:30:19,124 [INFO] controller.start_next_trial(): Start trial 1 of task KeyboardInput
+2025-12-05 15:30:20,649 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:28,332 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:28,333 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'PRACTICE', 'entered_word': 'PRACTICE', 'num_key_clicks': 9, 'num_backspaces': 0, 'moving_distance': 2212.9636597101658}
+2025-12-05 15:30:28,334 [INFO] controller.on_trial_completed(): Current trail completed in 9.21s
+2025-12-05 15:30:28,351 [INFO] controller.start_next_trial(): Start trial 2 of task KeyboardInput
+2025-12-05 15:30:29,799 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:38,390 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:38,391 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'ALGORITHM', 'entered_word': 'ALGORITHM', 'num_key_clicks': 10, 'num_backspaces': 0, 'moving_distance': 2219.372532949373}
+2025-12-05 15:30:38,391 [INFO] controller.on_trial_completed(): Current trail completed in 10.04s
+2025-12-05 15:30:38,407 [INFO] controller.start_next_trial(): Start trial 3 of task KeyboardInput
+2025-12-05 15:30:39,778 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:46,266 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:46,267 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'NETWORK', 'entered_word': 'NETWORK', 'num_key_clicks': 8, 'num_backspaces': 0, 'moving_distance': 2073.779400678959}
+2025-12-05 15:30:46,267 [INFO] controller.on_trial_completed(): Current trail completed in 7.86s
+2025-12-05 15:30:46,284 [INFO] controller.start_next_trial(): Start trial 4 of task KeyboardInput
+2025-12-05 15:30:47,363 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:30:54,519 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:30:54,520 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'EDUCATION', 'entered_word': 'EDUCATION', 'num_key_clicks': 10, 'num_backspaces': 0, 'moving_distance': 1949.8803593813136}
+2025-12-05 15:30:54,520 [INFO] controller.on_trial_completed(): Current trail completed in 8.24s
+2025-12-05 15:30:54,537 [INFO] controller.start_next_trial(): Start trial 5 of task KeyboardInput
+2025-12-05 15:30:55,699 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:31:04,224 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:31:04,224 [DEBUG] keyboard_input.on_submit(): KeyboardInput completed: {'is_correct': 1, 'target_word': 'LANGUAGE', 'entered_word': 'LANGUAGE', 'num_key_clicks': 9, 'num_backspaces': 0, 'moving_distance': 2669.3430283287234}
+2025-12-05 15:31:04,225 [INFO] controller.on_trial_completed(): Current trail completed in 9.69s
+2025-12-05 15:31:04,226 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-12-05 15:31:06,826 [INFO] controller.start_next_trial(): Start trial 1 of task MenuSelect
+2025-12-05 15:31:08,360 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(717, 159)
+2025-12-05 15:31:08,367 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:31:09,557 [DEBUG] menu_select.on_menu_clicked(): Item idx 0 is selected
+2025-12-05 15:31:09,564 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:31:09,565 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 0, 'selected_index': 0, 'error_distance': 1040.033172547876, 'target_distance': 111.68258592994702, 'moving_distance': 57.33339033403795}
+2025-12-05 15:31:09,565 [INFO] controller.on_trial_completed(): Current trail completed in 2.74s
+2025-12-05 15:31:09,574 [INFO] controller.start_next_trial(): Start trial 2 of task MenuSelect
+2025-12-05 15:31:11,213 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(1035, 176)
+2025-12-05 15:31:11,217 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:31:12,578 [DEBUG] menu_select.on_menu_clicked(): Item idx 5 is selected
+2025-12-05 15:31:12,585 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:31:12,586 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 5, 'selected_index': 5, 'error_distance': 1455.8193569258515, 'target_distance': 339.31254029286924, 'moving_distance': 344.18325108476574}
+2025-12-05 15:31:12,586 [INFO] controller.on_trial_completed(): Current trail completed in 3.01s
+2025-12-05 15:31:12,592 [INFO] controller.start_next_trial(): Start trial 3 of task MenuSelect
+2025-12-05 15:31:13,939 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(935, 224)
+2025-12-05 15:31:13,944 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:31:14,844 [DEBUG] menu_select.on_menu_clicked(): Item idx 1 is selected
+2025-12-05 15:31:14,849 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:31:14,850 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 1, 'selected_index': 1, 'error_distance': 1287.8175336591748, 'target_distance': 139.8177385026664, 'moving_distance': 96.50962632161226}
+2025-12-05 15:31:14,850 [INFO] controller.on_trial_completed(): Current trail completed in 2.26s
+2025-12-05 15:31:14,857 [INFO] controller.start_next_trial(): Start trial 4 of task MenuSelect
+2025-12-05 15:31:15,933 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(955, 202)
+2025-12-05 15:31:15,939 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:31:16,861 [DEBUG] menu_select.on_menu_clicked(): Item idx 5 is selected
+2025-12-05 15:31:16,869 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:31:16,870 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 5, 'selected_index': 5, 'error_distance': 1397.9964234575136, 'target_distance': 339.31254029286924, 'moving_distance': 340.37951048383553}
+2025-12-05 15:31:16,870 [INFO] controller.on_trial_completed(): Current trail completed in 2.01s
+2025-12-05 15:31:16,878 [INFO] controller.start_next_trial(): Start trial 5 of task MenuSelect
+2025-12-05 15:31:18,151 [DEBUG] menu_select.show_context_menu(): Show context menu at PySide6.QtCore.QPoint(959, 171)
+2025-12-05 15:31:18,156 [DEBUG] client.send_command(): Sent command: {"action": "start_recording"}
+2025-12-05 15:31:19,103 [DEBUG] menu_select.on_menu_clicked(): Item idx 0 is selected
+2025-12-05 15:31:19,109 [DEBUG] client.send_command(): Sent command: {"action": "stop_recording"}
+2025-12-05 15:31:19,109 [DEBUG] menu_select.on_menu_clicked(): MenuSelect completed: {'is_correct': 1, 'menu_length': 6, 'target_index': 0, 'selected_index': 0, 'error_distance': 1273.1712375010677, 'target_distance': 111.68258592994702, 'moving_distance': 34.07872599709485}
+2025-12-05 15:31:19,110 [INFO] controller.on_trial_completed(): Current trail completed in 2.23s
+2025-12-05 15:31:19,112 [INFO] controller.start_next_trial(): All trials for current task completed. Moving to next task.
+2025-12-05 15:31:19,112 [INFO] controller.start_next_task(): All tasks completed.
+2025-12-05 15:31:25,443 [INFO] client.disconnect(): Disconnected from mouse server
+2025-12-05 15:31:28,384 [INFO] client.disconnect(): Disconnected from mouse server

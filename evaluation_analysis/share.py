@@ -1,3 +1,5 @@
+DATASET_FOLDER = "./evaluation_analysis/"
+
 SYSTEM = ["gesture", "touchpad"]
 TASK = ["menu-selection", "dragdrop", "keyboard-input"]
 
@@ -42,3 +44,9 @@ NASA_TLX_SUBSCALES = [
     "effort",
     "frustration",
 ]
+
+
+def print_divider(title: str):
+    print("\n" + "=" * 60)
+    print(title)
+    print("=" * 60)
