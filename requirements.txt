@@ -5,3 +5,6 @@ pyside6
 pandas
 pyobjc-framework-Quartz
 gspread
+seaborn
+matplotlib
+python-Levenshtein

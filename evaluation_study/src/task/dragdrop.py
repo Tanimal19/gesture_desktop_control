@@ -20,9 +20,7 @@ class DragDropTaskWidget(AbstractTaskWidget):
         "is_correct",
         "target_area",
         "dropped_area",
-        "error_distance",  # pixels between dropped point and target area center
         "target_distance",  # pixels between start point and target area center
-        "drag_distance",  # pixels between start point and drop point
         "moving_distance",  # pixels of pointer moving bewteen drag start and drop
     ]
     on_completed = Signal(object)
@@ -113,14 +111,8 @@ class DragDropTaskWidget(AbstractTaskWidget):
         target_area = self.drop_areas[self.target_area_idx]
         target_pos = target_area.geometry().center()
 
-        error_distance = calculate_distance(
-            self.draggable_square.drag_end_pos, target_pos
-        )
         target_distance = calculate_distance(
             self.draggable_square.drag_start_pos, target_pos
-        )
-        drag_distance = calculate_distance(
-            self.draggable_square.drag_start_pos, self.draggable_square.drag_end_pos
         )
 
         res = self.mouse_client.stop_distance_recording()
@@ -134,9 +126,7 @@ class DragDropTaskWidget(AbstractTaskWidget):
             ),
             "target_area": target_area.area_label,
             "dropped_area": dropped_area.area_label if dropped_area else "None",
-            "error_distance": error_distance,
             "target_distance": target_distance,
-            "drag_distance": drag_distance,
             "moving_distance": moving_distance,
         }
 

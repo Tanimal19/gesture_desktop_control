@@ -2,7 +2,14 @@ import pandas as pd
 import gspread
 import re
 from pathlib import Path
-from share import SHEET_HEADER, NASA_TLX_SUBSCALES, SYSTEM, DATASET_FOLDER
+from share import (
+    SHEET_HEADER,
+    NASA_TLX_SUBSCALES,
+    SYSTEM,
+    DATASET_FOLDER,
+    QUALITATIVE_RESULT_FOLDER,
+    QUANTITATIVE_RESULT_FOLDER,
+)
 
 
 # ==== Questionnaire Sheet Parsing ====
@@ -52,6 +59,7 @@ def parse_questionnaire_sheet(sheet_url: str) -> pd.DataFrame:
     df["pid"] = df["pid"].astype(int)
     order_df["pid"] = order_df["pid"].astype(int)
     merged_df = df.merge(order_df, on="pid", how="left")
+    merged_df = merged_df[merged_df["pid"] != 0]  # Exclude pilot participant
 
     # Create new columns based on system order
     for metric in NASA_TLX_SUBSCALES:
@@ -77,7 +85,7 @@ def parse_questionnaire_sheet(sheet_url: str) -> pd.DataFrame:
 
 
 # ==== Combine Task Results ====
-def combine_task_results():
+def combine_task_results() -> pd.DataFrame:
     base_dir = Path(__file__).parent.parent / "evaluation_study" / "datasets"
 
     # Get all participant folders (p0, p1, p2, ...)
@@ -104,32 +112,26 @@ def combine_task_results():
                 print(f"Warning: File not found - {result_file}")
 
     # Combine all dataframes
-    if all_dataframes:
-        combined_df = pd.concat(all_dataframes, ignore_index=True)
+    combined_df = pd.concat(all_dataframes, ignore_index=True)
 
-        combined_df = combined_df.sort_values(
-            ["pid", "system", "task_type", "trial_index"]
-        )
-        combined_df = combined_df.reset_index(drop=True)
+    combined_df = combined_df.sort_values(["pid", "system", "task_type", "trial_index"])
+    combined_df = combined_df.reset_index(drop=True)
 
-        print(f"\nCombined dataframe shape: {combined_df.shape}")
-        print(f"Total records: {len(combined_df)}")
-        print(f"\nUnique participants: {sorted(combined_df['pid'].unique())}")
-        print(f"Input methods: {sorted(combined_df['input_method'].unique())}")
-        print(f"Task types: {sorted(combined_df['task_type'].unique())}")
-
-        # Save to CSV
-        output_file = Path(__file__).parent / "combined_task_results.csv"
-        combined_df.to_csv(output_file, index=False)
-        print(f"\nCombined data saved to: {output_file}")
-
-        return combined_df
-    else:
-        print("No data files found!")
-        return None
+    return combined_df
 
 
 if __name__ == "__main__":
     questionnire_df = parse_questionnaire_sheet(
         "https://docs.google.com/spreadsheets/d/17x2tE15Vy4zHrtOQnIAZm3iR1hqoU4mafqt8BvrHGQQ/edit?usp=sharing"
     )
+
+    result_df = combine_task_results()
+
+    print("Questionnaire DataFrame:")
+    print(questionnire_df)
+
+    print("\nCombined Task Results DataFrame:")
+    print(result_df)
+
+    questionnire_df.to_csv(QUALITATIVE_RESULT_FOLDER + "raw.csv", index=False)
+    result_df.to_csv(QUANTITATIVE_RESULT_FOLDER + "raw.csv", index=False)

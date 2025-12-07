@@ -1,4 +1,6 @@
 DATASET_FOLDER = "./evaluation_analysis/"
+QUALITATIVE_RESULT_FOLDER = DATASET_FOLDER + "qualitative_results/"
+QUANTITATIVE_RESULT_FOLDER = DATASET_FOLDER + "quantitative_results/"
 
 SYSTEM = ["gesture", "touchpad"]
 TASK = ["menu-selection", "dragdrop", "keyboard-input"]

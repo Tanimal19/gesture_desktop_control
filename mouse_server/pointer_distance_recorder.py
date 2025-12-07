@@ -21,6 +21,7 @@ class PointerDistanceRecorder:
 
         loc = Quartz.CGEventGetLocation(event)
         x, y = loc.x, loc.y
+        logger.debug(f"Mouse moved to: ({x}, {y})")
 
         if self.last_pos is not None:
             dx = x - self.last_pos[0]
@@ -37,6 +38,8 @@ class PointerDistanceRecorder:
         self.running = True
         self.total_distance = 0.0
         self.last_pos = None
+
+        logger.info("Starting pointer distance recording.")
 
         def run():
             mask = (
@@ -72,6 +75,8 @@ class PointerDistanceRecorder:
         self.running = False
         if self._tap:
             Quartz.CGEventTapEnable(self._tap, False)
+
+        logger.info("Stopped pointer distance recording.")
         return self.total_distance
 
 

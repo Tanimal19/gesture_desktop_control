@@ -17,7 +17,6 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         "menu_length",
         "target_index",
         "selected_index",
-        "error_distance",  # pixels between clicked point and target item
         "target_distance",  # pixels between start point and target item
         "moving_distance",  # pixels of pointer moving between menu open and item click
     ]
@@ -75,16 +74,7 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
         instruction_label.setStyleSheet(get_instruction_style())
         layout.addWidget(instruction_label)
 
-        self.click_pos = (-1, -1)
         self.start_pos = (-1, -1)
-
-    def mousePressEvent(self, event: QMouseEvent) -> None:
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.click_pos = (
-                int(event.globalPosition().x()),
-                int(event.globalPosition().y()),
-            )
-            logger.debug(f"Left click at {self.click_pos}")
 
     def show_context_menu(self, position: QPoint):
         logger.debug(f"Show context menu at {position}")
@@ -107,7 +97,6 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
 
         target_pos = self.menu_widget.get_item_position(self.target_index)
 
-        error_distance = calculate_distance(self.click_pos, target_pos)
         target_distance = calculate_distance(self.start_pos, target_pos)
         res = self.mouse_client.stop_distance_recording()
         moving_distance = res.get("distance", -1) if res else -1
@@ -117,7 +106,6 @@ class MenuSelectTaskWidget(AbstractTaskWidget):
             "menu_length": MenuSelectTaskWidget._menu_length,
             "target_index": self.target_index,
             "selected_index": selected_index,
-            "error_distance": error_distance,
             "target_distance": target_distance,
             "moving_distance": moving_distance,
         }
