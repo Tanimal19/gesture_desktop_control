@@ -1,0 +1,9 @@
+Statistical Comparison (Wilcoxon Signed-Rank Test):
+Dimension            stat         p-value      Significant
+------------------------------------------------------------
+Mental-Demand        0.0000       0.1250       No
+Physical-Demand      0.0000       0.1250       No
+Temporal-Demand      0.0000       0.5000       No
+Performance          3.0000       0.6250       No
+Effort               0.0000       0.1250       No
+Frustration          0.0000       0.2500       No

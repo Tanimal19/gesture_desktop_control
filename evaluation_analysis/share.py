@@ -48,6 +48,9 @@ NASA_TLX_SUBSCALES = [
 ]
 
 
+COLOR = ["#FF6B6B", "#4ECDC4"]  # Gesture: red, Touchpad: teal
+
+
 def print_divider(title: str):
     print("\n" + "=" * 60)
     print(title)

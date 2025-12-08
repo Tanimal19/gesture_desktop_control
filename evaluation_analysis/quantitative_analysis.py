@@ -4,7 +4,7 @@ import pprint
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
-from share import QUANTITATIVE_RESULT_FOLDER, print_divider
+from share import QUANTITATIVE_RESULT_FOLDER, COLOR, print_divider
 
 
 pp = pprint.PrettyPrinter(compact=True, width=120)
@@ -239,14 +239,6 @@ def statistical_analysis(
 
 # ==== Visualization ====
 def plot_task_correct_rate(data):
-    """
-    Plot correct rate for both systems using grouped bar plots.
-
-    Args:
-        data: Dictionary with task names as keys, each containing 'gesture' and 'touchpad'
-              subdictionaries with 'correct_rate' values
-    """
-    # Prepare data for seaborn
     plot_data = []
     for task_name, task_data in data.items():
         for system in ["gesture", "touchpad"]:
@@ -272,7 +264,7 @@ def plot_task_correct_rate(data):
         hue="System",
         width=0.6,
         ax=ax,
-        palette=["#FF6B6B", "#4ECDC4"],
+        palette=COLOR,
         alpha=0.8,
     )
 
@@ -292,14 +284,6 @@ def plot_task_correct_rate(data):
 
 
 def plot_task_metrics_in_single_figure(task_name, metrics_dict, metric_configs):
-    """
-    Plot all metrics for a single task in one figure with subplots.
-
-    Args:
-        task_name: Name of the task (e.g., "Menu Selection")
-        metrics_dict: Dictionary containing metric data for both systems
-        metric_configs: List of tuples (metric_name, ylabel) for metrics to plot
-    """
     n_metrics = len(metric_configs)
     fig, axes = plt.subplots(1, n_metrics, figsize=(4 * n_metrics, 5))
 
@@ -329,7 +313,7 @@ def plot_task_metrics_in_single_figure(task_name, metrics_dict, metric_configs):
             y=ylabel,
             hue="System",
             ax=ax,
-            palette=["#FF6B6B", "#4ECDC4"],
+            palette=COLOR,
             size=8,
             alpha=0.6,
             jitter=0.2,
