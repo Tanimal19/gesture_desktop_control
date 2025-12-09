@@ -72,6 +72,9 @@ def parse_questionnaire_sheet(sheet_url: str) -> pd.DataFrame:
                 ),
                 axis=1,
             )
+            merged_df[f"{sys}-{metric}"] = (
+                pd.to_numeric(merged_df[f"{sys}-{metric}"]) * 5
+            )
 
     # Drop the original s1/s2 columns and system1/system2 columns
     columns_to_drop = (

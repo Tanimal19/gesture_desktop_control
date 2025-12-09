@@ -241,10 +241,16 @@ def plot_nasa_tlx(df: pd.DataFrame):
         order=dim_order[::-1],
     )
 
+    # Bold the "Overall" label on y-axis
+    yticklabels = ax.get_yticklabels()
+    for label in yticklabels:
+        if "Overall" in label.get_text():
+            label.set_fontweight("bold")
+
     ax.set_ylabel("NASA-TLX Dimension")
     ax.set_xlabel("Mean Score (0-20, lower is better)")
     ax.set_title("NASA-TLX Scores by Dimension")
-    ax.set_xticks(np.arange(0, 21, 2))
+    ax.set_xticks(np.arange(0, 101, 5))
     ax.legend(title="System")
     sns.despine(ax=ax, left=True)
 
