@@ -5,8 +5,10 @@ __pycache__
 
 .venv/
 
-doc/
+doc/videos/
 *.mp4
 *.mov
+*.key
+
 
 credentials.json

@@ -283,6 +283,96 @@ def plot_task_correct_rate(data):
     return fig
 
 
+def plot_combined_efficiency_and_time(
+    menu_select_metrics, drag_drop_metrics, keyboard_input_metrics
+):
+    fig, axes = plt.subplots(2, 3, figsize=(15, 8))
+
+    tasks_data = [
+        ("Menu Selection", menu_select_metrics),
+        ("Drag & Drop", drag_drop_metrics),
+        ("Keyboard Input", keyboard_input_metrics),
+    ]
+
+    metrics = [("efficiency", "Efficiency"), ("complete_time", "Complete Time (s)")]
+
+    for row_idx, (metric_name, metric_label) in enumerate(metrics):
+        for col_idx, (task_name, task_metrics) in enumerate(tasks_data):
+            ax = axes[row_idx, col_idx]
+
+            # Prepare data for seaborn
+            plot_data = []
+            for system in ["gesture", "touchpad"]:
+                for value in task_metrics[system][metric_name]:
+                    plot_data.append(
+                        {"System": system.capitalize(), metric_label: value}
+                    )
+
+            plot_df = pd.DataFrame(plot_data)
+
+            # Create strip plot
+            sns.stripplot(
+                data=plot_df,
+                x="System",
+                y=metric_label,
+                hue="System",
+                ax=ax,
+                palette=COLOR,
+                size=8,
+                alpha=0.6,
+                jitter=0.2,
+                legend=False,
+                zorder=1,
+            )
+
+            # Add mean lines and labels
+            for i, system in enumerate(["Gesture", "Touchpad"]):
+                system_data = plot_df[plot_df["System"] == system][metric_label]
+                mean_val = system_data.mean()
+                ax.hlines(
+                    mean_val,
+                    i - 0.3,
+                    i + 0.3,
+                    colors="black",
+                    linestyles="solid",
+                    linewidth=2,
+                    zorder=3,
+                )
+                # Add mean value label
+                ax.text(
+                    i,
+                    mean_val + (0.03 * (ax.get_ylim()[1] - ax.get_ylim()[0])),
+                    f"  {mean_val:.2f}",
+                    ha="left",
+                    fontsize=9,
+                    fontweight="bold",
+                    color="black",
+                    zorder=4,
+                )
+
+            # Set title only for top row
+            if row_idx == 0:
+                ax.set_title(task_name, fontsize=12, fontweight="bold", pad=10)
+
+            # Set ylabel only for leftmost column
+            if col_idx == 0:
+                ax.set_ylabel(metric_label, fontsize=11)
+            else:
+                ax.set_ylabel("")
+
+            ax.set_xlabel("")
+            ax.grid(axis="y", alpha=0.3, linestyle="--")
+
+    fig.suptitle(
+        "Efficiency and Completion Time Across Tasks",
+        fontsize=16,
+        fontweight="bold",
+        y=0.995,
+    )
+    plt.tight_layout()
+    return fig
+
+
 def plot_task_metrics_in_single_figure(task_name, metrics_dict, metric_configs):
     n_metrics = len(metric_configs)
     fig, axes = plt.subplots(1, n_metrics, figsize=(4 * n_metrics, 5))
@@ -356,84 +446,20 @@ def plot_task_metrics_in_single_figure(task_name, metrics_dict, metric_configs):
 
 
 def visualization(menu_select_metrics, drag_drop_metrics, keyboard_input_metrics):
-    """
-    Generate all visualization plots for the quantitative analysis.
-    """
     print_divider("Generating Visualizations")
 
-    # Plot correct rate comparison across all tasks
-    print("Plotting correct rate comparison...")
-    task_correct_rate_data = {
-        "Menu Selection": menu_select_metrics,
-        "Drag & Drop": drag_drop_metrics,
-        "Keyboard Input": keyboard_input_metrics,
-    }
-    fig_correct_rate = plot_task_correct_rate(task_correct_rate_data)
-    fig_correct_rate.savefig(
-        QUANTITATIVE_RESULT_FOLDER + "correct_rate_comparison.png",
+    # Plot combined efficiency and completion time
+    print("Plotting combined efficiency and completion time...")
+    fig_combined = plot_combined_efficiency_and_time(
+        menu_select_metrics, drag_drop_metrics, keyboard_input_metrics
+    )
+    fig_combined.savefig(
+        QUANTITATIVE_RESULT_FOLDER + "combined_efficiency_time.png",
         dpi=300,
         bbox_inches="tight",
     )
-    print(f"Saved: {QUANTITATIVE_RESULT_FOLDER}correct_rate_comparison.png")
-    plt.close(fig_correct_rate)
-
-    # Plot Menu Selection metrics
-    print("Plotting Menu Selection metrics...")
-    menu_configs = [
-        ("efficiency", "Efficiency"),
-        ("complete_time", "Complete Time (s)"),
-        ("moving_distance", "Moving Distance (pixels)"),
-    ]
-    fig_menu = plot_task_metrics_in_single_figure(
-        "Menu Selection", menu_select_metrics, menu_configs
-    )
-    fig_menu.savefig(
-        QUANTITATIVE_RESULT_FOLDER + "menu_select_metrics.png",
-        dpi=300,
-        bbox_inches="tight",
-    )
-    print(f"Saved: {QUANTITATIVE_RESULT_FOLDER}menu_select_metrics.png")
-    plt.close(fig_menu)
-
-    # Plot Drag & Drop metrics
-    print("Plotting Drag & Drop metrics...")
-    dragdrop_configs = [
-        ("efficiency", "Efficiency"),
-        ("complete_time", "Complete Time (s)"),
-        ("moving_distance", "Moving Distance (pixels)"),
-    ]
-    fig_dragdrop = plot_task_metrics_in_single_figure(
-        "Drag & Drop", drag_drop_metrics, dragdrop_configs
-    )
-    fig_dragdrop.savefig(
-        QUANTITATIVE_RESULT_FOLDER + "drag_drop_metrics.png",
-        dpi=300,
-        bbox_inches="tight",
-    )
-    print(f"Saved: {QUANTITATIVE_RESULT_FOLDER}drag_drop_metrics.png")
-    plt.close(fig_dragdrop)
-
-    # Plot Keyboard Input metrics
-    print("Plotting Keyboard Input metrics...")
-    keyboard_configs = [
-        ("wpm", "WPM"),
-        ("backspace_rate", "Backspace Rate"),
-        ("efficiency", "Efficiency"),
-        ("complete_time", "Complete Time (s)"),
-        ("moving_distance", "Moving Distance (pixels)"),
-    ]
-    fig_keyboard = plot_task_metrics_in_single_figure(
-        "Keyboard Input", keyboard_input_metrics, keyboard_configs
-    )
-    fig_keyboard.savefig(
-        QUANTITATIVE_RESULT_FOLDER + "keyboard_input_metrics.png",
-        dpi=300,
-        bbox_inches="tight",
-    )
-    print(f"Saved: {QUANTITATIVE_RESULT_FOLDER}keyboard_input_metrics.png")
-    plt.close(fig_keyboard)
-
-    print("\nAll visualizations completed!")
+    print(f"Saved: {QUANTITATIVE_RESULT_FOLDER}combined_efficiency_time.png")
+    plt.close(fig_combined)
 
 
 if __name__ == "__main__":
@@ -443,5 +469,5 @@ if __name__ == "__main__":
     drag_drop_metrics = calculate_drag_drop_metrics(df)
     keyboard_input_metrics = calculate_keyboard_input_metrics(df)
 
-    statistical_analysis(menu_select_metrics, drag_drop_metrics, keyboard_input_metrics)
+    # statistical_analysis(menu_select_metrics, drag_drop_metrics, keyboard_input_metrics)
     visualization(menu_select_metrics, drag_drop_metrics, keyboard_input_metrics)

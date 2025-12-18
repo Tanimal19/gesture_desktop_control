@@ -123,7 +123,6 @@ def combine_task_results() -> pd.DataFrame:
     return combined_df
 
 
-# ==== Main ====
 if __name__ == "__main__":
     questionnire_df = parse_questionnaire_sheet(
         "https://docs.google.com/spreadsheets/d/17x2tE15Vy4zHrtOQnIAZm3iR1hqoU4mafqt8BvrHGQQ/edit?usp=sharing"
